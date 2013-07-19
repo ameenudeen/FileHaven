@@ -148,7 +148,7 @@ public class DownloadFileServlet extends HttpServlet {
 			for(byte b:data){
 				out.write(b);
 			}
-			out.flush();
+			out.flush(); 
 			out.close();
 		}
 		catch(BadPaddingException ex){
