@@ -144,7 +144,7 @@ public class DownloadFileServlet extends HttpServlet {
 			ServletOutputStream out = response.getOutputStream();
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-Disposition","attachment;filename="+file.getFileName()+(file.getFileExtension().equals("*No Extension*")?"":"."+file.getFileExtension()));
-
+ 
 			for(byte b:data){
 				out.write(b);
 			}
