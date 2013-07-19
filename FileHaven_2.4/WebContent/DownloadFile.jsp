@@ -78,8 +78,8 @@ padding:60px;
 			$("#information_double_enc").text("");
 			<%if(file.getEncrypted().equals("TRUE")){
 			%>
-			var enc1=document.getElementById("input_double_enc1");
-			var enc2=document.getElementById("input_double_enc2");
+			var enc1=document.getElementById("input_double_enc1").value;
+			var enc2=document.getElementById("input_double_enc2").value;
 			if(enc1!=enc2){
 				$("#information_double_enc").text("Inputs are not similar");
 				return false;
