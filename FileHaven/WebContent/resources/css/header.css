@@ -1,0 +1,141 @@
+.displayChat {
+	font-weight:bold;
+	padding:5px;
+
+}
+
+.displayInv {
+	font-weight:bold;
+		padding:5px;
+  
+}
+
+#newChat {
+	font-weight:bold;
+		padding:5px;
+  
+}
+
+.disHover{
+	padding:0px 0px 0px 5px;
+	width:100%;
+	/* First we need to help some browsers along for this to work.
+     Just because a vendor prefix is there, doesn't mean it will
+     work in a browser made by that vendor either, it's just for
+     future-proofing purposes I guess. */
+  -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  /* ...and now for the proper property */
+  transition:.5s;
+}
+
+.disHover:hover { background-color:aqua; }
+
+.daTab {
+    list-style:none; 
+    height:32px;
+    padding:0; 
+    margin:0; 
+    border: none;
+
+}
+
+.daTab li {
+    float:left; 
+    margin-right:0.13em; 
+}
+
+.daTab li a {
+    display:block;
+    height:32px;
+    padding:0 1em;
+    text-decoration:none;
+    border:0.06em solid #000;
+    border-bottom:0;
+    font:bold 0.88em/2em arial,geneva,helvetica,sans-serif;
+    color:#000;
+    background-color:#ddd;
+
+    /* CSS 3 elements */
+    webkit-border-top-right-radius:0.50em;
+    -webkit-border-top-left-radius:0.50em;
+    -moz-border-radius-topright:0.50em;
+    -moz-border-radius-topleft:0.50em;
+    border-top-right-radius:0.50em;
+    border-top-left-radius:0.50em;
+    
+      -o-transition:.2s;
+  -ms-transition:.2s;
+  -moz-transition:.2s;
+  -webkit-transition:.2s;
+  /* ...and now for the proper property */
+  transition:.2s;
+}
+
+.daTab li a:hover {
+    background:#3cf; 
+    color:#fff;
+    text-decoration:none;
+}
+
+.daTab li#current a {
+    background-color: #777;
+    color: #fff;
+}
+.daTab li#current a:hover {
+    background: #39C;
+}
+
+#virtualkeypad button{
+	font-size:16px;
+	font-weight:bold;
+	padding:5px 10px 5px 10px;
+}
+
+
+a
+{
+	cursor:pointer;
+}
+
+.nav li ul
+{
+     display: none; 
+     width: auto;
+     position:absolute;
+     top:40px;
+     padding:0px;
+     margin:0px;
+}
+.nav li:hover ul
+{
+     display: block;
+     position: absolute;
+     margin: 0;
+     padding: 0; 
+}
+.nav li:hover li
+{
+    float: none;
+    list-style:none;
+    margin:0px;
+    
+}
+.nav li:hover li
+{
+    background:#222;
+}
+.nav li:hover li a
+{
+    color: #ccc;
+    padding:0 20px;
+    display:block;
+	padding:10px 15px 10px 15px;
+}
+.nav li li a:hover
+{
+    color:#fff;
+    text-decoration:none;
+}
