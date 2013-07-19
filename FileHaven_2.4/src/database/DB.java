@@ -9,15 +9,15 @@ public class DB {
     
     public static String dbdriver = "com.mysql.jdbc.Driver";
     
-    public static String url = "jdbc:mysql://localhost/FileHaven";
-    public static String username = "root";
-    public static String password = "root";
+//    public static String url = "jdbc:mysql://localhost/FileHaven";
+//    public static String username = "root";
+//    public static String password = "root";
     
-    /*
-    public static String url = "jdbc:mysql://filehaven.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
-    public static String username = "filehaven";
-    public static String password = "filehaven";
-    */
+  
+    public static String url = "jdbc:mysql://adeeldb.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
+    public static String username = "adeeldb";
+    public static String password = "Iamtheking";
+    
     
     public DB() throws Exception {
         try {
