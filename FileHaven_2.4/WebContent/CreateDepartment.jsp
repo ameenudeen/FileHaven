@@ -9,6 +9,8 @@
 
 <link href="resources/css/bootstrap.css" rel="stylesheet"
 	type="text/css" />
+<link href="resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/application.css" rel="stylesheet" type="text/css" />
 
 <style type="text/css" title="currentStyle">
 @import "resources/css/demo_table.css";
@@ -166,7 +168,8 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 
 
 	<hr>
-<%@ include file="footer.jsp"%>
+
+
 	<!-- Dynamic Search Table
     ================================================== -->
 	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog"

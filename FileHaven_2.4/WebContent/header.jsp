@@ -1,13 +1,15 @@
-
 <link href="resources/css/jquery.contextMenu.css" rel="stylesheet"
 	type="text/css" />
 <link href="resources/css/reveal.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/header.css" rel="stylesheet" type="text/css" />
 
+
 <link href="resources/css/jquery-ui.css" rel="stylesheet"
 	type="text/css">
 <link href="resources/css/smoothness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/smoothness/demo_table_jui.css" rel="stylesheet" type="text/css" />
+
+
 	
 		<!-- Le javascript
     ================================================== -->
