@@ -65,11 +65,36 @@ function validateForm()
     }
     
     else if(document.testRemove.sometext.value=="")
-    	{
+    {
     		alert("Please select at least one manager");
     		 document.testRemove.sometext.focus();
     		 return false;
-    	}
+    }
+    
+    else if(document.testRemove.employees.value=="")
+    {
+    		alert("Please select at least one employee");
+    		 document.testRemove.employees.focus();
+    		 return false;
+    		 
+    }
+    
+    else if(document.testRemove.departmentDescription.value=="")
+    {
+      alert("Department description should not be blank");
+      document.testRemove.departmentDescription.focus();
+      return false;
+    }
+    
+    else if(document.testRemove.test.value=="")
+    {
+    	alert("Please upload a department picture");
+         return false;
+    
+    }
+    
+   
+    
   
 }
 </script>
