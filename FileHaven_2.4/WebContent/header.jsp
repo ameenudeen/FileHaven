@@ -697,6 +697,19 @@
 						$(window).bind("resize", function() {
 
 							$('#sidebar').toggle($(this).width() >= 767);
+							
+							if($(this).width() >= 1200){
+								console.log('1');
+								$("#daFilter").width(200);
+							}
+							else if($(this).width() >= 980){
+								console.log('2');
+								$("#daFilter").width(150);
+							}
+							else{
+								console.log('3');
+								$("#daFilter").width(100);
+							}
 
 						}).trigger("resize");
 
