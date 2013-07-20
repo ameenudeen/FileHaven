@@ -627,7 +627,8 @@
 						$('#updateNotification').click(function(event) {  
 		                    var username=$('#user').val();
 		                	$.get('ActionServlet',{user:username},function(responseText) { 
-		                        $('#welcometext').text(responseText);         
+		                        $('#welcometext').text(responseText);
+		                        location.reload();
 		                    });
 		                });
 						

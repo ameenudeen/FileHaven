@@ -87,6 +87,8 @@ padding:60px;
 					</div>
 				</div>
 			</div>
+			</div>
+			</div>
 <%@ include file="footer.jsp"%>
 </body>
 </html>
