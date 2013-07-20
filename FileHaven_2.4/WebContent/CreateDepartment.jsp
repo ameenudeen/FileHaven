@@ -59,10 +59,17 @@ function validateForm()
 {
     if(document.testRemove.departmentName.value=="")
     {
-      alert("User Name should be left blank");
-      document.frm.departmentName.focus();
+      alert("Department name should not be left blank");
+      document.testRemove.departmentName.focus();
       return false;
     }
+    
+    else if(document.testRemove.sometext.value=="")
+    	{
+    		alert("Please select at least one manager");
+    		 document.testRemove.sometext.focus();
+    		 return false;
+    	}
   
 }
 </script>
