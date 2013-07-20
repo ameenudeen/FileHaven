@@ -636,6 +636,13 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 				data-dismiss="modal">Ok</button>
 		</div>
 	</div>
+	
+  <hr>
+
+  <!-- Footer
+    ================================================== -->
+  	<%@ include file="footer.jsp"%> 
+	
 	<!-- Le javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
