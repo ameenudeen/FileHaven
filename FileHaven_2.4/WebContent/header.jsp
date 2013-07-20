@@ -9,7 +9,24 @@
 <link href="resources/css/smoothness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/smoothness/demo_table_jui.css" rel="stylesheet" type="text/css" />
 	
+		<!-- Le javascript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="resources/js/bootstrap-transition.js"></script>
+	<script src="resources/js/bootstrap-alert.js"></script>
+	<script src="resources/js/bootstrap-modal.js"></script>
+	<script src="resources/js/bootstrap-dropdown.js"></script>
+	<script src="resources/js/bootstrap-scrollspy.js"></script>
+	<script src="resources/js/bootstrap-tab.js"></script>
+	<script src="resources/js/bootstrap-tooltip.js"></script>
+	<script src="resources/js/bootstrap-popover.js"></script>
+	<script src="resources/js/bootstrap-button.js"></script>
+	<script src="resources/js/bootstrap-collapse.js"></script>
+	<script src="resources/js/bootstrap-carousel.js"></script>
+	<script src="resources/js/bootstrap-typeahead.js"></script>
+	
 <script src="resources/js/jquery.dataTables.js" type="text/javascript"></script>
+<script src="resources/js/jquery.viewport.js" type="text/javascript"></script>
 <script src="resources/js/jquery.fastLiveFilter.js" type="text/javascript"></script>
 <script src="resources/js/DataTables/dataTables.fnReloadAjax.js" type="text/javascript"></script>
 <script src="resources/js/DataTables/jquery.tablesorter.js" type="text/javascript"></script>
@@ -17,7 +34,19 @@
 <script src="resources/js/jquery.contextMenu.js" type="text/javascript"></script>
 <script src="resources/js/jquery.reveal.js" type="text/javascript"></script>
 
-<%@ page import="model.ChatSession,model.Account"%>
+<%@ page import="database.*,model.*, java.util.*"%>
+
+<% 	if(session.getAttribute("LoggedInUser")==null){
+		response.sendRedirect("Login.jsp");
+		return;
+} %>
+
+<%
+	Account user = (Account) session.getAttribute("LoggedInUser");
+
+	NotificationDBAO notification = new NotificationDBAO();
+	ArrayList<Notification> notifications = notification.getNotifications(user);
+%>
 
 <style>
 #chatInvUserDT .ui-toolbar
@@ -26,11 +55,8 @@
 }
 </style>
 <script>
-	<% 	if(session.getAttribute("LoggedInUser")==null){
-		response.sendRedirect("Login.jsp");
-		return;
-	} %>
 
+	//$(":in-viewport")
 	var hosturl = location.origin + "/" + location.pathname.split('/')[1] + "/";
 	var activeroom = -1;
 	var activeinv = -1;
@@ -41,8 +67,8 @@
 	var cutGaiSelected = [];
 	
 	retrieveChatRoomAjax();
-	//setInterval(retrieveChatRoomAjax, 10000);
-	setInterval(retrieveChatMsgAjax, 100);
+	setInterval(retrieveChatRoomAjax, 10000);
+	setInterval(retrieveChatMsgAjax, 500);
 
 	function sendChatMsgAjax() {
 		if (activeroom > -1) {
@@ -155,6 +181,7 @@
 				if (xmlhttp.readyState == 4 && xmlhttp.status != 200) {
 					alert("Connection error");
 				} else if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					$("#cfmDialog").trigger('reveal:close');
 					retrieveChatRoomAjax();
 				}
 			};
@@ -230,7 +257,9 @@
 	}
 
 	function retrieveChatMsgAjax() {
+		
 		if (activeroom > -1) {
+			console.log("Entered");
 			var xmlhttp;
 			if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 				xmlhttp = new XMLHttpRequest();
@@ -246,6 +275,63 @@
 			xmlhttp.send();
 		}
 	}
+	
+	function retrieveChatInvDescAjax() {
+		if (activeinv > -1) {
+			var xmlhttp;
+			if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp = new XMLHttpRequest();
+			} else {// code for IE6, IE5
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					document.getElementById("invCfmDialogDesc").innerHTML = xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET", "GetChatInvDescServ?clientiid="+activeinv, true);
+			xmlhttp.send();
+		}
+	}
+	
+	function getChatRmUserAjax() {
+		if (activeroom > -1) {
+			var xmlhttp;
+			if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp = new XMLHttpRequest();
+			} else {// code for IE6, IE5
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					$("#chatUsersUl").html( xmlhttp.responseText);
+				}
+			}
+			xmlhttp.open("GET", "GetChatUserServ", true);
+			xmlhttp.send();
+		}
+	}
+	
+	function leaveChatRoomAjax(clientrid) {
+		if (clientrid > -1 && confirm("You will not be able to join this chatroom unless you are invited again. Proceed?")) {
+			var xmlhttp;
+			if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp = new XMLHttpRequest();
+			} else {// code for IE6, IE5
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+					$("#chat").hide();
+					retrieveChatRoomAjax();
+					daReinit();
+					alert("You have left the chatroom.");
+				}
+			}
+			xmlhttp.open("GET", "LeaveChatRoomServ?clientRid="+clientrid, true);
+			xmlhttp.send();
+		}
+	}
 
 	function retrieveChatRoomAjax() {
 		var xmlhttp;
@@ -256,6 +342,11 @@
 		}
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if(xmlhttp.responseText=="redirect"){
+					window.location.href=hosturl+'Login.jsp';
+					return false;
+				}
+				
 				document.getElementById("discussionarea").innerHTML = xmlhttp.responseText;
 
 				//Live Filter
@@ -430,12 +521,13 @@
 							setActiveRoom(activeroom);
 							$("#chat").show();
 							$(".chatName").text($(this).text());
-							$(".chatUsers")
-									.html(
-											"<b>Users</b><ul><li>Jack</li><li>Alice</li><li>Robin</li></ul>");
+							getChatRmUserAjax();
 						});
 
 		$(".displayInv").click(function() {
+			activeinv=$(this).attr('data-clientiid');
+			$('#invCfmDialogTitle').text($(this).text());
+			retrieveChatInvDescAjax();
 			$("#cfmDialog").reveal();
 		});
 		
@@ -539,8 +631,8 @@
 		                    });
 		                });
 						
-						$('#chatInvForm')
-								.submit(
+						$('#invDialogSubmit')
+								.click(
 										function() {
 											if (cutGaiSelected.length == 0) {
 												$("#sendInvErrorlbl")
@@ -621,9 +713,7 @@
 											setActiveRoom(activeroom);
 											$("#chat").show();
 											$(".chatName").text($(this).text());
-											$(".chatUsers")
-													.html(
-															"<b>Users</b><ul><li>Jack</li><li>Alice</li><li>Robin</li></ul>");
+											getChatRmUserAjax();
 										});
 
 						$(".invUserLink").button().click(function() {
@@ -636,6 +726,9 @@
 						});
 
 						$(".displayInv").click(function() {
+							activeinv=$(this).attr('data-clientiid');
+							$('#invCfmDialogTitle').text($(this).text());
+							retrieveChatInvDescAjax();
 							$("#cfmDialog").reveal();
 						});
 						
@@ -678,12 +771,13 @@
 											setActiveRoom(activeroom);
 											$("#chat").show();
 											$(".chatName").text($(this).text());
-											$(".chatUsers")
-													.html(
-															"<b>Users</b><ul><li>Jack</li><li>Alice</li><li>Robin</li></ul>");
+											getChatRmUserAjax();
 										}
 										if (key == "history") {
-											window.location.href = "ViewChatHistory.jsp";
+											window.location.href = hosturl+"ViewChatHistory.jsp?clientrid="+$(this).attr('data-clientrid');
+										}
+										if (key == "leave") {
+											leaveChatRoomAjax($(this).attr('data-clientrid'));
 										}
 									},
 									items : {
@@ -710,8 +804,10 @@
 										if (key == "view") {
 											activeinv = $(this).attr(
 													'data-clientiid');
-											//$("#cfmDialog").dialog("open");
+											$('#invCfmDialogTitle').text($(this).text());
+											retrieveChatInvDescAjax();
 											$('#cfmDialog').reveal();
+											
 										} else if (key == "accept") {
 											var cfm = confirm("You are about to accept an invitation. Proceed?");
 											if (cfm) {
@@ -773,7 +869,7 @@
 
 					});
 </script>
-
+			
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container-fluid">
@@ -785,6 +881,10 @@
 			<a class="brand" href="Index.jsp">File Haven</a>
 			<div class="nav-collapse collapse">
 				<p class="navbar-text pull-right">
+				<a href="#notification" data-toggle="modal"><button
+								class="btn btn-danger" type="button"><%=notifications.size() %>
+								New Notifications
+							</button></a>
 				<%if(session.getAttribute("LoggedInUser")==null) {%>
 					<a class="navbar-link" onclick="window.location.href=hosturl+'UploadFile.jsp';">Login</a>
 				<%}
@@ -813,7 +913,6 @@
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
 
-							<li><a>Notification</a></li>
 						</ul>
 					<% } %>
 					
@@ -835,7 +934,6 @@
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
-							<li><a>Notification</a></li>
 						</ul>
 					<% } %>
 					
@@ -857,7 +955,6 @@
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
-							<li><a>Notification</a></li>
 						</ul>
 					<% } %>
 					
@@ -875,7 +972,6 @@
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
-							<li><a>Notification</a></li>
 						</ul>
 					<% } %>
 					
@@ -893,7 +989,6 @@
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
-							<li><a>Notification</a></li>
 						</ul>
 					<% } %>
 					
@@ -907,7 +1002,6 @@
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
-							<li><a>Notification</a></li>
 						</ul>
 					<% } %>
 				
@@ -917,8 +1011,38 @@
 		</div>
 	</div>
 </div>
-<div id="sidebar" class="well sidebar-nav affix"
-	style="margin-top: 60px; margin-left: 10px; width: 250px; z-index: 0;">
+<div class="span3">
+<ul class="thumbnails">
+				<li class="span3">
+					<div class="thumbnail">
+						<img src="resources/img/hewlett.jpg" alt="">
+
+
+
+					</div> <input type="text" id="user" /> <input type="button" id="submit1"
+					value="Ajax Submit1" /> <br />
+					<div id="welcometext"></div>
+					<div class="well well-large">
+						Company Name:
+						<p class="muted">Hewlett Packard</p>
+						<p class="text-success">
+							User: Mr
+							<%=user.getName()%></p>
+						<p class="text-info">
+							Postion:
+							<%=user.getType()%></p>
+
+
+
+
+						<p class="text-warning">465.1 MB of 28.38 GB used</p>
+						<div class="progress progress-striped active">
+							<div class="bar" style="width: 20%;"></div>
+						</div>
+					</div>
+					
+					<div id="sidebar" class="well sidebar-nav "
+	>
 	<!--<ul class="nav nav-list">
 		<li class="nav-header">Sidebar</li>
 		<li class="active"><a href="#">Link</a></li>
@@ -936,13 +1060,16 @@
 	</ul>
 	
 	<div id="dareaDiv" style="border: solid 1px #ddd; height: 300px; padding: 5px;">
-	<input type="text" id="daFilter" PlaceHolder="Type to filter" style="width:224px;"/>
+	<input type="text" id="daFilter" PlaceHolder="Type to filter" />
 		<div style="overflow-y:auto;overflow-x:hidden;height: 250px;">
-			<ul id="discussionarea"  style="margin-left:0px;list-style-position:inside;">
+			<ul id="discussionarea" style="margin-left:0px;list-style-position:inside;">
 
 			</ul>
 		</div>
 	</div>
+</div>
+				</li>
+			</ul>
 </div>
 
 <div id="chat" class="well sidebar-nav affix"
@@ -957,9 +1084,8 @@
 	<div id="chatUsers" class="chatUsers"
 		style="padding: 1px; float: right; border: solid 1px grey; width: 80px !important; height: 130px; font-size: 10px;">
 		<b>Users</b>
-		<ul>
-			<li>Jack</li>
-			<li>Alice</li>
+		<ul id="chatUsersUl">
+
 		</ul>
 
 	</div>
@@ -985,7 +1111,7 @@
 <div id="invDialog" class="reveal-modal large"
 	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
 	<a class="close-reveal-modal">&#215;</a>
-	<form id="chatInvForm">
+
 				<p><h4>Select users to invite</h4></p>
 		<fieldset>
 			<table class="display" id="chatInvUserDT">
@@ -1010,9 +1136,9 @@
 		</fieldset>
 		<hr />
 		
-		<input type="submit" value="Send Invitation" />
-		<button>Cancel</button>
-	</form>
+		<button id="invDialogSubmit">Send Invitation</button>
+		<button onclick="$('#invDialog').trigger('reveal:close');">Cancel</button>
+
 	<p><span id="sendInvErrorlbl" style="color:red;"></span></p>
 </div>
 
@@ -1020,17 +1146,19 @@
 	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
 	<a class="close-reveal-modal">&#215;</a>
 
-	<h4>You are invited to Chatroom3</h4>
+	<h4>You are invited to <span id="invCfmDialogTitle">Chatroom3</span></h4>
 	<div>
-		<p>This is a chatroom description</p>
+		<p><span id="invCfmDialogDesc">This is a chatroom description</span></p>
 	</div>
 
 	<hr />
-	<form>
-		<button>Accept</button>
-		<button>Deny</button>
-		<button>Cancel</button>
-	</form>
+
+		<button onclick="setInvStatusAjax(activeinv, 1);">
+			Accept</button>
+		<button onclick="setInvStatusAjax(activeinv, 2);">
+			Deny</button>
+		<button onclick="$('#cfmDialog').trigger('reveal:close');">Cancel</button>
+
 
 </div>
 
@@ -1048,7 +1176,7 @@
 	
 		<button onclick="verifyPinAjax($('#chatpinauth').val())">Confirm</button>
 		<button onclick="$('#chatpinauth').val('')">Clear</button>
-		<button>Cancel</button>
+		<button onclick="$('#pinDialog').trigger('reveal:close');">Cancel</button>
 	<p><span id="pinAuthErrorlbl" style="color:red;"></span></p>
 
 </div>
@@ -1076,13 +1204,50 @@
 	
 		<button onclick="registerPinAjax()">Confirm</button>
 		<button onclick="$('#chatpinreg').val('');$('#chatpincfm').val('');">Clear</button>
-		<button>Cancel</button>
+		<button onlick="$('#cpinDialog').trigger('reveal:close');">Cancel</button>
 	<p><span id="pinRegErrorlbl" style="color:red;"></span></p>
 
 </div>
 
+	<div id="notification" class="modal hide fade" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Notification</h3>
+		</div>
+		<div class="modal-body">
+			<%if(notifications.size()==0){ %>
+				
+				<h3>No New Notifications</h3>
+	
+		
+			
+			<% }else{
+				for(int i=0;i<notifications.size();i++){
+            Notification displayNotifications = (Notification)notifications.get(i);
+            %>
+                                          
+            
+            
+			<div class="alert fade in">
+				<button type="button" class="close" data-dismiss="alert">×</button>
+				
+				<strong><%= displayNotifications.getMessageDateTime()%></strong>
+				<%=displayNotifications.getMessage() %>
+
+
+			</div>
+			<%} %>
+			<%} %>
+		</div>
+
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary" id="updateNotification"
+				data-dismiss="modal">Ok</button>
+		</div>
+	</div>
+		
 
 <!--/.well -->
-<div class="container-fluid">
-	<div class="row-fluid">
-		<div class="span3"></div>

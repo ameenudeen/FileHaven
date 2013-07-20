@@ -34,7 +34,7 @@ public class FileReportDBAO {
 	        	DB db = new DB();
 		    	con = db.getConnection();
 	        } catch (Exception ex) {
-	            System.out.println("Exception in AccountDBAO: " + ex);
+	            System.out.println("Exception in FileReportDBAO: " + ex);
 	            throw new Exception("Couldn't open connection to database: " +
 	                    ex.getMessage());
 	        }
@@ -198,18 +198,18 @@ public class FileReportDBAO {
 	public static void main(String args[])
 	{
 		
-		final Date currentTime = new Date();
-
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		final SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss");
-
-
-		// Give it to me in GMT time.
-		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-		sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
-		System.out.println("GMT date: " + sdf.format(currentTime));
-		System.out.println("GMT time: " + sdf1.format(currentTime));
-		
+//		final Date currentTime = new Date();
+//
+//		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		final SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss");
+//
+//
+//		// Give it to me in GMT time.
+//		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+//		sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
+//		System.out.println("GMT date: " + sdf.format(currentTime));
+//		System.out.println("GMT time: " + sdf1.format(currentTime));
+//		
 //		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //		DateFormat dateFormat1 = new SimpleDateFormat("HH:MM:SS");
 //		Date date = new Date();

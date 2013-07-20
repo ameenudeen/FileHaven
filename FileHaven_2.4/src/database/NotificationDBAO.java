@@ -20,17 +20,21 @@ public class NotificationDBAO {
 	private boolean conFree = true;
 
 	// Database configuration
-	 public static String dbdriver = "com.mysql.jdbc.Driver";
-	    
-	    public static String url = "jdbc:mysql://localhost/FileHaven";
-	    public static String username = "root";
-	    public static String password = "";
+//	 public static String dbdriver = "com.mysql.jdbc.Driver";
+//
+//	    public static String url = "jdbc:mysql://filehaven.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
+//	    public static String username = "filehaven";
+//	    public static String password = "filehaven";
+//	 
+//	    public static String url = "jdbc:mysql://localhost/FileHaven";
+//	    public static String username = "root";
+//	    public static String password = "";
 	    
 	
 	public NotificationDBAO() throws Exception {
 		try {
-			Class.forName(dbdriver);
-			con = DriverManager.getConnection(url, username, password);
+			DB db = new DB();
+	    	con = db.getConnection();
 
 		} catch (Exception ex) {
 			System.out.println("Exception in File Haven: " + ex);

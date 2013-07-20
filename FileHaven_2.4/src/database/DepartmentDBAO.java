@@ -14,19 +14,17 @@ public class DepartmentDBAO {
 	private boolean conFree = true;
 
 	// Database configuration
-	 public static String dbdriver = "com.mysql.jdbc.Driver";
-	    
-	    public static String url = "jdbc:mysql://localhost/FileHaven";
-	    public static String username = "root";
-	    public static String password = "";
+	public static String url = "jdbc:mysql://filehaven.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
+	public static String dbdriver = "com.mysql.jdbc.Driver";
+	public static String username = "filehaven";
+	public static String password = "filehaven";
 
 	public DepartmentDBAO() throws Exception {
-		try {
-			Class.forName(dbdriver);
-			con = DriverManager.getConnection(url, username, password);
-
-		} catch (Exception ex) {
-			System.out.println("Exception in File Haven: " + ex);
+		 try {
+	        	DB db = new DB();
+		    	con = db.getConnection();
+	        }  catch (Exception ex) {
+			System.out.println("Exception in DepartmentDBAO: " + ex);
 			throw new Exception("Couldn't open connection to database: "
 					+ ex.getMessage());
 		}
@@ -105,7 +103,7 @@ public class DepartmentDBAO {
 		ArrayList<Department> d1 = new ArrayList<Department>();
 		//TODO change the sql statement,change name to username
 		try {
-			String selectStatement = "SELECT * FROM department WHERE CompanyID=(SELECT CompanyID FROM account WHERE UserName=?)";
+			String selectStatement = "SELECT * FROM department WHERE CompanyID=(SELECT CompanyID FROM account WHERE Name=?)";
 			System.out.println(selectStatement);
 			getConnection();
 
@@ -116,8 +114,6 @@ public class DepartmentDBAO {
 
 			while (rs.next()) {
 				Department department = new Department();
-				department.setId(rs.getInt(rs
-						.findColumn("ID")));
 				department
 						.setDepartmentName(rs.getString(rs.findColumn("Name")));
 				department.setDepartmentLogo(rs.getString(rs
@@ -186,6 +182,32 @@ public class DepartmentDBAO {
 					+ departmentName + "'";
 			getConnection();
 			PreparedStatement prest = con.prepareStatement(sql);
+			ResultSet rs = prest.executeQuery();
+
+			while (rs.next()) {
+				id = rs.getInt(rs.findColumn("ID"));
+			}
+
+			prest.close();
+			releaseConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			releaseConnection();
+		}
+
+		return id;
+
+	}
+	
+	public int getDepID(String departmentName,int companyID) {
+		int id = 0;
+		try {
+			String sql = "SELECT ID FROM department d WHERE d.name=? AND d.CompanyID=?";
+			getConnection();
+			PreparedStatement prest = con.prepareStatement(sql);
+			prest.setString(1, departmentName);
+			prest.setInt(2, companyID);
 			ResultSet rs = prest.executeQuery();
 
 			while (rs.next()) {
