@@ -53,6 +53,19 @@
 		$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
 	});	
 	</script>
+	
+<script type="text/javascript">
+function validateForm()
+{
+    if(document.testRemove.departmentName.value=="")
+    {
+      alert("User Name should be left blank");
+      document.frm.departmentName.focus();
+      return false;
+    }
+  
+}
+</script>
 
 </head>
  
@@ -74,7 +87,7 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 <body>
 	<%@ include file="header.jsp"%> 
 		<div class="span9">
-			<form action='CreateDepartment' method='POST'
+			<form action='CreateDepartment' method='POST' onSubmit="return validateForm()"
 				enctype="multipart/form-data" name="testRemove"
 				class="form-horizontal">
 
