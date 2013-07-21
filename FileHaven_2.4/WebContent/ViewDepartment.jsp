@@ -66,7 +66,7 @@
 								<form action='DeleteDepartment' method='POST'>
 									<input type="hidden" value=<%=m2ama.getDepartmentName()%>
 										name="departmentName">
-									<button class="btn btn-large btn-block btn-danger" type="submit">Delete</button>
+									<button class="btn btn-large btn-block btn-danger" onclick="return confirm('Are you sure want to delete');" type="submit">Delete</button>
 								</form>
 
 								
