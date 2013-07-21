@@ -66,7 +66,7 @@ public class DepartmentDBAO {
 		try {
 
 			// TODO change the sql statement,change name to username
-			String statement = "(SELECT CompanyID FROM account WHERE Name='"
+			String statement = "(SELECT CompanyID FROM account WHERE UserName='"
 					+ user + "'))";
 			String selectStatement = "insert into department (Name,Description,DepartmentLogo,CompanyID) values(?,?,?,"
 					+ statement;
@@ -257,14 +257,13 @@ public class DepartmentDBAO {
 
 	}
 
-	// TODO change the sql statement,change name to username
 	public int getDepartmentIDOfCompany(String departmentName, String user) {
 
 		int id = 0;
 		try {
 			String sql = "SELECT ID FROM department d WHERE d.name='"
 					+ departmentName
-					+ "' AND CompanyID=(SELECT CompanyID From account a WHERE a.name='"
+					+ "' AND CompanyID=(SELECT CompanyID From account a WHERE a.UserName='"
 					+ user + "')";
 			System.out.println(sql);
 			getConnection();
@@ -285,14 +284,46 @@ public class DepartmentDBAO {
 
 		return id;
 	}
+	
+	public ArrayList<String> getEmployeesUserName(Employee employ,int companyID){
+
+		ArrayList<String> userNames= new ArrayList<String>();
+		try {
+			
+			for (int i = 0; i < employ.getEmployees().size(); i++) {
+			String sql = "SELECT UserName FROM account WHERE Name=? AND companyID=?";
+			System.out.println(sql);
+			getConnection();
+			PreparedStatement prest = con.prepareStatement(sql);
+			prest.setString(1, employ.getEmployees().get(i));
+			prest.setInt(2, companyID);
+			ResultSet rs = prest.executeQuery();
+
+			while (rs.next()) {
+				userNames.add(rs.getString("UserName"));
+			}
+			
+			prest.close();
+			releaseConnection();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			releaseConnection();
+		}
+
+		return userNames;
+	}
+	
 
 	public boolean updateEmployeeDepartment(Employee employ,
-			String departmentName, String user) {
+			String departmentName, Account user) {
 
 		boolean status = false;
 
 		try {
-			int departmentId = getDepartmentIDOfCompany(departmentName, user);
+			int departmentId = getDepartmentIDOfCompany(departmentName, user.getUserName());
+			ArrayList<String> userNames=getEmployeesUserName(employ,user.getCompanyID());
 
 			for (int i = 0; i < employ.getEmployees().size(); i++) {
 				String sql = "UPDATE employee e SET e.DepartmentID ="
@@ -300,8 +331,8 @@ public class DepartmentDBAO {
 				System.out.println(sql);
 				getConnection();
 				PreparedStatement prest = con.prepareStatement(sql);
-				System.out.println(employ.getEmployees().get(i));
-				prest.setString(1, employ.getEmployees().get(i));
+				System.out.println(userNames.get(i));
+				prest.setString(1, userNames.get(i));
 
 				if (prest.executeUpdate() == 1) {
 					status = true;

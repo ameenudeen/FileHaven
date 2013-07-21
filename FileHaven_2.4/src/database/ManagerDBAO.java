@@ -289,7 +289,7 @@ public class ManagerDBAO {
 			
 
 			for (int i = 0; i < manager.getManagers().size(); i++) {
-				String sql = "UPDATE manager e INNER JOIN account a ON e.UserName=a.UserName SET e.DepartmentID ="+departmentId+" WHERE a.Name = ?";
+				String sql = "UPDATE manager e INNER JOIN account a ON e.UserName=a.UserName SET e.DepartmentID ="+departmentId+" WHERE a.UserName = ?";
 				System.out.println(sql);
 				getConnection();
 				PreparedStatement prest = con.prepareStatement(sql);

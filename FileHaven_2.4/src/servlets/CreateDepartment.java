@@ -161,15 +161,16 @@ public class CreateDepartment extends HttpServlet {
 			DepartmentDBAO db;
 			try {
 				db = new DepartmentDBAO();
-				db.insertDepartment(d1, currentUser.getName());
-				db.updateEmployeeDepartment(e1,departmentName,currentUser.getName());
+				db.insertDepartment(d1, currentUser.getUserName());
+				db.updateEmployeeDepartment(e1,departmentName,currentUser);
 				
-				ManagerDBAO manager = new ManagerDBAO();
-				manager.updateManagerDepartment(m1, departmentName, currentUser.getName());
 				
-				//sendnotification
-				NotificationDBAO notificationEmployee = new NotificationDBAO();
-				notificationEmployee.insertEmployeeNotification(currentUser.getName()+" had added you into the "+departmentName, false, currentUser.getName(), e1);
+//				ManagerDBAO manager = new ManagerDBAO();
+//				manager.updateManagerDepartment(m1, departmentName, currentUser.getUserName());
+//				
+//				//sendnotification
+//				NotificationDBAO notificationEmployee = new NotificationDBAO();
+//				notificationEmployee.insertEmployeeNotification(currentUser.getName()+" had added you into the "+departmentName, false, currentUser.getName(), e1);
 				
 //				NotificationDBAO notificationManager = new NotificationDBAO();
 //				notification.insertNotification(message, messageRead, sender,m1);
