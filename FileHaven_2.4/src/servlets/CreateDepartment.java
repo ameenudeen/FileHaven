@@ -165,9 +165,9 @@ public class CreateDepartment extends HttpServlet {
 				db.updateEmployeeDepartment(e1,departmentName,currentUser);
 				
 				
-//				ManagerDBAO manager = new ManagerDBAO();
-//				manager.updateManagerDepartment(m1, departmentName, currentUser.getUserName());
-//				
+				ManagerDBAO manager = new ManagerDBAO();
+				manager.updateManagerDepartment(m1, departmentName, currentUser);
+				
 //				//sendnotification
 //				NotificationDBAO notificationEmployee = new NotificationDBAO();
 //				notificationEmployee.insertEmployeeNotification(currentUser.getName()+" had added you into the "+departmentName, false, currentUser.getName(), e1);

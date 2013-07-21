@@ -232,6 +232,36 @@ public class ManagerDBAO {
 		return m1;
 	}
 	
+	public ArrayList<String> getManagersUserName(Manager manager,int companyID){
+
+		ArrayList<String> userNames= new ArrayList<String>();
+		try {
+			
+			for (int i = 0; i < manager.getManagers().size(); i++) {
+			String sql = "SELECT UserName FROM account WHERE Name=? AND companyID=?";
+			System.out.println(sql);
+			getConnection();
+			PreparedStatement prest = con.prepareStatement(sql);
+			prest.setString(1, manager.getManagers().get(i));
+			prest.setInt(2, companyID);
+			ResultSet rs = prest.executeQuery();
+
+			while (rs.next()) {
+				userNames.add(rs.getString("UserName"));
+			}
+			
+			prest.close();
+			releaseConnection();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			releaseConnection();
+		}
+
+		return userNames;
+	}
+	
 	public ArrayList<Manager> getDepartmentManagers(int departmentId,int companyID) {
 		ArrayList<Manager> m1 = new ArrayList<Manager>();
 
@@ -272,7 +302,7 @@ public class ManagerDBAO {
 		return m1;
 	}
 	
-	public boolean updateManagerDepartment(Manager manager,String departmentName,String user) {
+	public boolean updateManagerDepartment(Manager manager,String departmentName,Account user) {
 
 		boolean status = false;
 		int departmentId = 0;
@@ -281,20 +311,18 @@ public class ManagerDBAO {
 			DepartmentDBAO d1;
 			try {
 				d1 = new DepartmentDBAO();
-				departmentId=d1.getDepartmentIDOfCompany(departmentName,user);
+				departmentId=d1.getDepartmentIDOfCompany(departmentName,user.getUserName());
 			} catch (Exception e) {
-				// Sql Statement: use username instead of a.name
 				e.printStackTrace();
 			}
 			
-
+			ArrayList<String> managerUserName=getManagersUserName(manager,user.getCompanyID());
 			for (int i = 0; i < manager.getManagers().size(); i++) {
 				String sql = "UPDATE manager e INNER JOIN account a ON e.UserName=a.UserName SET e.DepartmentID ="+departmentId+" WHERE a.UserName = ?";
 				System.out.println(sql);
 				getConnection();
 				PreparedStatement prest = con.prepareStatement(sql);
-				System.out.println(manager.getManagers().get(i));
-				prest.setString(1, manager.getManagers().get(i));
+				prest.setString(1, managerUserName.get(i));
 
 				if (prest.executeUpdate() == 1) {
 					status = true;
