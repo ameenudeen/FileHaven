@@ -75,6 +75,7 @@ function validateForm()
       return false;
     }
     
+        
     else if(document.testRemove.sometext.value=="")
     {
     		alert("Please select at least one manager");
