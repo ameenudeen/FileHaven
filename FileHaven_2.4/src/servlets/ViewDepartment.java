@@ -46,7 +46,7 @@ public class ViewDepartment extends HttpServlet {
 		try {
 			
 			DepartmentDBAO d1 = new DepartmentDBAO();
-			int departmentId=d1.getDepartmentIDOfCompany(departmentName, currentUser.getName());
+			int departmentId=d1.getDepartmentIDOfCompany(departmentName, currentUser.getUserName());
 			session.setAttribute("departmentId", departmentId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
