@@ -132,7 +132,7 @@ public class DepartmentDBAO {
 		ArrayList<Department> d1 = new ArrayList<Department>();
 		// TODO change the sql statement,change name to username
 		try {
-			String selectStatement = "SELECT * FROM department WHERE CompanyID=(SELECT CompanyID FROM account WHERE Name=?)";
+			String selectStatement = "SELECT * FROM department WHERE CompanyID=(SELECT CompanyID FROM account WHERE UserName=?)";
 			System.out.println(selectStatement);
 			getConnection();
 

@@ -6156,3 +6156,7 @@ a.badge:focus {
 .affix {
   position: fixed;
 }
+
+ul.thumbnails li.span4:nth-child(3n + 4) {
+  margin-left : 0px;
+}
