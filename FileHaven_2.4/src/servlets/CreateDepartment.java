@@ -181,8 +181,11 @@ public class CreateDepartment extends HttpServlet {
 				PrintWriter out = response.getWriter();  
 				response.setContentType("text/html");  
 				out.println("<script type=\"text/javascript\">");  
-				out.println("alert('deadbeef');");  
+				out.println("alert('Department Successfully Created');");  
+				out.println("var hosturl = location.origin + '/' + location.pathname.split('/')[1] + '/';");
+				out.println("window.location.href=hosturl+'Information.jsp';");
 				out.println("</script>");
+				
 				
 				//response.sendRedirect("/FileHaven/Information.jsp");
 				

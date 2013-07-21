@@ -372,7 +372,7 @@ public class EmployeeDBAO {
 //    	EmployeeDBAO e1;
 //		try {
 //			e1 = new EmployeeDBAO();
-//			e1.removeEmployeesFromDepartment(33, 8);
+//			e1.removeEmployeesFromDepartment(37, 8);
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
