@@ -3,6 +3,7 @@ package servlets;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -176,6 +177,14 @@ public class CreateDepartment extends HttpServlet {
 //				notification.insertNotification(message, messageRead, sender,m1);
 //				
 				System.out.println("Success");
+				
+				PrintWriter out = response.getWriter();  
+				response.setContentType("text/html");  
+				out.println("<script type=\"text/javascript\">");  
+				out.println("alert('deadbeef');");  
+				out.println("</script>");
+				
+				//response.sendRedirect("/FileHaven/Information.jsp");
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

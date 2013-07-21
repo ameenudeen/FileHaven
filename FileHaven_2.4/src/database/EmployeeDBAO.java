@@ -18,10 +18,10 @@ public class EmployeeDBAO {
 
 	// Database configuration
 	 public static String dbdriver = "com.mysql.jdbc.Driver";
-	   
-	    public static String url = "jdbc:mysql://filehaven.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
-	    public static String username = "filehaven";
-	    public static String password = "filehaven";
+//	   
+//	    public static String url = "jdbc:mysql://filehaven.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
+//	    public static String username = "filehaven";
+//	    public static String password = "filehaven";
 	 
 //	    public static String url = "jdbc:mysql://localhost/FileHaven";
 //	    public static String username = "root";
@@ -366,5 +366,18 @@ public class EmployeeDBAO {
         }
 
     }
+    
+//    public static void main(String args[])
+//    {
+//    	EmployeeDBAO e1;
+//		try {
+//			e1 = new EmployeeDBAO();
+//			e1.removeEmployeesFromDepartment(33, 8);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//    	
+//    }
 
 }
