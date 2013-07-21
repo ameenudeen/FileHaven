@@ -55,9 +55,8 @@
 								<h3><%=m2ama.getDepartmentName()%></h3>
 								<p><%=m2ama.getDepartmentDescription()%></p>
 
-								<p>
-									<a href="#myModal" role="button" class="btn btn-primary"
-										data-toggle="modal">View</a>
+								
+									
 								<form action='ViewDepartment' method='POST'>
 									<input type="hidden" value=<%=m2ama.getDepartmentName()%>
 										name="hiddenField">
@@ -67,10 +66,10 @@
 								<form action='DeleteDepartment' method='POST'>
 									<input type="hidden" value=<%=m2ama.getDepartmentName()%>
 										name="departmentName">
-									<button class="btn btn-large btn-block" type="submit">Delete</button>
+									<button class="btn btn-large btn-block btn-danger" type="submit">Delete</button>
 								</form>
 
-								</p>
+								
 							</div>
 						</div>
 					</li>
