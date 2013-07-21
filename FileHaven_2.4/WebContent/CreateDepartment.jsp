@@ -54,6 +54,17 @@
 	});	
 	</script>
 	
+	<script>
+            $(document).ready(function() {                        
+                $('#availability').click(function(event) {  
+                    var username=$('#inputDepartmentName').val();
+                	$.get('DepartmentAvailability',{user:username},function(responseText) { 
+                        $('#checkavailability').text(responseText);   
+                    });
+                });
+            });
+        </script>
+	
 <script type="text/javascript">
 function validateForm()
 {
@@ -138,6 +149,11 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 						<div class="controls">
 							<input type="text" name='departmentName' id="inputDepartmentName"
 								placeholder="E.g Accounts Dept">
+								
+								
+								 <button class="btn" id="availability" type="button">Check Availability</button>
+								 <div id="checkavailability">
+								</div>
 						</div>
 
 					</div>

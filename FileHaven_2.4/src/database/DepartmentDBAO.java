@@ -20,14 +20,43 @@ public class DepartmentDBAO {
 	public static String password = "filehaven";
 
 	public DepartmentDBAO() throws Exception {
-		 try {
-	        	DB db = new DB();
-		    	con = db.getConnection();
-	        }  catch (Exception ex) {
+		try {
+			DB db = new DB();
+			con = db.getConnection();
+		} catch (Exception ex) {
 			System.out.println("Exception in DepartmentDBAO: " + ex);
 			throw new Exception("Couldn't open connection to database: "
 					+ ex.getMessage());
 		}
+	}
+
+	public boolean checkAvailability(String departmentName, int companyID) {
+		boolean status = false;
+		try {
+
+			String selectStatement = "SELECT * FROM department WHERE Name=? AND companyID=?";
+			System.out.println(selectStatement);
+			getConnection();
+
+			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+			prepStmt.setString(1, departmentName);
+			prepStmt.setInt(2, companyID);
+
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				Department department = new Department();
+				department.setId(rs.getInt("ID"));
+				status =true;	
+				
+			}
+		} catch (SQLException ex) {
+			releaseConnection();
+			ex.printStackTrace();
+		}
+		
+		return status;
+
 	}
 
 	public boolean insertDepartment(Department department, String user) {
@@ -35,8 +64,8 @@ public class DepartmentDBAO {
 		boolean status = false;
 
 		try {
-			
-			//TODO change the sql statement,change name to username
+
+			// TODO change the sql statement,change name to username
 			String statement = "(SELECT CompanyID FROM account WHERE Name='"
 					+ user + "'))";
 			String selectStatement = "insert into department (Name,Description,DepartmentLogo,CompanyID) values(?,?,?,"
@@ -101,7 +130,7 @@ public class DepartmentDBAO {
 
 	public ArrayList<Department> getCompanyDepartment(String user) {
 		ArrayList<Department> d1 = new ArrayList<Department>();
-		//TODO change the sql statement,change name to username
+		// TODO change the sql statement,change name to username
 		try {
 			String selectStatement = "SELECT * FROM department WHERE CompanyID=(SELECT CompanyID FROM account WHERE Name=?)";
 			System.out.println(selectStatement);
@@ -135,7 +164,8 @@ public class DepartmentDBAO {
 
 		return d1;
 	}
-	//TODO change the sql statement,change name to username
+
+	// TODO change the sql statement,change name to username
 	public ArrayList<Department> getDepartmentDetails(String user,
 			int departmentId) {
 		ArrayList<Department> d1 = new ArrayList<Department>();
@@ -174,7 +204,8 @@ public class DepartmentDBAO {
 
 		return d1;
 	}
-	//TODO change the sql statement,change name to username
+
+	// TODO change the sql statement,change name to username
 	public int getDepartmentID(String departmentName) {
 		int id = 0;
 		try {
@@ -199,8 +230,8 @@ public class DepartmentDBAO {
 		return id;
 
 	}
-	
-	public int getDepID(String departmentName,int companyID) {
+
+	public int getDepID(String departmentName, int companyID) {
 		int id = 0;
 		try {
 			String sql = "SELECT ID FROM department d WHERE d.name=? AND d.CompanyID=?";
@@ -225,7 +256,8 @@ public class DepartmentDBAO {
 		return id;
 
 	}
-	//TODO change the sql statement,change name to username
+
+	// TODO change the sql statement,change name to username
 	public int getDepartmentIDOfCompany(String departmentName, String user) {
 
 		int id = 0;
@@ -253,7 +285,7 @@ public class DepartmentDBAO {
 
 		return id;
 	}
-	
+
 	public boolean updateEmployeeDepartment(Employee employ,
 			String departmentName, String user) {
 
@@ -288,9 +320,9 @@ public class DepartmentDBAO {
 
 		return status;
 	}
-	//TODO change the sql statement,change name to username
-	public boolean deleteDepartment(String departmentName,int companyID)
-	{
+
+	// TODO change the sql statement,change name to username
+	public boolean deleteDepartment(String departmentName, int companyID) {
 		boolean status = false;
 
 		try {
@@ -302,7 +334,6 @@ public class DepartmentDBAO {
 			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
 			prepStmt.setString(1, departmentName);
 			prepStmt.setInt(2, companyID);
-			
 
 			if (prepStmt.executeUpdate() == 1) {
 				status = true;
@@ -318,92 +349,96 @@ public class DepartmentDBAO {
 		}
 		return status;
 	}
-	
-	//THis method needs some reworking--Refer to your old stuff
-//	public ArrayList<Employee> getSelectedEmployees(String username){
-//		ArrayList<Employee> m1 = new ArrayList<Employee>();
-//				
-//		try {
-//			String selectStatement =  "SELECT * FROM employee e INNER JOIN account a ON e.UserName=a.UserName WHERE CompanyID=(SELECT CompanyID FROM account WHERE UserName=?)";
-//			System.out.println(selectStatement);
-//			getConnection();
-//
-//			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
-//			prepStmt.setString(1, username);
-//
-//			ResultSet rs = prepStmt.executeQuery();
-//			
-//		
-//			while (rs.next()) {
-//				Employee employee = new Employee();
-//				employee.setName(rs.getString(rs.findColumn("Name")));
-//				employee.setGender(rs.getString("Gender").charAt(0));
-//				employee.setDOB(rs.getDate("DateOfBirth"));
-//				employee.setPhoneNumber(rs.getString("PhoneNumber"));
-//				employee.setEmail(rs.getString("Email"));
-//				employee.setAddress(rs.getString("NRIC"));
-//				employee.setDepartmentID(rs.getInt("DepartmentID"));
-//				
-//				m1.add(employee);
-//					
-//							
-//			}
-//			prepStmt.close();
-//			releaseConnection();
-//					
-//
-//		} catch (SQLException ex) {
-//			ex.printStackTrace();
-//			releaseConnection();
-//
-//			
-//		}
-//		
-//		return m1;
-//	}
 
-//	public boolean updateEmployeesDepartment(Employee employ,
-//			String departmentName, String user,Account currentUser) {
-//
-//		boolean status = false;
-//		 
-//		int departmentId = getDepartmentIDOfCompany(departmentName, user);
-//		ArrayList<Employee> a1 = getSelectedEmployees(currentUser.getCompanyID());
-//				try {
-//			
-//			for (int i = 0; i < employ.getEmployees().size(); i++) {
-//				
-//
-//				if (departmentId == a1.get(i).getDepartmentID() && !employ.getEmployees().get(i).equals(a1.get(i).getName())) {
-//					// set it to null;
-//
-//					String sql = "UPDATE employee e INNER JOIN account a ON e.AccountID=a.ID SET e.DepartmentID = NULL"
-//							 + " WHERE a.Name = ?";
-//					System.out.println(sql);
-//					getConnection();
-//					PreparedStatement prest = con.prepareStatement(sql);
-//					System.out.println(a1.get(i).getName());
-//					prest.setString(1, a1.get(i).getName());
-//
-//					if (prest.executeUpdate() == 1) {
-//						status = true;
-//						prest.close();
-//						releaseConnection();
-//						System.out.println("Successful in employee");
-//					}
-//				}
-//
-//			}
-//		}
-//
-//		catch (Exception ex) {
-//			// TODO Auto-generated catch block
-//			releaseConnection();
-//			ex.printStackTrace();
-//		}
-//
-//		return status;
-//	}
+	// THis method needs some reworking--Refer to your old stuff
+	// public ArrayList<Employee> getSelectedEmployees(String username){
+	// ArrayList<Employee> m1 = new ArrayList<Employee>();
+	//
+	// try {
+	// String selectStatement =
+	// "SELECT * FROM employee e INNER JOIN account a ON e.UserName=a.UserName WHERE CompanyID=(SELECT CompanyID FROM account WHERE UserName=?)";
+	// System.out.println(selectStatement);
+	// getConnection();
+	//
+	// PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+	// prepStmt.setString(1, username);
+	//
+	// ResultSet rs = prepStmt.executeQuery();
+	//
+	//
+	// while (rs.next()) {
+	// Employee employee = new Employee();
+	// employee.setName(rs.getString(rs.findColumn("Name")));
+	// employee.setGender(rs.getString("Gender").charAt(0));
+	// employee.setDOB(rs.getDate("DateOfBirth"));
+	// employee.setPhoneNumber(rs.getString("PhoneNumber"));
+	// employee.setEmail(rs.getString("Email"));
+	// employee.setAddress(rs.getString("NRIC"));
+	// employee.setDepartmentID(rs.getInt("DepartmentID"));
+	//
+	// m1.add(employee);
+	//
+	//
+	// }
+	// prepStmt.close();
+	// releaseConnection();
+	//
+	//
+	// } catch (SQLException ex) {
+	// ex.printStackTrace();
+	// releaseConnection();
+	//
+	//
+	// }
+	//
+	// return m1;
+	// }
+
+	// public boolean updateEmployeesDepartment(Employee employ,
+	// String departmentName, String user,Account currentUser) {
+	//
+	// boolean status = false;
+	//
+	// int departmentId = getDepartmentIDOfCompany(departmentName, user);
+	// ArrayList<Employee> a1 =
+	// getSelectedEmployees(currentUser.getCompanyID());
+	// try {
+	//
+	// for (int i = 0; i < employ.getEmployees().size(); i++) {
+	//
+	//
+	// if (departmentId == a1.get(i).getDepartmentID() &&
+	// !employ.getEmployees().get(i).equals(a1.get(i).getName())) {
+	// // set it to null;
+	//
+	// String sql =
+	// "UPDATE employee e INNER JOIN account a ON e.AccountID=a.ID SET e.DepartmentID = NULL"
+	// + " WHERE a.Name = ?";
+	// System.out.println(sql);
+	// getConnection();
+	// PreparedStatement prest = con.prepareStatement(sql);
+	// System.out.println(a1.get(i).getName());
+	// prest.setString(1, a1.get(i).getName());
+	//
+	// if (prest.executeUpdate() == 1) {
+	// status = true;
+	// prest.close();
+	// releaseConnection();
+	// System.out.println("Successful in employee");
+	// }
+	// }
+	//
+	// }
+	// }
+	//
+	// catch (Exception ex) {
+	// // TODO Auto-generated catch block
+	// releaseConnection();
+	// ex.printStackTrace();
+	// }
+	//
+	// return status;
+	// }
 
 	protected synchronized Connection getConnection() {
 		while (conFree == false) {
@@ -439,25 +474,17 @@ public class DepartmentDBAO {
 		notify();
 	}
 
-//	 public static void main(String args[])
-//	 {
-//	 DepartmentDBAO d1;
-//	 try {
-//	 d1 = new DepartmentDBAO();
-//	 System.out.println(d1.deleteDepartment("Testing", 3));
-//	
-////	ArrayList<Employee> test = d1.getSelectedEmployees("Lewis");
-////	 System.out.println(test.get(0).getName());
-//	
-//	 // for(int i=0;i<test.size();i++)
-//	 // {
-//	 // System.out.println("lalal"+test.get(i).getDepartmentDescription());
-//	 // }
-//	 } catch (Exception e) {
-//	 // TODO Auto-generated catch block
-//	 e.printStackTrace();
-//	 }
-//	
-//	 }
+//	public static void main(String args[])
+//	{
+//		DepartmentDBAO d1;
+//		try {
+//			d1 = new DepartmentDBAO();
+//			System.out.println(d1.checkAvailability("Accounts", 8));
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//	}
 
 }

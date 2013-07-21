@@ -449,9 +449,20 @@
     <servlet-name>PDF</servlet-name>
     <servlet-class>servlets.PDF</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>DepartmentAvailability</display-name>
+  	<servlet-name>DepartmentAvailability</servlet-name>
+  	<servlet-class>servlets.DepartmentAvailability</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>PDF</servlet-name>
     <url-pattern>/PDF</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DepartmentAvailability</servlet-name>
+  	<url-pattern>/DepartmentAvailability</url-pattern>
   </servlet-mapping>
   
 	<welcome-file-list>
