@@ -25,6 +25,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import utils.FileUploadService;
 import database.DepartmentDBAO;
+import database.EmployeeDBAO;
 import database.ManagerDBAO;
 
 /**
@@ -156,17 +157,25 @@ public class UpdateDepartment extends HttpServlet {
 
 					Manager m1 = new Manager();
 					m1.setManagers(departmentManagers);
+					
+					EmployeeDBAO employee = new EmployeeDBAO();
+					int dID=(Integer)session.getAttribute("departmentId");
+					employee.removeEmployeesFromDepartment(dID, currentUser.getCompanyID());
+					
+					ManagerDBAO manager = new ManagerDBAO();
+					manager.removeManagersFromDepartment(dID, currentUser.getCompanyID());
 
 					DepartmentDBAO db;
 					try {
 						db = new DepartmentDBAO();
 						int departmentId= (Integer)session.getAttribute("departmentId");
 						db.updateDepartment(d1, currentUser.getName(),departmentId);
-						db.updateEmployeeDepartment(e1,departmentName,currentUser.getName());
+						
+						db.updateEmployeeDepartment(e1,departmentName,currentUser);
 						//db.updateEmployeesDepartment(e1,departmentName,currentUser.getName(),currentUser);
 						
-						ManagerDBAO manager = new ManagerDBAO();
-						manager.updateManagerDepartment(m1, departmentName, currentUser.getName());
+						ManagerDBAO managers = new ManagerDBAO();
+						managers.updateManagerDepartment(m1, departmentName, currentUser);
 						//manager.updateManagerssDepartment(m1, departmentName, currentUser.getName(),currentUser);
 						System.out.println("Success");
 						
