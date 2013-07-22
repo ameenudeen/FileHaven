@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,10 +17,12 @@ import javax.servlet.http.HttpSession;
 
 import model.Account;
 import model.Company;
+import model.Network;
 import model.Permission;
 
 import database.AccountDBAO;
 import database.CompanyDBAO;
+import database.NetworkDBAO;
 import database.PermissionDBAO;
 
 /**
@@ -101,7 +105,26 @@ public class LoginTimeCheckServlet extends HttpServlet {
 				
 				dba.updateLoginTime(userName, loginTime);
 				
-				response.sendRedirect("Index.jsp");
+				NetworkDBAO n1 = new NetworkDBAO();
+				Network network=(Network)n1.getNetworkDetails(acc);
+				
+				long ipLo = n1.ipToLong(InetAddress.getByName(network.getIpAddressStart()));
+		        long ipHi = n1.ipToLong(InetAddress.getByName(network.getIpAddressEnd()));
+		        long ipToTest = n1.ipToLong(InetAddress.getByName(Inet4Address.getLocalHost().getHostAddress()));
+
+		        System.out.println(ipToTest >= ipLo && ipToTest <= ipHi);
+		        if((ipToTest >= ipLo && ipToTest <= ipHi)==false)
+		        {
+		        	response.sendRedirect("Verification.jsp");
+		        }
+		        
+		        else{
+		        	
+		        	response.sendRedirect("Index.jsp");
+		        	
+		        }
+				
+				
 			}
 			else
 			{

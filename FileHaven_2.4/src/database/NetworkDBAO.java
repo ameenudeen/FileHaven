@@ -1,5 +1,6 @@
 package database;
 
+import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,21 +60,31 @@ public class NetworkDBAO {
 	        
 	   }
 	   
-	   public static void main(String args[])
-	   {
-		   NetworkDBAO n1;
-		try {
-			n1 = new NetworkDBAO();
-			Account a1 = new Account();
-			   a1.setCompanyID(8);
-			   System.out.println(n1.getNetworkDetails(a1).getIpAddressStart());
-			   System.out.println(n1.getNetworkDetails(a1).getIpAddressEnd());
-			   System.out.println(n1.getNetworkDetails(a1).getSubnetMask());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		   
-	   }
+	   public static long ipToLong(InetAddress ip) {
+	        byte[] octets = ip.getAddress();
+	        long result = 0;
+	        for (byte octet : octets) {
+	            result <<= 8;
+	            result |= octet & 0xff;
+	        }
+	        return result;
+	    }
+	   
+//	   public static void main(String args[])
+//	   {
+//		   NetworkDBAO n1;
+//		try {
+//			n1 = new NetworkDBAO();
+//			Account a1 = new Account();
+//			   a1.setCompanyID(8);
+//			   System.out.println(n1.getNetworkDetails(a1).getIpAddressStart());
+//			   System.out.println(n1.getNetworkDetails(a1).getIpAddressEnd());
+//			   System.out.println(n1.getNetworkDetails(a1).getSubnetMask());
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		   
+//	   }
 
 }
