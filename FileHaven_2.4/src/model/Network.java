@@ -8,6 +8,14 @@ public class Network {
 	private String subnetMask;
 	private int companyID;
 	
+	
+	public Network() {
+		
+	}
+	
+
+	
+	
 	public int getId() {
 		return id;
 	}

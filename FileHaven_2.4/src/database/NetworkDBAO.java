@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.Account;
 import model.Network;
@@ -68,6 +69,117 @@ public class NetworkDBAO {
 	            result |= octet & 0xff;
 	        }
 	        return result;
+	    }
+	   
+	    // Insert values into Network table
+	    
+	    public void insertNetwork(String IPAddressStart, String IPAddressEnd, String subnetMask, int companyID) throws Exception {
+	        
+	        try {
+	        	
+	            String insertStatement = "INSERT INTO network (IPAddressStart, IPAddressEnd, subnetMask, CompanyID) VALUES(?, ?, ?, ?)";
+	            PreparedStatement prepStmt = con.prepareStatement(insertStatement);
+	            prepStmt.setString(1, IPAddressStart);
+	            prepStmt.setString(2, IPAddressEnd);
+	            prepStmt.setString(3, subnetMask);
+	            prepStmt.setInt(4, companyID);
+	            prepStmt.executeUpdate();
+	            
+	        } catch (SQLException ex) {
+	            throw new Exception("insertNetwork Exception : " + ex.getMessage());
+	        }
+
+	    }
+	    
+	    // Retrieve details from Network table
+	    
+	    public Network getNetworkDetails(int ID) throws Exception {
+	    	Network nw = new Network();
+	    	
+	        try {
+	            String selectStatement = "SELECT * FROM network where ID = ? ";
+	            PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+	            prepStmt.setInt(1, ID);
+	            ResultSet rs = prepStmt.executeQuery();
+	            
+	            while (rs.next()) {
+	            	nw.setId(ID);
+	            	nw.setIpAddressStart((rs.getString("IPAddressStart")));
+	            	nw.setIpAddressEnd(rs.getString("IPAddressEnd"));
+	            	nw.setSubnetMask(rs.getString("SubnetMask"));
+	                nw.setCompanyID(rs.getInt("CompanyID"));
+	            }
+	            
+	            rs.close();
+	            prepStmt.close();
+	        } catch (SQLException ex) {
+	            throw new Exception("getNetworkDetails Exception : " + ex.getMessage());
+	        }
+	        
+	        return nw;
+	    }
+	    
+	    // Retrieve ID from Network table by companyID
+	    
+	    public ArrayList<Integer> getCompanyNetworkID(int companyID) throws Exception {
+	    	ArrayList<Integer> IDList = new ArrayList<Integer>();
+	    	
+	        try {
+	            String selectStatement = "SELECT ID FROM network WHERE CompanyID = ? ORDER BY ID";
+	            PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+	            prepStmt.setInt(1, companyID);
+	            ResultSet rs = prepStmt.executeQuery();
+	            
+	            while (rs.next()) {
+	            	int ID = rs.getInt("ID");
+	                
+	                IDList.add(ID);
+	            }
+	            
+	            rs.close();
+	            prepStmt.close();
+	        } catch (SQLException ex) {
+	            throw new Exception("getCompanyNetworkID Exception : " + ex.getMessage());
+	        }
+	        
+	        return IDList;
+	    }
+	    
+	    // Update details in Network table
+	    
+	    public void updateNetworkDetails(int ID, String IPAddressStart, String IPAddressEnd, String subnetMask) throws Exception {
+	        
+	        try {
+	        	
+	            String updateStatement = "UPDATE network SET IPAddressStart=?, IPAddressEnd=?, SubnetMask=? WHERE ID = ?";
+	            PreparedStatement prepStmt = con.prepareStatement(updateStatement);
+	            prepStmt.setString(1, IPAddressStart);
+	            prepStmt.setString(2, IPAddressEnd);
+	            prepStmt.setString(3, subnetMask);
+	            prepStmt.setInt(4, ID);
+	            prepStmt.executeUpdate();
+	            
+	        } catch (SQLException ex) {
+	            throw new Exception("updateNetworkDetails Exception : " + ex.getMessage());
+	        }
+
+	    }
+	    
+	    // Delete entry from Network table
+	    
+	    public void deleteNetwork(int ID) throws Exception {
+	        
+	        try {
+	        	
+	            String deleteStatement = "DELETE FROM network WHERE ID = ?";
+	            PreparedStatement prepStmt = con.prepareStatement(deleteStatement);
+	            prepStmt.setInt(1, ID);
+	            prepStmt.executeUpdate();
+	            
+	        } catch (SQLException ex) {
+	            throw new Exception("deleteNetwork Exception : " + ex.getMessage());
+	        }
+
 	    }
 	   
 //	   public static void main(String args[])
