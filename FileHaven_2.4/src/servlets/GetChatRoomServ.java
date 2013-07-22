@@ -37,11 +37,15 @@ public class GetChatRoomServ extends HttpServlet {
 		else {
 			cs=new ChatSession();
 		}
-		
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
 	    
     	Account loginUser=(Account) request.getSession().getAttribute("LoggedInUser"); 
+    	if(loginUser==null){
+    	    request.getSession().setAttribute("alert","Login session timeout. Please login again.");
+    	    out.print("redirect");
+    		return;
+    	}
     	String username=loginUser.getUserName();
 	    
 	    if(cs.pinIsEmpty()){
@@ -85,12 +89,16 @@ public class GetChatRoomServ extends HttpServlet {
 			}
 			if(daTabVal!=2){
 			    for(int i=0;i<cs.getChatInvList().size();i++){
-			    	out.println("<div class='disHover'><li class='displayInv' data-clientiid="+cs.getChatInvList().get(i).getClientIid()+" style='cursor:pointer;'><img src='resources/img/chat/envelope.png' />"+cs.getChatInvList().get(i).getRoomTitle()+"</li></div>");
+			    	out.println("<div class='disHover'><li class='displayInv' style='cursor:pointer;' " +  
+			    			" data-clientiid="+cs.getChatInvList().get(i).getClientIid()+"><img src='resources/img/chat/envelope.png' />"+cs.getChatInvList().get(i).getRoomTitle()+"</li></div>");
 			    }
 			}
 			if(daTabVal!=1){
 			    for(int i=0;i<cs.getChatroomList().size();i++){
-					out.println("<div class='disHover'><li class='displayChat' data-clientrid="+cs.getChatroomList().get(i).getClientRid()+" style='cursor:pointer;'><img src='resources/img/chat/iconmonstr-speech-bubble-15-icon.png' />"+cs.getChatroomList().get(i).getDescription()+"</li></div>");
+			    	boolean unread=false;
+			    	unread=cs.getChatroomList().get(i).isChatRmUnread(username);
+					out.println("<div class='disHover'><li class='displayChat " + (unread?"chatRoomUnread'":"'") +
+							"data-clientrid="+cs.getChatroomList().get(i).getClientRid()+" style='cursor:pointer;'><img src='resources/img/chat/iconmonstr-speech-bubble-15-icon.png' />"+cs.getChatroomList().get(i).getDescription()+"</li></div>");
 				}
 			}
 			out.println("<div class='disHover'><li id='newChat' style='cursor:pointer;'><img src='resources/img/chat/plus.png' />Create Chatroom</li></div>");

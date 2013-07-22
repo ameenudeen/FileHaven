@@ -7,6 +7,7 @@ public class Chatlog {
 	private String user;
 	private int id;
 	private boolean integrityChk;
+	private boolean unread;
 	
 	public int getId() {
 		return id;
@@ -43,6 +44,12 @@ public class Chatlog {
 	}
 	public void setIntegrityChk(boolean integrityChk) {
 		this.integrityChk = integrityChk;
+	}
+	public boolean isUnread() {
+		return unread;
+	}
+	public void setUnread(boolean unread) {
+		this.unread = unread;
 	}
 	
 	

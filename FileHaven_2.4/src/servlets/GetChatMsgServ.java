@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Account;
 import model.ChatSession;
 
 /**
@@ -37,6 +38,10 @@ public class GetChatMsgServ extends HttpServlet {
 		else {
 			cs=new ChatSession();
 		}
+		System.out.println("Get chat msg serv is visited");
+		
+    	Account loginUser=(Account) request.getSession().getAttribute("LoggedInUser"); 
+    	String username=loginUser.getUserName();
 		
 		int roomindex=-1;
     	for(int i=0;i<cs.getChatroomList().size();i++){
@@ -44,17 +49,25 @@ public class GetChatMsgServ extends HttpServlet {
     			roomindex=i;
     		}
     	}
-
-		
+    	
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
 	    if(roomindex>-1){
 	    	for(int i=cs.getChatroomList().get(roomindex).getChatlogList().size()-1;i>-1;i--){
-	    		out.println("<p style='color:"+ (cs.getChatroomList().get(roomindex).getChatlogList().get(i).isIntegrityChk() ? "black" : "red")+";'><b> "+
+	    		
+	        	String logColor="black";
+	    		if(!cs.getChatroomList().get(roomindex).getChatlogList().get(i).isIntegrityChk()){
+	    			logColor="red";
+	    		}
+	    		else if(cs.getChatroomList().get(roomindex).getChatlogList().get(i).isUnread()){
+	    			logColor="GoldenRod";
+	    		}
+	    		
+	    		out.println("<p data-cid="+i+" style='color:"+ logColor +";'><b> "+
 	    				cs.getChatroomList().get(roomindex).getChatlogList().get(i).getUser() +"</b>: "+ cs.getChatroomList().get(roomindex).getChatlogList().get(i).getChatMsg()+"</p>");
 	    	}
 	    	
-	    	cs.getChatroomList().get(roomindex).refreshChatMsg();
+	    	cs.getChatroomList().get(roomindex).refreshChatMsg(username);
 	    }
 	    //System.out.println("GetChatMsgServ");
 	    request.getSession().setAttribute("chatsession", cs);

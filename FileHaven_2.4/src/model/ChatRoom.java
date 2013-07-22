@@ -28,7 +28,14 @@ public class ChatRoom {
 	
 	public void storeChatMessage(Chatlog cl){
 		try {
-			controller.storeChatMessage(this,cl);
+			
+			int pkey=controller.storeChatMessage(this,cl);
+			ArrayList<String> userList=controller.getChatUser(this);
+			
+			for(int i=0;i<userList.size();i++){
+				controller.setMsgUnread(userList.get(i), pkey);
+			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,12 +81,43 @@ public class ChatRoom {
 		return userList;
 	}
 	
-	public void refreshChatMsg(){
+	public void refreshChatMsg(String username){
 		try {
-			controller.refreshChatMessage(this);
+			controller.refreshChatMessage(this,username);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public boolean isChatRmUnread(String userid){
+		try {
+			return controller.checkRoomMsgUnread(userid, id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean leaveChatRoom(String username){
+		try{
+			return controller.leaveChatRoom(this, username);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	public ArrayList<String> getChatUserList(){
+		try {
+			return controller.getChatUser(this);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

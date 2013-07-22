@@ -1,26 +1,24 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Account;
 import model.ChatSession;
 
 /**
- * Servlet implementation class GetChatUserServ
+ * Servlet implementation class LeaveChatRoomServ
  */
-public class GetChatUserServ extends HttpServlet {
+public class LeaveChatRoomServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetChatUserServ() {
+    public LeaveChatRoomServ() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,24 +36,23 @@ public class GetChatUserServ extends HttpServlet {
 			cs=new ChatSession();
 		}
 		
+		Account loginUser=(Account) request.getSession().getAttribute("LoggedInUser"); 
+    	String userid=loginUser.getUserName();
+		
+		int clientRid=Integer.parseInt(request.getParameter("clientRid"));
+		
 		int roomindex=-1;
     	for(int i=0;i<cs.getChatroomList().size();i++){
-    		if(cs.getChatroomList().get(i).getClientRid()==cs.getActiveRid()){
+    		if(cs.getChatroomList().get(i).getClientRid()==clientRid){
     			roomindex=i;
     		}
     	}
-		
-    	ArrayList<String> userList = cs.getChatroomList().get(roomindex).getChatUserList();
-		
-		response.setContentType("text/html");
-	    PrintWriter out = response.getWriter();
-	    if(roomindex>-1){
-	    	for(int i=0;i<userList.size();i++){
-	    		out.println("<li>"+userList.get(i)+"</li>");
-	    	}
-	    }
-	    
-	    request.getSession().setAttribute("chatsession", cs);
+    	
+    	if(cs.getChatroomList().get(roomindex).leaveChatRoom(userid)){
+    		cs.getChatroomList().remove(roomindex);
+    	}
+    	
+    	request.getSession().setAttribute("chatsession", cs);
 	}
 
 	/**

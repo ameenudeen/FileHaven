@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.Statement;
+
 import model.Account;
 import model.ChatInv;
 import model.ChatRoom;
@@ -111,15 +113,42 @@ public class ChatDBAO {
 
 	}
 
-	public boolean storeChatMessage(ChatRoom cr, Chatlog cl) throws Exception {
+	public int storeChatMessage(ChatRoom cr, Chatlog cl) throws Exception {
 		try {
-			String stmt = "INSERT INTO chatmessages(chatroomID,userID,message,timestamp,msgsign) VALUES (?,?,?,?,?)";
-			PreparedStatement prepStmt = con.prepareStatement(stmt);
+			String stmt = "INSERT INTO chatmessages(chatroomID,userID,message,timestamp,msgsign) " +
+					"VALUES (?,?,?,?,?)";
+			PreparedStatement prepStmt = con.prepareStatement(stmt,Statement.RETURN_GENERATED_KEYS);
 			prepStmt.setInt(1, cr.getId());
 			prepStmt.setString(2, cl.getUser());
 			prepStmt.setString(3, cl.getChatMsg());
 			prepStmt.setString(4, cl.getTimestamp());
 			prepStmt.setBytes(5, cl.getChatMsgSigned());
+			
+
+			int primaryKey=-1;
+			if (prepStmt.executeUpdate() == 1) {
+				ResultSet rs = prepStmt.getGeneratedKeys();  
+			    rs.next();  
+			    primaryKey = rs.getInt(1);  
+			}
+			prepStmt.close();
+
+			return primaryKey;
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return -1;
+		}
+
+	}
+	
+	public boolean setMsgUnread(String userid, int chatmsgid) throws Exception {
+		try {
+			String stmt = "INSERT INTO chatunread(userID,chatmsgID,status) VALUES (?,?,?)";
+			PreparedStatement prepStmt = con.prepareStatement(stmt);
+			prepStmt.setString(1, userid);
+			prepStmt.setInt(2, chatmsgid);
+			prepStmt.setString(3, "unread");
 			
 
 			if (prepStmt.executeUpdate() == 1) {
@@ -135,8 +164,129 @@ public class ChatDBAO {
 		}
 
 	}
+	
+	public boolean setMsgRead(String userid, int chatmsgid) throws Exception {
+		try {
+			String stmt = "DELETE FROM chatunread WHERE userID=? AND chatmsgID=?";
+			PreparedStatement prepStmt = con.prepareStatement(stmt);
+			prepStmt.setString(1, userid);
+			prepStmt.setInt(2, chatmsgid);
+			
 
-	public boolean refreshChatMessage(ChatRoom cr) throws Exception {
+			if (prepStmt.executeUpdate() == 1) {
+				prepStmt.close();
+			}
+			prepStmt.close();
+
+			return true;
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	public boolean checkMsgUnread(String userid, int chatmsgid) throws Exception {
+		try {
+			String stmt = "SELECT count(*) FROM chatunread WHERE userID=? AND chatmsgID=?";
+			PreparedStatement prepStmt = con.prepareStatement(stmt);
+			prepStmt.setString(1, userid);
+			prepStmt.setInt(2, chatmsgid);
+			
+			boolean unread=false;
+			ResultSet rs = prepStmt.executeQuery();
+			if(rs.next()){
+				if(rs.getInt(1)!=0){
+					unread=true;
+				}
+			}
+			prepStmt.close();
+
+			return unread;
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+
+	}
+
+	public boolean checkRoomMsgUnread(String userid, int chatroomid) throws Exception {
+		try {
+			String stmt = "SELECT count(*) FROM chatunread cu " +
+					"INNER JOIN chatmessages cm " +
+					"ON cm.chatmsgID=cu.chatmsgID " +
+					"WHERE cu.userID=? AND cm.chatroomID=?";
+			PreparedStatement prepStmt = con.prepareStatement(stmt);
+			prepStmt.setString(1, userid);
+			prepStmt.setInt(2, chatroomid);
+			
+			boolean unread=false;
+			ResultSet rs = prepStmt.executeQuery();
+			if(rs.next()){
+				if(rs.getInt(1)!=0){
+					unread=true;
+				}
+			}
+			prepStmt.close();
+
+			return unread;
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	public boolean leaveChatRoom(ChatRoom cr,String username) throws Exception {
+		PreparedStatement prepStmt=null;
+		PreparedStatement prepStmt2=null;
+		try {
+			String stmt = "DELETE FROM chatinvitation WHERE chatroomid=? AND userid=?";
+			String stmt2 = "DELETE FROM chatunread WHERE userID=? AND chatmsgID=?";
+			
+			con.setAutoCommit(false);
+			prepStmt = con.prepareStatement(stmt);
+			prepStmt2 = con.prepareStatement(stmt2);
+
+			prepStmt.setInt(1, cr.getId());
+			prepStmt.setString(2, username);
+			prepStmt2.setInt(1, cr.getId());
+			prepStmt2.setString(2, username);
+			
+
+			prepStmt.executeUpdate();
+			prepStmt2.executeUpdate();
+
+			con.commit();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+	        if (con != null) {
+	            try {
+	                System.err.print("Transaction is being rolled back");
+	                con.rollback();
+	            } catch(SQLException excep) {
+	            	excep.printStackTrace();
+	            }
+	        }
+		}
+		finally{
+			if (prepStmt != null) {
+				prepStmt.close();
+	        }
+	        if (prepStmt2 != null) {
+	        	prepStmt2.close();
+	        }
+
+	        con.setAutoCommit(true);
+		}
+		return true;
+	}
+	
+	public boolean refreshChatMessage(ChatRoom cr,String username) throws Exception {
 
 		try {
 
@@ -186,7 +336,13 @@ public class ChatDBAO {
 		            boolean verifies = sig.verify(sigToVerify);
 		            
 		            temp.setIntegrityChk(verifies);
-
+		            
+		            boolean unread=checkMsgUnread(username, temp.getId());
+		            temp.setUnread(unread);
+		            if(unread){
+		            	setMsgRead(username, temp.getId());
+		            }
+		            
 					cr.getChatlogList().add(temp);
 				}
 			}
@@ -275,6 +431,7 @@ public class ChatDBAO {
 				temp.setTimestamp(rs.getString("Timestamp"));
 				temp.setRoomTitle(rs.getString("RoomTitle"));
 				temp.setRoomId(rs.getInt("ChatroomId"));
+				temp.setSender(rs.getString("SenderId"));
 
 				cs.getChatInvList().add(temp);
 				cs.incrementCurIid();
@@ -387,6 +544,8 @@ public class ChatDBAO {
 		}
 
 	}
+	
+	
 
 	public int checkPinExist(String userid) {
 		try {
@@ -540,6 +699,30 @@ public class ChatDBAO {
 			e.printStackTrace();
 			return "";
 		}
+	}
+
+	public ArrayList<String> getChatUser(ChatRoom cr) {
+		// TODO Auto-generated method stub
+		try {
+			ArrayList<String> tempList=new ArrayList<String>();
+			String selectStatement = "select * from chatinvitation where chatroomID=?";
+			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+			prepStmt.setInt(1, cr.getId());
+			ResultSet rs = prepStmt.executeQuery();
+			
+			
+			while (rs.next()) {
+				tempList.add(rs.getString("UserID"));
+				
+			}
+			
+			return tempList;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 
 }

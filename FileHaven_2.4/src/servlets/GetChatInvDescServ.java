@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,15 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import model.ChatSession;
 
 /**
- * Servlet implementation class GetChatUserServ
+ * Servlet implementation class GetChatInvDescServ
  */
-public class GetChatUserServ extends HttpServlet {
+public class GetChatInvDescServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetChatUserServ() {
+    public GetChatInvDescServ() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,25 +36,21 @@ public class GetChatUserServ extends HttpServlet {
 		else {
 			cs=new ChatSession();
 		}
-		
-		int roomindex=-1;
+    	
+    	int invindex=-1;
     	for(int i=0;i<cs.getChatroomList().size();i++){
-    		if(cs.getChatroomList().get(i).getClientRid()==cs.getActiveRid()){
-    			roomindex=i;
+    		if(cs.getChatInvList().get(i).getClientIid()==Integer.parseInt(request.getParameter("clientiid"))){
+    			invindex=i;
     		}
     	}
-		
-    	ArrayList<String> userList = cs.getChatroomList().get(roomindex).getChatUserList();
-		
-		response.setContentType("text/html");
+    	
+    	response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
-	    if(roomindex>-1){
-	    	for(int i=0;i<userList.size();i++){
-	    		out.println("<li>"+userList.get(i)+"</li>");
-	    	}
-	    }
-	    
-	    request.getSession().setAttribute("chatsession", cs);
+    	
+    	out.print(cs.getChatInvList().get(invindex).getDesc()+"<br />" +
+    			"<i>Invited by "+cs.getChatInvList().get(invindex).getSender()+"</i>");
+    	
+    	request.getSession().setAttribute("chatsession", cs);
 	}
 
 	/**

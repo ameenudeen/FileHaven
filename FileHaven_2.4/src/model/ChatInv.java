@@ -85,7 +85,7 @@ public class ChatInv {
 		}
 			
 	}
-
+	
 	public int getRoomId() {
 		return roomId;
 	}
