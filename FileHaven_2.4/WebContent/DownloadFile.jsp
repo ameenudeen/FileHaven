@@ -9,6 +9,8 @@
     <link href="resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/application.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="resources/css/keyboard.css" />
+    <script type="text/javascript" src="resources/js/keyboard.js" charset="UTF-8"></script>
     <script src="resources/js/jquery-1.9.1.js"></script>
 	<script src="resources/js/jquery-ui-1.9.1.js"></script> 
 <style>
@@ -162,8 +164,8 @@ padding:60px;
 					<br>
 					<br>
 					<div id="double_encrypt">
-					<span style="padding-right:10px">Encryption Key</span> : <input id="input_double_enc1" name="input_double_enc" style="width:100px" type="password"> <span class="error" id="information_double_enc"></span><br>
-					<span style="padding-right:20px">Re-Enter Key</span> : <input id="input_double_enc2" style="width:100px" type="password"> 
+					<span style="padding-right:10px">Encryption Key</span> : <input class="keyboardInput" id="input_double_enc1" name="input_double_enc" style="width:100px" type="password"> <span class="error" id="information_double_enc"></span><br>
+					<span style="padding-right:20px">Re-Enter Key</span> : <input class="keyboardInput" id="input_double_enc2" style="width:100px" type="password"> 
 					<p style="color:red;text-decoration:underline;font-weight:bold;font-style:italic">Download will start even if key is incorrect</p>
 					</div>
 					<br>

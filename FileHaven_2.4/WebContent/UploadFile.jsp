@@ -9,6 +9,8 @@
     <link href="resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/application.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="resources/css/keyboard.css" />
+    <script type="text/javascript" src="resources/js/keyboard.js" charset="UTF-8"></script>
     <script src="resources/js/jquery-1.9.1.js"></script>
 	<script src="resources/js/jquery-ui-1.9.1.js"></script> 
 	<script src="resources/js/validation.js"></script>
@@ -239,8 +241,8 @@ function validate_input(){
 				<br><br>
 				<input onclick="double_encrypt()" id="double_encrypt_checkbox" type="checkbox" name="encryption_checkbox"> Encrypt the file
 				<div id="double_enc">
-				<span style="padding-right:10px">Encryption Key</span> : <input id="double_enc_1" style="width:100px" name="input_double_enc" type="password"> * <span id="information_double_enc" class="error"></span></span><br>
-				<span style="padding-right:20px">Re-Enter Key</span> : <input id="double_enc_2" style="width:100px" type="password">
+				<span style="padding-right:10px">Encryption Key</span> : <input class="keyboardInput" id="double_enc_1" style="width:100px" name="input_double_enc" type="password"> * <span id="information_double_enc" class="error"></span></span><br>
+				<span style="padding-right:20px">Re-Enter Key</span> : <input class="keyboardInput" id="double_enc_2" style="width:100px" type="password">
 				</div>
 				<p class="subtitle" style="margin-top:30px;">Department</p>
 				<div class="inner_space">
