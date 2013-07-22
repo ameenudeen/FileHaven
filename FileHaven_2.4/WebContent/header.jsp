@@ -1100,7 +1100,7 @@
 		<hr />
 	</div>
 	<div id="chatUsers" class="chatUsers"
-		style="padding: 1px; float: right; border: solid 1px grey; width: 80px !important; height: 130px; font-size: 10px;">
+		style="padding: 1px; float: right; border: solid 1px grey; width: 80px !important; height: 130px; font-size: 10px;overflow-x:auto;overflow-y:auto;">
 		<b>Users</b>
 		<ul id="chatUsersUl">
 

@@ -38,7 +38,6 @@ public class GetChatMsgServ extends HttpServlet {
 		else {
 			cs=new ChatSession();
 		}
-		System.out.println("Get chat msg serv is visited");
 		
     	Account loginUser=(Account) request.getSession().getAttribute("LoggedInUser"); 
     	String username=loginUser.getUserName();
