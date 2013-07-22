@@ -244,6 +244,30 @@
     <url-pattern>/ChangePasswordServlet</url-pattern>
   </servlet-mapping>
   
+   <servlet>
+  	<description>
+  	</description>
+  	<display-name>GetChatInvDescServ</display-name>
+  	<servlet-name>GetChatInvDescServ</servlet-name>
+  	<servlet-class>servlets.GetChatInvDescServ</servlet-class>
+  </servlet>
+   <servlet-mapping>
+  	<servlet-name>GetChatInvDescServ</servlet-name>
+  	<url-pattern>/GetChatInvDescServ</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>LeaveChatRoomServ</display-name>
+  	<servlet-name>LeaveChatRoomServ</servlet-name>
+  	<servlet-class>servlets.LeaveChatRoomServ</servlet-class>
+  </servlet>
+    <servlet-mapping>
+  	<servlet-name>LeaveChatRoomServ</servlet-name>
+  	<url-pattern>/LeaveChatRoomServ</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>SendChatMsgServ</servlet-name>
     <servlet-class>servlets.SendChatMsgServ</servlet-class>
