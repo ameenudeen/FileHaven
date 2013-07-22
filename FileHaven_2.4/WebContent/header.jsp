@@ -922,10 +922,13 @@
 		        				</ul></li>
 							<li><a>Company</a><ul>
 						        <li><a onclick="window.location.href=hosturl+'CreateCompany.jsp';">Create Company</a></li>
+						        <li><a onclick="window.location.href=hosturl+'ViewPermissionServlet';">View Permissions</a></li>
+						        <li><a onclick="window.location.href=hosturl+'ViewAccountReportServlet';">View Login Attempts</a></li>
 		        				</ul></li>
 		        			<li><a>Profile</a><ul>
 						        <li><a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';">View Profile</a></li>
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
+						        <li><a onclick="window.location.href=hosturl+'UpdatePersonalPattern.jsp';">Change Secondary Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
 
@@ -948,8 +951,16 @@
 							<li><a>Profile</a><ul>
 						        <li><a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';">View Profile</a></li>
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
+						        <li><a onclick="window.location.href=hosturl+'UpdatePersonalPattern.jsp';">Change Secondary Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
+		        			<li><a>Company</a><ul>
+		        				<li><a onclick="window.location.href=hosturl+'RetrieveWorkingTimeServlet';">Set Working Time</a></li>
+		        				<li><a onclick="window.location.href=hosturl+'RetrievePermitableUsersServlet';">Set Permissions</a></li>
+						        <li><a onclick="window.location.href=hosturl+'ViewPermissionServlet';">View Permissions</a></li>
+		        				<li><a onclick="window.location.href=hosturl+'ViewAccountReportServlet';">View Login Attempts</a></li>
+		        				</ul></li>
+							<li><a>Notification</a></li>
 						</ul>
 					<% } %>
 					
@@ -969,7 +980,13 @@
 							<li><a>Profile</a><ul>
 						        <li><a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';">View Profile</a></li>
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
+						        <li><a onclick="window.location.href=hosturl+'UpdatePersonalPattern.jsp';">Change Secondary Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
+		        				</ul></li>
+		        			<li><a>Department</a><ul>
+		        				<li><a onclick="window.location.href=hosturl+'RetrievePermitableUsersServlet';">Set Permissions</a></li>
+		        				<li><a onclick="window.location.href=hosturl+'ViewPermissionServlet';">View Permissions</a></li>
+		        				<li><a onclick="window.location.href=hosturl+'ViewAccountReportServlet';">View Login Attempts</a></li>
 		        				</ul></li>
 						</ul>
 					<% } %>
@@ -986,23 +1003,7 @@
 							<li><a>Profile</a><ul>
 						        <li><a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';">View Profile</a></li>
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
-						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
-		        				</ul></li>
-						</ul>
-					<% } %>
-					
-					<% if (((Account) request.getSession().getAttribute("LoggedInUser")).getType()=='F'||((Account) request.getSession().getAttribute("LoggedInUser")).getType()=='f'){ %>
-						<ul class="nav">
-							<li><a onclick="window.location.href=hosturl+'Index.jsp';">Home</a></li>
-							
-							<li><a>File</a><ul>
-						        <li><a onclick="window.location.href=hosturl+'UploadFile.jsp';">Upload File</a></li>
-						        <li><a onclick="window.location.href=hosturl+'ViewFileList.jsp';">View File List</a></li>
-						        <li><a onclick="window.location.href=hosturl+'report.jsp';">File Statistics</a></li>
-		        				</ul></li>
-							<li><a>Profile</a><ul>
-						        <li><a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';">View Profile</a></li>
-						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
+						        <li><a onclick="window.location.href=hosturl+'UpdatePersonalPattern.jsp';">Change Secondary Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
 		        				</ul></li>
 						</ul>
@@ -1017,6 +1018,7 @@
 						        <li><a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';">View Profile</a></li>
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
+		        				<li><a onclick="window.location.href=hosturl+'UpdatePersonalPattern.jsp';">Change Secondary Password</a></li>
 		        				</ul></li>
 						</ul>
 					<% } %>
