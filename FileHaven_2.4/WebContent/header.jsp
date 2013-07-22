@@ -1127,7 +1127,7 @@
 
 
 <div id="invDialog" class="reveal-modal large"
-	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
+	Style="background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
 	<a class="close-reveal-modal">&#215;</a>
 
 				<p><h4>Select users to invite</h4></p>
@@ -1161,7 +1161,7 @@
 </div>
 
 <div id="cfmDialog" class="reveal-modal small"
-	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
+	Style="background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
 	<a class="close-reveal-modal">&#215;</a>
 
 	<h4>You are invited to <span id="invCfmDialogTitle">Chatroom3</span></h4>
@@ -1181,7 +1181,7 @@
 </div>
 
 <div id="pinDialog" class="reveal-modal small"
-	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
+	Style="background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
 	<a class="close-reveal-modal">&#215;</a>
 
 	<h4>Please enter your pin</h4>
@@ -1200,10 +1200,11 @@
 </div>
 
 <div id="cpinDialog" class="reveal-modal small"
-	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
+	Style="width:250px;background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
 	<a class="close-reveal-modal">&#215;</a>
-
 	<h4>Create a New Pin</h4>
+	<div style="height:230px;overflow-x:hidden;overflow-y:scroll;">
+	
 
 		<label for="chatpinreg">New pin:</label>
 		<input onkeydown="return false;" onfocus="shuffleKeypadReg('',0)" name="chatpinreg" id="chatpinreg" type="password" />
@@ -1218,13 +1219,11 @@
 		
 		<label for="pinAPassword">Account password:</label>
 		<input name="pinAPassword" id="pinAPassword" type="password" />
-	<hr />
-	
+	</div><hr />
 		<button onclick="registerPinAjax()">Confirm</button>
 		<button onclick="$('#chatpinreg').val('');$('#chatpincfm').val('');">Clear</button>
 		<button onlick="$('#cpinDialog').trigger('reveal:close');">Cancel</button>
 	<p><span id="pinRegErrorlbl" style="color:red;"></span></p>
-
 </div>
 
 	<div id="notification" class="modal hide fade" tabindex="-1"
