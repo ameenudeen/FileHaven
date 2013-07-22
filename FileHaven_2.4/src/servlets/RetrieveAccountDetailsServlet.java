@@ -49,10 +49,6 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 		
 		try {
 			AccountDBAO dba = new AccountDBAO();
-			CeoDBAO dbc = new CeoDBAO();
-			EmployeeDBAO dbe = new EmployeeDBAO();
-			FilemanagerDBAO dbf = new FilemanagerDBAO();
-			ManagerDBAO dbm = new ManagerDBAO();
 			
 			temp = (Account) dba.getAccountDetails(userName);
 			
@@ -60,6 +56,7 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 			{
 				if(temp.getType() == 'C')
 				{
+					CeoDBAO dbc = new CeoDBAO();
 					acc = new Ceo();
 					acc = dbc.getCeoDetails(userName);
 					acc.setUserName(userName);
@@ -69,6 +66,7 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 				}
 				else if(temp.getType() == 'E')
 				{
+					EmployeeDBAO dbe = new EmployeeDBAO();
 					acc = new Employee();
 					acc = dbe.getEmployeeDetails(userName);
 					acc.setUserName(userName);
@@ -78,6 +76,7 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 				}
 				else if(temp.getType() == 'F')
 				{
+					FilemanagerDBAO dbf = new FilemanagerDBAO();
 					acc = new Filemanager();
 					acc = dbf.getFilemanagerDetails(userName);
 					acc.setUserName(userName);
@@ -87,6 +86,7 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 				}
 				else
 				{
+					ManagerDBAO dbm = new ManagerDBAO();
 					acc = new Manager();
 					acc = dbm.getManagerDetails(userName);
 					acc.setUserName(userName);

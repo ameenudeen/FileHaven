@@ -44,6 +44,7 @@ public class ViewAccountServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		session.removeAttribute("accList");
 		session.removeAttribute("deptList");
+		session.removeAttribute("tempList");
 		
 		Account acc = (Account) session.getAttribute("LoggedInUser");
 		
@@ -53,7 +54,6 @@ public class ViewAccountServlet extends HttpServlet {
 		try
 		{
 			AccountDBAO dba = new AccountDBAO();
-			ManagerDBAO dbm = new ManagerDBAO();
 			DepartmentDBAO dbdt = new DepartmentDBAO();
 			
 			ArrayList<Account> accList = new ArrayList<Account>();
@@ -98,6 +98,7 @@ public class ViewAccountServlet extends HttpServlet {
 			}
 			else
 			{
+				ManagerDBAO dbm = new ManagerDBAO();
 				int deptID = dbm.getManagerDetails(acc.getUserName()).getDepartmentID();
 				wStmt = "AND DepartmentID = " + deptID;
 				
@@ -109,39 +110,50 @@ public class ViewAccountServlet extends HttpServlet {
 			
 			ArrayList<String> deptList = new ArrayList<String>();
 			
-			for(int i=0; i<accList.size(); i++)
+			if(tempList.size() == 0)
 			{
-				int departmentID = 0;
-				
-				if(accList.get(i).getType() == 'E')
+				for(int i=0; i<accList.size(); i++)
 				{
-					departmentID = ((Employee) accList.get(i)).getDepartmentID();
+					deptList.add("None");
 				}
-				else if(accList.get(i).getType() == 'F')
+			}
+			else
+			{
+				for(int i=0; i<accList.size(); i++)
 				{
-					departmentID = ((Filemanager) accList.get(i)).getDepartmentID();
-				}
-				else
-				{
-					departmentID = ((Manager) accList.get(i)).getDepartmentID();
-				}
-				
-				for(int k=0; k<tempList.size(); k++)
-				{
-					Department tempDepartment = tempList.get(k);
-					if(departmentID == 0)
+					int departmentID = 0;
+					
+					if(accList.get(i).getType() == 'E')
 					{
-						deptList.add("None");
-						break;
+						departmentID = ((Employee) accList.get(i)).getDepartmentID();
 					}
-					else if(departmentID == tempDepartment.getId())
+					else if(accList.get(i).getType() == 'F')
 					{
-						deptList.add(tempDepartment.getDepartmentName());
-						break;
+						departmentID = ((Filemanager) accList.get(i)).getDepartmentID();
+					}
+					else
+					{
+						departmentID = ((Manager) accList.get(i)).getDepartmentID();
+					}
+					
+					for(int k=0; k<tempList.size(); k++)
+					{
+						Department tempDepartment = tempList.get(k);
+						if(departmentID == 0)
+						{
+							deptList.add("None");
+							break;
+						}
+						else if(departmentID == tempDepartment.getId())
+						{
+							deptList.add(tempDepartment.getDepartmentName());
+							break;
+						}
 					}
 				}
 			}
 			
+			session.setAttribute("tempList", tempList);
 			session.setAttribute("deptList", deptList);
 			session.setAttribute("accList", accList);
 			

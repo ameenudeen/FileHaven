@@ -7,18 +7,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Account;
+import model.Company;
+
+import database.AccountDBAO;
 import database.CompanyDBAO;
 
 /**
- * Servlet implementation class CreateCompanyServlet
+ * Servlet implementation class RetrieveWorkingTimeServlet
  */
-public class CreateCompanyServlet extends HttpServlet {
+public class RetrieveWorkingTimeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateCompanyServlet() {
+    public RetrieveWorkingTimeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,6 +32,7 @@ public class CreateCompanyServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
 	/**
@@ -36,45 +41,20 @@ public class CreateCompanyServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
-		session.removeAttribute("commsg");
-		session.removeAttribute("ssmsg");
 		
-		String companyName = request.getParameter("companyName");
-		String address = request.getParameter("address");
-		int storageSpace = 0;
-		boolean intCheck = false;
-		String companyLogo = request.getParameter("companyLogo");
+		session.removeAttribute("wtmsg");
+		session.removeAttribute("company");
 		
-		try{
+		Account acc = (Account) session.getAttribute("LoggedInUser");
+		
+		try {
 			
-			if(companyName != "" && address != "")
-			{	
-				try{
-					storageSpace = Integer.parseInt(request.getParameter("storageSpace"));
-					intCheck = true;
-				}catch(Exception ie)
-				{
-					
-				}
-				
-				if(intCheck)
-				{
-					CompanyDBAO dbcom = new CompanyDBAO();
-					dbcom.insertCompany(companyName, address, storageSpace, companyLogo);
-				
-					session.setAttribute("commsg", "Company created successfully.");
-				}
-				else
-				{
-					session.setAttribute("ssmsg", "The value you have entered is not a valid number.");
-				}
-			}
-			else
-			{
-				session.setAttribute("commsg", "Please fill up all the fields.");
-			}
+			CompanyDBAO dbcom = new CompanyDBAO();
+			Company com = dbcom.getCompanyDetails(acc.getCompanyID());
 			
-			response.sendRedirect("CreateCompany.jsp");
+			session.setAttribute("company", com);
+			
+			response.sendRedirect("UpdateWorkingTime.jsp");
 			
 		}catch(Exception e)
 		{	

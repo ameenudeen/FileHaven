@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 public class Company {
 	
 	// Attributes
@@ -9,6 +11,8 @@ public class Company {
 	private String address;
 	private int storageSpace;
 	private String companyLogo;
+	private String startTime;
+	private String endTime;
 	
 	// Constructors
 	
@@ -63,6 +67,18 @@ public class Company {
 	}
 	public void setCompanyLogo(String companyLogo) {
 		this.companyLogo = companyLogo;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 } // End Of Class

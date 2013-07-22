@@ -522,6 +522,25 @@ public class AccountDBAO {
 
     }
     
+    // Update userPattern column in Account table
+    
+    public void updateUserPattern(String userName, String userPattern) throws Exception {
+        
+        try {
+        	
+            String updateStatement = "UPDATE account SET UserPattern = ? WHERE UserName = ?";
+            PreparedStatement prepStmt = con.prepareStatement(updateStatement);            
+            prepStmt.setString(1, userPattern);
+            prepStmt.setString(2, userName);
+            
+            prepStmt.executeUpdate();
+            
+        } catch (SQLException ex) {
+            throw new Exception("updateUserPattern Exception : " + ex.getMessage());
+        }
+
+    }
+    
     // Delete entry from Account table
     
     public void deleteAccount(String userName) throws Exception {

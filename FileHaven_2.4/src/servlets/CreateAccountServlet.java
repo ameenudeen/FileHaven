@@ -46,6 +46,7 @@ public class CreateAccountServlet extends HttpServlet {
 		session.removeAttribute("msg");
 		session.removeAttribute("unmsg");
 		session.removeAttribute("nricmsg");
+		session.removeAttribute("dobmsg");
 		session.removeAttribute("phmsg");
 		session.removeAttribute("emmsg");
 		
@@ -83,16 +84,11 @@ public class CreateAccountServlet extends HttpServlet {
 		session.setAttribute("NRIC", NRIC);
 		
 		try {
-			AccountDBAO dba = new AccountDBAO();
-			CeoDBAO dbc = new CeoDBAO();
-			EmployeeDBAO dbe = new EmployeeDBAO();
-			FilemanagerDBAO dbf = new FilemanagerDBAO();
-			ManagerDBAO dbm = new ManagerDBAO();
-			
 			password = Hash.hashString(password, acc.getUserName(), createdTime);
 			
 			if(userName != "" && name != "" && password != "" && dateOfBirth != "" && phoneNumber != "" && email != "" && address != "" && NRIC != "")
 			{	
+				AccountDBAO dba = new AccountDBAO();
 				boolean userNameAvail = dba.checkUserNameAvailability(userName);
 				
 				if(userNameAvail == false)
@@ -110,6 +106,14 @@ public class CreateAccountServlet extends HttpServlet {
 					session.setAttribute("nricmsg", "Please enter a valid NRIC.");
 				}
 				
+				Pattern pd = Pattern.compile("\\b[0-9]{4}-[0-9]{2}-[0-9]{2}\\b");
+				Matcher m = pd.matcher(dateOfBirth);
+				boolean dateOfBirthAvail = m.matches();
+				if (dateOfBirthAvail == false)
+				{
+			        session.setAttribute("dobmsg", "Please enter a valid date. (YYYY-MM-DD)");
+			    }
+				
 				boolean phoneNumberAvail = false;
 				if (phoneNumber.matches("[0-9]+") && phoneNumber.length() == 8)
 				{
@@ -120,8 +124,8 @@ public class CreateAccountServlet extends HttpServlet {
 					session.setAttribute("phmsg", "Please enter a valid phone number.");
 				}
 				
-				Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-				Matcher m = p.matcher(email);
+				Pattern pe = Pattern.compile(".+@.+\\.[a-z]+");
+				m = pe.matcher(email);
 				boolean emailAvail = m.matches();
 				
 				if(emailAvail == false)
@@ -129,7 +133,7 @@ public class CreateAccountServlet extends HttpServlet {
 					session.setAttribute("emmsg", "Please enter a valid email address.");
 				}
 				
-				if(userNameAvail && NRICAvail && phoneNumberAvail && emailAvail)
+				if(userNameAvail && NRICAvail && dateOfBirthAvail && phoneNumberAvail && emailAvail)
 				{
 					session.removeAttribute("userName");
 					session.removeAttribute("name");
@@ -153,30 +157,48 @@ public class CreateAccountServlet extends HttpServlet {
 					
 					if(type == 'E')
 					{
+						EmployeeDBAO dbe = new EmployeeDBAO();
 						dbe.insertEmployee(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 					}
 					else if(type == 'F')
 					{
+						FilemanagerDBAO dbf = new FilemanagerDBAO();
 						dbf.insertFilemanager(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 					}
 					else if(type == 'M')
 					{
+						ManagerDBAO dbm = new ManagerDBAO();
 						dbm.insertManager(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 					}
 					else
 					{
+						CeoDBAO dbc = new CeoDBAO();
 						dbc.insertCeo(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 					}
 					session.setAttribute("msg", "Account created successfully.");
+					session.setAttribute("createdUser", userName);
+					session.setAttribute("createdTime", createdTime);
+					session.setAttribute("creatorID", acc.getUserName());
+					
+					response.sendRedirect("UpdatePatternLock.jsp");
+				}
+				else
+				{
+					if(response.isCommitted() == false)
+					{
+						response.sendRedirect("CreateAccount.jsp");
+					}
 				}
 			}
 			else
 			{	
 				session.setAttribute("msg", "*Please fill up all the fields.");
+				
+				if(response.isCommitted() == false)
+				{
+					response.sendRedirect("CreateAccount.jsp");
+				}
 			}
-			
-			
-			response.sendRedirect("CreateAccount.jsp");
 			
 		}catch(Exception e)
 		{

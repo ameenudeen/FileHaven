@@ -36,15 +36,18 @@ public class CompanyDBAO {
     
     // Insert values into Company table
     
-    public void insertCompany(String companyName, String address, int storageSpace) throws Exception {
+    public void insertCompany(String companyName, String address, int storageSpace, String companyLogo) throws Exception {
         
         try {
         	
-            String insertStatement = "INSERT INTO company (Name, Address, StorageSpace) VALUES(?, ?, ?)";
+            String insertStatement = "INSERT INTO company (Name, Address, StorageSpace, CompanyLogo, StartTime, EndTime) VALUES(?, ?, ?, ?, ?, ?)";
             PreparedStatement prepStmt = con.prepareStatement(insertStatement);
             prepStmt.setString(1, companyName);
             prepStmt.setString(2, address);
             prepStmt.setInt(3, storageSpace);
+            prepStmt.setString(4, companyLogo);
+            prepStmt.setString(5, "00:00:00");
+            prepStmt.setString(6, "00:00:00");
             prepStmt.executeUpdate();
             
         } catch (SQLException ex) {
@@ -70,6 +73,8 @@ public class CompanyDBAO {
                 com.setAddress(rs.getString("Address"));
                 com.setStorageSpace(rs.getInt("StorageSpace"));
                 com.setCompanyLogo(rs.getString("CompanyLogo"));
+                com.setStartTime(rs.getString("startTime"));
+                com.setEndTime(rs.getString("endTime"));
             }
             
             rs.close();
@@ -81,7 +86,7 @@ public class CompanyDBAO {
         return com;
     }
     
-    // Retrieve a single Company's details
+    // Retrieve a list of Companys details
     
     public ArrayList<Company> getCompanysList() throws Exception {
         ArrayList<Company> companyList = new ArrayList<Company>();
@@ -111,7 +116,7 @@ public class CompanyDBAO {
     
     // Update details in Company table
     
-    public void updateAdministratorDetails(int companyID, String companyName, String address) throws Exception {
+    public void updateCompanyDetails(int companyID, String companyName, String address) throws Exception {
         
         try {
         	
@@ -124,6 +129,25 @@ public class CompanyDBAO {
             
         } catch (SQLException ex) {
             throw new Exception("updateCompanyDetails Exception : " + ex.getMessage());
+        }
+
+    }
+    
+    // Update working time in Company table
+    
+    public void updateWorkingTime(int companyID, String startTime, String endTime) throws Exception {
+        
+        try {
+        	
+            String updateStatement = "UPDATE company SET StartTime=?, EndTime=? WHERE ID = ?";
+            PreparedStatement prepStmt = con.prepareStatement(updateStatement);
+            prepStmt.setString(1, startTime);
+            prepStmt.setString(2, endTime);
+            prepStmt.setInt(3, companyID);
+            prepStmt.executeUpdate();
+            
+        } catch (SQLException ex) {
+            throw new Exception("updateWorkingTime Exception : " + ex.getMessage());
         }
 
     }

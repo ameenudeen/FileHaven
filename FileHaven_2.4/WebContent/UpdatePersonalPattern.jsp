@@ -8,7 +8,7 @@
 <%
 Account tempaccount = (Account) session.getAttribute("LoggedInUser");
 
-if(tempaccount == null)
+if(tempaccount != null)
 {
 %>
 
@@ -17,10 +17,11 @@ if(tempaccount == null)
     <link href="resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/application.css" rel="stylesheet" type="text/css" />
+    <link href="resources/css/patternlock.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="resources/css/keyboard.css" />
     <script src="resources/js/jquery-1.9.1.js"></script>
 	<script src="resources/js/jquery-ui-1.9.1.js"></script>
-	<script type="text/javascript" src="resources/js/keyboard.js" charset="UTF-8"></script>
+	<script src="resources/js/patternlock.js"></script>
 <style>
 .content_space{
 padding:60px;
@@ -47,41 +48,40 @@ padding:60px;
 
 </head>
 <body>
-<%@ include file="LoginHeader.jsp"%> 
+<%@ include file="header.jsp"%> 
       	<div class="span9">
 			<div class="hero-unit">
-			            <h1>Login</h1>
-			            <p></p>
+			            <h1>Account Management</h1>
+			            <p>Update Secondary Password</p>
 			</div>
 			<div class="row-fluid" >
 			<div class="content_space">
 			
-			<form action='LoginServlet' method='post'>
-			
-			<table cellspacing=15 cellpadding=10>
-			<tr><td>Username :</td><td><input type=text name="userName" style="height: 20px; width:180px" /></td></tr>
-			<tr><td>Password :</td><td><input type=password name="password" style="height: 20px; width:180px" class="keyboardInput" /></td></tr>
-			</table>
-			
-			<table cellspacing=15 cellpadding=10>
-			<tr><td>Please enter the Captcha shown below</td></tr>
-			<tr><td><img src="CaptchaServlet"></td></tr>
-			<tr><td><input type="text" name="code" style="height: 20px; width: 180px; "/></td></tr>
-			<tr><td><input type=submit name="submit" Value="Login" style="height: 30px; width: 60px;" class="btn" onclick="" /></td></tr>
-			
-			<%
-			String alert = (String)session.getAttribute("alert");
-			if (alert == null) {
-			} else {
-			%>
-			<tr><td><%= alert%></td></tr>
-			<%
-			} 
-			%>
-			
-			</table>
-			
+			<form method="post" action="UpdatePersonalPatternServlet">
+					<h2>Click and drag a pattern to update your secondary password.</h2>
+
+					<div>
+						<input type="password" id="userPattern" name="userPattern" class="patternlock" />
+					</div>
+					
+					<table cellspacing=30 cellpadding=10>
+					<%
+					String uppmsg = (String)session.getAttribute("uppmsg");
+					if (uppmsg == null) {
+					} else {
+					%>
+					<div style="font-weight: bold;">
+					<%= uppmsg %>
+					</div>
+					<br><br>
+					<%
+					} 
+					%>
+					</table>
+					
+					<input type="submit" value="Confirm" />
 			</form>
+			
 			</div>
 		</div>
 	</div>
@@ -92,7 +92,7 @@ padding:60px;
 }
 else
 {
-	response.sendRedirect("Index.jsp");
+	response.sendRedirect("Error.jsp");
 }
 %>
 

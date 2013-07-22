@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,15 +52,31 @@ public class LoginServlet extends HttpServlet {
 		String captcha = session.getAttribute("captcha").toString();
 		String code = request.getParameter("code");
 		
+		int cc = 0;
+		int uc = 0;
+		int lc = 0;
+		
+		if(session.getAttribute("cc") != null)
+		{
+			cc = Integer.parseInt(session.getAttribute("cc").toString());
+		}
+		if(session.getAttribute("uc") != null)
+		{
+			uc = Integer.parseInt(session.getAttribute("uc").toString());
+		}
+		if(session.getAttribute("lc") != null)
+		{
+			lc = Integer.parseInt(session.getAttribute("lc").toString());
+		}
+		
 		try {
-			AccountDBAO dba = new AccountDBAO();
-
 			if (captcha != null && code != null && code != "") 
 			{
 				if (captcha.equals(code))
 				{
 					if(userName != "" && !(userName.equalsIgnoreCase("/' OR 1 = 1")) && password != "")
 					{
+						AccountDBAO dba = new AccountDBAO();
 						if(dba.getPassword(userName) != "")
 						{
 							Account acc = dba.getAccountDetails(userName);
@@ -67,45 +84,71 @@ public class LoginServlet extends HttpServlet {
 							password = Hash.hashString(password, acc.getCreatorID(), acc.getCreatedTime());
 							
 							if(password.equals(dba.getPassword(userName)))
-							{
-								session.setAttribute("LoggedInUser", acc);
+							{	
+								session.removeAttribute("cc");
+								session.removeAttribute("uc");
+								session.removeAttribute("lc");
 								
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-								java.util.Date now = new java.util.Date();
-								String loginTime = sdf.format(now);
+								session.setAttribute("VerifyUser", acc);
 								
-								dba.updateLoginTime(userName, loginTime);
-								
-								response.sendRedirect("Index.jsp");
+								RequestDispatcher rd = request.getRequestDispatcher("/LoginTimeCheckServlet");
+								rd.forward(request, response);
 							}
 							else
 							{
 								session.setAttribute("alert", "Please check that you have entered your login ID and password correctly.");
-								response.sendRedirect("Login.jsp");
+								lc++;
 							}
 						}
 						else
 						{
 							session.setAttribute("alert", "Please check that you have entered your login ID and password correctly.");
-							response.sendRedirect("Login.jsp");
+							uc++;
 						}
 					}
 					else
 					{
 						session.setAttribute("alert", "Please check that you have entered your login ID and password correctly.");
-						response.sendRedirect("Login.jsp");
+						uc++;
 					}
 				}
 				else
 				{
 					session.setAttribute("alert", "Please check that you have entered the Captcha correctly.");
-					response.sendRedirect("Login.jsp");
+					cc++;
 				}
 			}
 			else
 			{
 				session.setAttribute("alert", "Please check that you have entered the Captcha correctly.");
-				response.sendRedirect("Login.jsp");
+				cc++;
+			}
+			
+			if(cc >= 5 || uc >= 3)
+			{
+				RequestDispatcher rd = request.getRequestDispatcher("/CreateAccountReportServlet");
+				rd.forward(request, response);
+			}
+			else if(lc >= 3)
+			{
+				AccountDBAO dba = new AccountDBAO();
+				
+				session.setAttribute("comID", dba.getAccountDetails(userName).getCompanyID());
+				session.setAttribute("inUser", userName);
+				
+				RequestDispatcher rd = request.getRequestDispatcher("/CreateAccountReportServlet");
+				rd.forward(request, response);
+			}
+			else
+			{
+				session.setAttribute("cc", cc);
+				session.setAttribute("uc", uc);
+				session.setAttribute("lc", lc);
+				
+				if(response.isCommitted() == false)
+				{
+					response.sendRedirect("Login.jsp");
+				}
 			}
 			
 		}catch (Exception e)

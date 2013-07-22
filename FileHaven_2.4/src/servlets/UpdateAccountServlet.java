@@ -46,6 +46,7 @@ public class UpdateAccountServlet extends HttpServlet {
 		
 		session.removeAttribute("upmsg");
 		session.removeAttribute("nricmsg");
+		session.removeAttribute("dobmsg");
 		session.removeAttribute("phmsg");
 		session.removeAttribute("emmsg");
 		
@@ -63,10 +64,6 @@ public class UpdateAccountServlet extends HttpServlet {
 		
 		try {
 			AccountDBAO dba = new AccountDBAO();
-			CeoDBAO dbc = new CeoDBAO();
-			EmployeeDBAO dbe = new EmployeeDBAO();
-			FilemanagerDBAO dbf = new FilemanagerDBAO();
-			ManagerDBAO dbm = new ManagerDBAO();
 			
 			Account acc = new Account();
 			acc = (Account) dba.getAccountDetails(userName);
@@ -83,6 +80,14 @@ public class UpdateAccountServlet extends HttpServlet {
 					session.setAttribute("nricmsg", "Please enter a valid NRIC.");
 				}
 				
+				Pattern pd = Pattern.compile("\\b[0-9]{4}-[0-9]{2}-[0-9]{2}\\b");
+				Matcher m = pd.matcher(dateOfBirth);
+				boolean dateOfBirthAvail = m.matches();
+				if (dateOfBirthAvail == false)
+				{
+			        session.setAttribute("dobmsg", "Please enter a valid date. (YYYY-MM-DD)");
+			    }
+				
 				boolean phoneNumberAvail = false;
 				if (phoneNumber.matches("[0-9]+") && phoneNumber.length() == 8)
 				{
@@ -93,8 +98,8 @@ public class UpdateAccountServlet extends HttpServlet {
 					session.setAttribute("phmsg", "Please enter a valid phone number.");
 				}
 				
-				Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-				Matcher m = p.matcher(email);
+				Pattern pe = Pattern.compile(".+@.+\\.[a-z]+");
+				m = pe.matcher(email);
 				boolean emailAvail = m.matches();
 				
 				if(emailAvail == false)
@@ -110,18 +115,22 @@ public class UpdateAccountServlet extends HttpServlet {
 					{
 						if(type == 'C')
 						{
+							CeoDBAO dbc = new CeoDBAO();
 							dbc.updateCeoDetails(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 						}
 						else if(type == 'E')
 						{
+							EmployeeDBAO dbe = new EmployeeDBAO();
 							dbe.updateEmployeeDetails(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 						}
 						else if(type == 'F')
 						{
+							FilemanagerDBAO dbf = new FilemanagerDBAO();
 							dbf.updateFilemanagerDetails(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 						}
 						else
 						{
+							ManagerDBAO dbm = new ManagerDBAO();
 							dbm.updateManagerDetails(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 						}
 					}
@@ -131,16 +140,19 @@ public class UpdateAccountServlet extends HttpServlet {
 					
 						if(acc.getType() == 'E')
 						{
+							EmployeeDBAO dbe = new EmployeeDBAO();
 							Employee emp = new Employee();
 							dbe.updateEmployeeDetails(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 							emp = (Employee) dbe.getEmployeeDetails(userName);
 						
 							if(type == 'F')
 							{
+								FilemanagerDBAO dbf = new FilemanagerDBAO();
 								dbf.insertFilemanagerCopy(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC, emp.getDepartmentID());
 							}
 							else
 							{
+								ManagerDBAO dbm = new ManagerDBAO();
 								dbm.insertManagerCopy(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC, emp.getDepartmentID());
 							}
 						
@@ -148,16 +160,19 @@ public class UpdateAccountServlet extends HttpServlet {
 						}
 						else if(acc.getType() == 'F')
 						{
+							FilemanagerDBAO dbf = new FilemanagerDBAO();
 							Filemanager fm = new Filemanager();
 							dbf.updateFilemanagerDetails(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 							fm = (Filemanager) dbf.getFilemanagerDetails(userName);
 						
 							if(type == 'E')
 							{
+								EmployeeDBAO dbe = new EmployeeDBAO();
 								dbe.insertEmployeeCopy(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC, fm.getDepartmentID());
 							}
 							else
 							{
+								ManagerDBAO dbm = new ManagerDBAO();
 								dbm.insertManagerCopy(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC, fm.getDepartmentID());
 							}
 						
@@ -165,16 +180,19 @@ public class UpdateAccountServlet extends HttpServlet {
 						}
 						else
 						{
+							ManagerDBAO dbm = new ManagerDBAO();
 							Manager mg = new Manager();
 							dbm.updateManagerDetails(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC);
 							mg = (Manager) dbm.getManagerDetails(userName);
 						
 							if(type == 'E')
 							{
+								EmployeeDBAO dbe = new EmployeeDBAO();
 								dbe.insertEmployeeCopy(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC, mg.getDepartmentID());
 							}
 							else
 							{
+								FilemanagerDBAO dbf = new FilemanagerDBAO();
 								dbf.insertFilemanagerCopy(userName, gender, dateOfBirth, phoneNumber, email, address, NRIC, mg.getDepartmentID());
 							}
 						

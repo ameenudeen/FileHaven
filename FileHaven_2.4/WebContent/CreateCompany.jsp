@@ -3,24 +3,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@ page import="model.Account, java.util.*" %>
+<%@ page import="model.*, java.util.*,database.*" %>
 
 <%
 Account tempaccount = (Account) session.getAttribute("LoggedInUser");
 
-if(tempaccount == null)
+if(tempaccount != null)
 {
+	if(tempaccount.getType() == 'A')
+	{
 %>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Login</title>
+    <title>Create Company</title>
     <link href="resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/application.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="resources/css/keyboard.css" />
     <script src="resources/js/jquery-1.9.1.js"></script>
-	<script src="resources/js/jquery-ui-1.9.1.js"></script>
-	<script type="text/javascript" src="resources/js/keyboard.js" charset="UTF-8"></script>
+	<script src="resources/js/jquery-ui-1.9.1.js"></script> 
 <style>
 .content_space{
 padding:60px;
@@ -45,43 +45,73 @@ padding:60px;
 }
 </style>
 
+<style type="text/css">
+	.invalidAlert
+	{
+	color:#CC0000;
+	font-weight: bold;
+	}
+</style>
+
 </head>
 <body>
-<%@ include file="LoginHeader.jsp"%> 
+<%@ include file="header.jsp"%> 
       	<div class="span9">
 			<div class="hero-unit">
-			            <h1>Login</h1>
-			            <p></p>
+			            <h1>Company Management</h1>
+			            <p>Create Company</p>
 			</div>
 			<div class="row-fluid" >
 			<div class="content_space">
 			
-			<form action='LoginServlet' method='post'>
-			
-			<table cellspacing=15 cellpadding=10>
-			<tr><td>Username :</td><td><input type=text name="userName" style="height: 20px; width:180px" /></td></tr>
-			<tr><td>Password :</td><td><input type=password name="password" style="height: 20px; width:180px" class="keyboardInput" /></td></tr>
-			</table>
-			
-			<table cellspacing=15 cellpadding=10>
-			<tr><td>Please enter the Captcha shown below</td></tr>
-			<tr><td><img src="CaptchaServlet"></td></tr>
-			<tr><td><input type="text" name="code" style="height: 20px; width: 180px; "/></td></tr>
-			<tr><td><input type=submit name="submit" Value="Login" style="height: 30px; width: 60px;" class="btn" onclick="" /></td></tr>
-			
 			<%
-			String alert = (String)session.getAttribute("alert");
-			if (alert == null) {
+			String commsg = (String) session.getAttribute("commsg");
+			if (commsg == null) {
 			} else {
 			%>
-			<tr><td><%= alert%></td></tr>
+			<table cellspacing=15 cellpadding=10>
+			<tr>
+			<td>
+			<div style="font-weight: bold;">
+			<%= commsg%>
+			</div>
+			<br><br>
+			</td>
+			</tr>
+			</table>
 			<%
 			} 
 			%>
 			
-			</table>
-			
-			</form>
+			<form action='CreateCompanyServlet' method='post'>
+				
+				<table cellspacing=15 cellpadding=10>
+				<tr><td>Company Name :</td><td><input type=text id="companyName" name="companyName" style="height: 20px; width:180px"/></td></tr>
+				<tr><td>Address :</td><td><input type=text id="address" name="address" style="height: 20px; width: 280px;"/></td></tr>
+				<tr><td>Storage Space :</td><td><input type=text id="storageSpace" name="storageSpace" style="height: 20px; width: 80px;"/></td>
+				
+				<%
+				String ssmsg = (String) session.getAttribute("ssmsg");
+				if(ssmsg == null){
+				} else {
+				%>
+				<td>
+				<div class="invalidAlert">
+				<%= ssmsg%>
+				</div>
+				</td>
+				<%
+				}
+				%>
+				
+				</tr>
+				<tr><td>Company Logo :</td><td><input type="file" id="companyLogo" name="companyLogo"></td></tr>
+				
+				</table>
+				
+				<p><input type="submit" value="Submit" name="submit" onclick="" class="btn"/></p>
+				
+				</form>
 			</div>
 		</div>
 	</div>
@@ -89,10 +119,15 @@ padding:60px;
 </body>
 
 <%
+	}
+	else
+	{
+		response.sendRedirect("Error.jsp");
+	}
 }
 else
 {
-	response.sendRedirect("Index.jsp");
+	response.sendRedirect("Error.jsp");
 }
 %>
 
