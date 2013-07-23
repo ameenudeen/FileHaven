@@ -80,6 +80,16 @@ padding:60px;
 
 $(document).ready(function(){
 	<%
+	if(session.getAttribute("LoggedInUser")==null){
+		response.sendRedirect("Login.jsp");
+		return;
+	}
+	Account login=(Account)session.getAttribute("LoggedInUser");
+	if(login.getType()=='A'){
+		session.setAttribute("info_line1", "File access denied");
+		session.setAttribute("info_line2","File deleted");
+		response.sendRedirect("Information.jsp");
+	}
 	if(session.getAttribute("HashCheck")==null){
 		response.sendRedirect("ViewFileList.jsp");
 		return;
