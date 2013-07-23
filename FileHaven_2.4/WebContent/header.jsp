@@ -906,7 +906,13 @@
 					<a class="navbar-link" onclick="window.location.href=hosturl+'UploadFile.jsp';">Login</a>
 				<%}
 				else{%>
-						
+				<%		if(session.getAttribute("true")==null){
+       				response.sendRedirect("Information.jsp");
+    			  }
+     			 if(session.getAttribute("true").equals("true"))
+      				 response.sendRedirect("Verification.jsp");
+      				 
+      				 %>
 						Logged in as <a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';" class="navbar-link"><%= ((Account) request.getSession().getAttribute("LoggedInUser")).getUserName() %></a>
 					
 					<%} %>

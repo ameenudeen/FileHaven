@@ -120,11 +120,12 @@ public class LoginTimeCheckServlet extends HttpServlet {
 		        System.out.println(ipToTest >= ipLo && ipToTest <= ipHi);
 		        if((ipToTest >= ipLo && ipToTest <= ipHi)==false)
 		        {
+		        	session.setAttribute("true", true);
 		        	response.sendRedirect("Verification.jsp");
 		        }
 		        
 		        else{
-		        	
+		        	session.setAttribute("true", false);
 		        	response.sendRedirect("Index.jsp");
 		        	
 		        }
