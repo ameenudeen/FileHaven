@@ -89,6 +89,12 @@
 			document.testRemove.departmentName.focus();
 			return false;
 		}
+		
+		else if(document.testRemove.departmentName.value.match(' '))
+			{
+				alert("No spaces are allowed in the department name");
+				return false;
+			}
 
 		else if (document.testRemove.sometext.value == "") {
 			alert("Please select at least one manager");
