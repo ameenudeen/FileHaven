@@ -104,7 +104,9 @@ public class HashCheckServlet extends HttpServlet {
 						String base64enc=item.getString();
 						base64enc=base64enc.replace(' ', '+');
 						base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-						originaFile=new FileDBAO().getFile(Integer.parseInt(base64enc));
+						FileDBAO fdb=new FileDBAO();
+						originaFile=fdb.getFile(Integer.parseInt(base64enc));
+						fdb.remove();
 						if(originaFile==null){
 							throw new Exception("Original file not found");
 						}

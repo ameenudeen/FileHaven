@@ -38,7 +38,9 @@ public class StartRecoverFileServlet extends HttpServlet {
 		String base64enc=request.getParameter("ID");
 		base64enc=base64enc.replace(' ', '+');
 		base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-		file=new FileDBAO().getFile(Integer.parseInt(base64enc));
+		FileDBAO fdb=new FileDBAO();
+		file=fdb.getFile(Integer.parseInt(base64enc));
+		fdb.remove();
 		if(file==null){
 			throw new Exception("File not found");
 		}

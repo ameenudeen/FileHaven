@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>FileHaven - View File</title>
-    <%@page import="model.Account,model.Department,database.DepartmentDBAO,java.util.Scanner,  model.Files,security.Security,org.apache.commons.codec.binary.Base64" %>
+    <%@page import="model.Account,model.Department,java.util.Scanner,  model.Files,security.Security,org.apache.commons.codec.binary.Base64" %>
     <link href="resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
     <link href="resources/css/application.css" rel="stylesheet" type="text/css" />

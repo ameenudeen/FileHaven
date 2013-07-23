@@ -97,7 +97,9 @@ public class FileDBAO{
 	        	file.setFileUploadedTime(rs.getString(rs.findColumn("UploadedTime")));
 	        	file.setFileDeletedTime(rs.getString(rs.findColumn("DeletedTime")));
 	        	file.setEncrypted(rs.getString(rs.findColumn("Encrypted")));
-	        	file.setPrivilege(new PrivilegeDBAO().getPrivilege(file.getFileID()));
+	        	PrivilegeDBAO pdb=new PrivilegeDBAO();
+	        	file.setPrivilege(pdb.getPrivilege(file.getFileID()));
+	        	pdb.remove();
 	        	file.setHash(rs.getString(rs.findColumn("Hash")));
             	
 	        	fileList.add(file);
@@ -127,7 +129,9 @@ public class FileDBAO{
         	file.setFileSize(rs.getDouble(rs.findColumn("Size")));
         	file.setFileUploadedTime(rs.getString(rs.findColumn("UploadedTime")));
         	file.setFileDeletedTime(rs.getString(rs.findColumn("DeletedTime")));
-        	file.setPrivilege(new PrivilegeDBAO().getPrivilege(file.getFileID()));
+        	PrivilegeDBAO pdb=new PrivilegeDBAO();
+        	file.setPrivilege(pdb.getPrivilege(file.getFileID()));
+        	pdb.remove();
         	file.setEncrypted(rs.getString(rs.findColumn("Encrypted")));
         	file.setHash(rs.getString(rs.findColumn("Hash")));
             prepStmt.close();
@@ -172,9 +176,11 @@ public class FileDBAO{
             	if(file.getPrivilege()!=null){
 	            	for(Privilege p:file.getPrivilege()){
 	            		p.setFileID(file.getFileID());
-	            		if(!new PrivilegeDBAO().createPrivilege(p)){
+	            		PrivilegeDBAO pdb=new PrivilegeDBAO();
+	            		if(!pdb.createPrivilege(p)){
 		            		success=false;
 	            		}
+	            		pdb.remove();
 	            	}
             	}
             	if(!new FileDataDBAO().createFileData(file.getFileID(), file.getData())){
@@ -206,11 +212,19 @@ public class FileDBAO{
              prepStmt.setInt(1, file.getFileID());
             if( prepStmt.executeUpdate()==1){
             	prepStmt.close();
-            	if(new FileDataDBAO().deleteFileData(file.getFileID())){
-            	if(new PrivilegeDBAO().deletePrivilege(file.getFileID()))
+            	FileDataDBAO fddb=new FileDataDBAO();
+            	PrivilegeDBAO pdb=new PrivilegeDBAO();
+            	if(fddb.deleteFileData(file.getFileID())){
+            	if(pdb.deletePrivilege(file.getFileID())){
+            		pdb.remove();
+                	fddb.remove();
             		return true;
+            	}
+            	pdb.remove();
+            	fddb.remove();
             	return false;
             	}
+            	fddb.remove();
             	return false;
             }
             prepStmt.close();

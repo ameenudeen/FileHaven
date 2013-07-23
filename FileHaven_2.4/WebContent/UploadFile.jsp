@@ -209,9 +209,13 @@ function validate_input(){
 			<div class="hero-unit">
 			            <h1>Upload File</h1>
 			            <%
-			            	int space=new CompanyDBAO().getCompanyDetails(login.getCompanyID()).getStorageSpace();
+			            	CompanyDBAO cdb=new CompanyDBAO();
+			            	int space=cdb.getCompanyDetails(login.getCompanyID()).getStorageSpace();
+			            	cdb.remove();
 			            	double used_space=0;
-			            	ArrayList<Files> files=new FileDBAO().getFileList(login.getUserName());
+			            	FileDBAO fdb=new FileDBAO();
+			            	ArrayList<Files> files=fdb.getFileList(login.getUserName());
+			            	fdb.remove();
 			            	for(int i=0;i<files.size();i++){
 			            		used_space+=files.get(i).getFileSize();
 			            	}
@@ -247,10 +251,14 @@ function validate_input(){
 				<p class="subtitle" style="margin-top:30px;">Department</p>
 				<div class="inner_space">
 					<%
-					ArrayList<Department> pList=new DepartmentDBAO().getCompanyDepartment(login.getUserName());
+					DepartmentDBAO ddb=new DepartmentDBAO();
+					ArrayList<Department> pList=ddb.getCompanyDepartment(login.getUserName());
+					ddb.remove();
 					if(login.getType()!='C'&&login.getType()!='F'){
 						int departmentID=-1;
-						departmentID=new ManagerDBAO().getManagerDetails(login.getUserName()).getDepartmentID();
+						ManagerDBAO mdb=new ManagerDBAO();
+						departmentID=mdb.getManagerDetails(login.getUserName()).getDepartmentID();
+						mdb.remove();
 						for(int i=0;i<pList.size();i++){
 							if(departmentID!=pList.get(i).getId())
 								pList.remove(i--);
