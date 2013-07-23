@@ -146,6 +146,7 @@ public class UpdateFileDetailServlet extends HttpServlet {
 					Privilege p=new Privilege();
 					p.setFileID(file.getFileID());
 					p.setDepartmentID(Integer.parseInt(id));
+					System.out.println(id);
 					privileges.add(p);
 				}
 			}

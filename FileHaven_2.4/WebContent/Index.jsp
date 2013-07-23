@@ -281,7 +281,7 @@
 						</p>
 						<p><a href="#" class="btn">More about FileHaven</a></p>
 						
-						<hr class="featurette-divider">
+						<hr id="start_using" class="featurette-divider">
 						 
 						<h2 class="featurette-heading"> Need to start immediately? <span class="muted">Look no further</span></h2>
 						<p class="lead">

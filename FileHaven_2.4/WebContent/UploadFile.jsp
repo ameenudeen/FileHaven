@@ -232,7 +232,7 @@ function validate_input(){
 			            <div style="width:300px" class="progress progress-striped active">
 											<div class="bar" style="width: <%=used_space/space*100%>%;"></div>
 										</div>
-			            <a class="btn btn-primary btn-large">Add more space now!<br/>Click to view detail</a>
+			            <a href="Index.jsp/#start_payment" class="btn btn-primary btn-large">Add more space now!<br/>Click to view detail</a>
 			</div>
 				<div class="row-fluid" >
 				<div class="content_space">
