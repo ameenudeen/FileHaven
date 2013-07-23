@@ -48,6 +48,7 @@
 
 	NotificationDBAO notification = new NotificationDBAO();
 	ArrayList<Notification> notifications = notification.getNotifications(user);
+	notification.remove();
 %>
 
 <style>
