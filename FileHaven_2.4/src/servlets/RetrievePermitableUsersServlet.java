@@ -85,7 +85,7 @@ public class RetrievePermitableUsersServlet extends HttpServlet {
 			response.sendRedirect("SetUserPermission.jsp");
 		}catch (Exception e)
 		{
-			dba.remove();
+			if(dba!=null)dba.remove();
 			e.printStackTrace();
 		}
 		

@@ -119,7 +119,7 @@ public class CreateAccountReportServlet extends HttpServlet {
 			
 		}catch(Exception e)
 		{
-			dbar.remove();
+			if(dbar!=null)dbar.remove();
 			e.printStackTrace();
 		}
 	}

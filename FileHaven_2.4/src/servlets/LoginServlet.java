@@ -156,7 +156,7 @@ public class LoginServlet extends HttpServlet {
 			
 		}catch (Exception e)
 		{
-			dba.remove();
+			if(dba!=null)dba.remove();
 			e.printStackTrace();
 		}
 	}

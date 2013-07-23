@@ -60,7 +60,7 @@ public class RetrieveWorkingTimeServlet extends HttpServlet {
 			
 		}catch(Exception e)
 		{	
-			dbcom.remove();
+			if(dbcom!=null)dbcom.remove();
 			e.printStackTrace();
 		}
 		

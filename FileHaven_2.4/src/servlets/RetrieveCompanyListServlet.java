@@ -53,7 +53,7 @@ public class RetrieveCompanyListServlet extends HttpServlet {
 			response.sendRedirect("CreateAccount.jsp");
 		}catch(Exception e)
 		{
-			dbcom.remove();
+			if(dbcom!=null)dbcom.remove();
 			e.printStackTrace();
 		}
 	}

@@ -92,7 +92,7 @@ public class ViewAccountReportServlet extends HttpServlet {
 			
 		}catch(Exception e)
 		{
-			dbar.remove();
+			if(dbar!=null)dbar.remove();
 			e.printStackTrace();
 		}
 		

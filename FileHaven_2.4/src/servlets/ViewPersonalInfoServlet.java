@@ -113,11 +113,11 @@ public class ViewPersonalInfoServlet extends HttpServlet {
 			response.sendRedirect("ViewPersonalInfo.jsp");
 	}catch (Exception e)
 	{ 
-		dbad.remove();
-		 dbc.remove();
-		 dbe.remove();
-		 dbf.remove();
-		 dbm.remove();
+		if(dbad!=null)dbad.remove();
+		if(dbc!=null)dbc.remove();
+		if(dbe!=null)dbe.remove();
+		if(dbf!=null)dbf.remove();
+		if(dbm!=null)dbm.remove();
 		e.printStackTrace();
 	}
 		

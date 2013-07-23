@@ -68,9 +68,9 @@ public class DeleteDepartment extends HttpServlet {
 			response.sendRedirect("/FileHaven/ViewDepartment.jsp");
 			
 		} catch (Exception e) {
-			d1.remove();
-			m1.remove();
-			e1.remove();
+			if(d1!=null)d1.remove();
+			if(m1!=null)m1.remove();
+			if(e1!=null)e1.remove();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

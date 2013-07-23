@@ -106,7 +106,7 @@ public class ViewFileServlet extends HttpServlet {
 		}
 		catch(Exception ex){
 			//handle exception
-			fdb.remove();
+			if(fdb!=null)fdb.remove();
 			session.setAttribute("info_line1", "View File List Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

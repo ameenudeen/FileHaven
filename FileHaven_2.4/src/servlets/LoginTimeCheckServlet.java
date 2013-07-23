@@ -220,10 +220,10 @@ public class LoginTimeCheckServlet extends HttpServlet {
 			
 		}catch (Exception e) 
 		{
-			dbpm.remove(); 
-		n1.remove();
-		dba.remove();
-		dbcom.remove();
+			if(dbpm!=null)dbpm.remove(); 
+			if(n1!=null)n1.remove();
+			if(dba!=null)dba.remove();
+			if(dbcom!=null)dbcom.remove();
 			e.printStackTrace();
 		}
 		

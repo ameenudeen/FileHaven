@@ -165,8 +165,8 @@ public class ViewAccountServlet extends HttpServlet {
 			
 		}catch(Exception e)
 		{
-			dba.remove();
-			dbdt.remove();
+			if(dba!=null)dba.remove();
+			if(dbdt!=null)dbdt.remove();
 			e.printStackTrace();
 		}
 		

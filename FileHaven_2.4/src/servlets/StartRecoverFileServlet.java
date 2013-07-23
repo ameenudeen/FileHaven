@@ -49,7 +49,7 @@ public class StartRecoverFileServlet extends HttpServlet {
 		getServletContext().getRequestDispatcher("/RecoverDeletedFile.jsp").forward(request,response);
 		}
 		catch(Exception ex){
-			fdb.remove();
+			if(fdb!=null)fdb.remove();
 			session.setAttribute("info_line1", "File access denied.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

@@ -86,7 +86,7 @@ public class RetrieveAccountListServlet extends HttpServlet {
 			response.sendRedirect("UpdateAccount.jsp");
 	}catch (Exception e)
 	{
-		dba.remove();
+		if(dba!=null)dba.remove();
 		e.printStackTrace();
 	}
 	}

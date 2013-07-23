@@ -42,7 +42,7 @@ public class DepartmentAvailability extends HttpServlet {
 			d1.remove();
 			System.out.println(status);
 		} catch (Exception e) {
-			d1.remove();
+			if(d1!=null)d1.remove();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
