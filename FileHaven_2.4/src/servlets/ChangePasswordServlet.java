@@ -45,13 +45,13 @@ public class ChangePasswordServlet extends HttpServlet {
 		session.removeAttribute("conpassmsg");
 		
 		Account acc = (Account) session.getAttribute("LoggedInUser");
-		
+		AccountDBAO  dba=null;
 		String oldPassword = request.getParameter("oldPassword");
 		String newPassword = request.getParameter("newPassword");
 		String conPassword = request.getParameter("conPassword");
 		
 		try {
-			AccountDBAO dba = new AccountDBAO();
+			dba = new AccountDBAO();
 			
 			if(oldPassword != "" && newPassword != "" && conPassword != "")
 			{	
@@ -86,7 +86,7 @@ public class ChangePasswordServlet extends HttpServlet {
 		{
 			e.printStackTrace();
 		}
-		
+		dba.remove();
 		response.sendRedirect("ChangePassword.jsp");
 		
 	}

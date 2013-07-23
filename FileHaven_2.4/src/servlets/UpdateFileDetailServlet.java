@@ -55,9 +55,13 @@ public class UpdateFileDetailServlet extends HttpServlet {
 		
 		Files file;
 		FileDBAO fdb = null;
+		PrivilegeDBAO pdb=null;
+		FileReportDBAO frdb=null;
 		String fileName=request.getParameter("FileName");
 		try{
+			frdb=new FileReportDBAO();
 			fdb=new FileDBAO();
+			pdb=new PrivilegeDBAO();
 			if(session.getAttribute("UpdateFile")==null){
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
@@ -130,7 +134,7 @@ public class UpdateFileDetailServlet extends HttpServlet {
 				}
 			}
 			file.setFileName(fileName);
-			PrivilegeDBAO pdb=new PrivilegeDBAO();
+			
 			if(file.getPrivilege()!=null){
 				for(int i=0;i<file.getPrivilege().size();i++)
 					pdb.deletePrivilege(file.getFileID());
@@ -146,12 +150,10 @@ public class UpdateFileDetailServlet extends HttpServlet {
 				}
 			}
 			if(!fdb.updateFile(file, "Name", fileName)){
-				pdb.remove();
 				throw new Exception("Error occur. Please consult FileHaven administrator. Error: File name error");
 			}
 			for(Privilege p:privileges){
 				if(!pdb.createPrivilege(p)){
-					pdb.remove();
 					throw new Exception("Error occur. Please consult FileHaven administrator. Error: File name error");
 				}
 			}
@@ -162,7 +164,6 @@ public class UpdateFileDetailServlet extends HttpServlet {
 			r.setFileID(file.getFileID());
 			r.setFileID(file.getFileID());
 			r.setStatus("Update");
-			FileReportDBAO frdb=new FileReportDBAO();
 			frdb.insertFileReport(r,login.getUserName());
 			session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
 			
@@ -172,6 +173,8 @@ public class UpdateFileDetailServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 		}
 		catch(Exception ex){
+			pdb.remove();
+			frdb.remove();
 			fdb.remove();
 			session.setAttribute("info_line1", "Update Failed.");
 			session.setAttribute("info_line2", ex.getMessage());

@@ -81,8 +81,14 @@ public class UploadFileServlet extends HttpServlet {
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setFileSizeMax(MAX_FILE_SIZE);
 		upload.setSizeMax(REQUEST_SIZE);
+
+		FileReportDBAO frdb=null;
+		FileDBAO fdb=null;
 		
 		try {
+			frdb=new FileReportDBAO();
+			fdb=new FileDBAO();
+			
 			List<FileItem> formItems = upload.parseRequest(request);
 			Iterator<FileItem> iter = formItems.iterator();
 			boolean double_encrypt=false;
@@ -190,7 +196,6 @@ public class UploadFileServlet extends HttpServlet {
 			space*=1024;
 			space*=1024;
 			//in GB
-			FileDBAO fdb=new FileDBAO();
 			ArrayList<Files> files=fdb.getFileList(login.getUserName());
 			double used_space=file.getFileSize();
 			for(Files f:files){
@@ -212,7 +217,6 @@ public class UploadFileServlet extends HttpServlet {
 			r.setFileID(file.getFileID());
 			r.setFileID(file.getFileID());
 			r.setStatus("Upload");
-			FileReportDBAO frdb=new FileReportDBAO();
 			frdb.insertFileReport(r, login.getUserName());
 			
 			frdb.remove();
@@ -222,6 +226,8 @@ public class UploadFileServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 		} 
 		catch (Exception ex) {
+			fdb.remove();
+			frdb.remove();
 			session.setAttribute("info_line1", "Upload File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);
