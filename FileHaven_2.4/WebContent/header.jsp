@@ -906,10 +906,10 @@
 					<a class="navbar-link" onclick="window.location.href=hosturl+'UploadFile.jsp';">Login</a>
 				<%}
 				else{%>
-				<%		if(session.getAttribute("true")==null){
+				<%		if(session.getAttribute("externalcompany")==null){
        				response.sendRedirect("Information.jsp");
     			  }
-     			 if(session.getAttribute("true").equals("true"))
+     			 if(session.getAttribute("externalcompany").equals("true"))
       				 response.sendRedirect("Verification.jsp");
       				 
       				 %>
