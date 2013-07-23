@@ -186,7 +186,7 @@ function validate_input(){
 					}
 					for(int i=0;i<pList.size();i++){
 						
-						String depid=new Integer(i).toString();
+						String depid=new Integer(pList.get(i).getId()).toString();
 						depid=Base64.encodeBase64String(Security.encryptByte(depid.getBytes(),Security.generateAESKey("SYSTEM_KEY"),"AES"));
 
 					%>

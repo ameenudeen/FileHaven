@@ -9,7 +9,7 @@
           <a class="brand" href="#">File Haven</a>
           <div class="nav-collapse collapse">
             <p class="navbar-text pull-right">
-              <a href="http://localhost:8080/Account_Prototype/Login.jsp" class="navbar-link">Login</a>
+              <a href="Login.jsp" class="navbar-link">Login</a>
             </p>
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>

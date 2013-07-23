@@ -34,7 +34,6 @@ public class FileDataDBAO {
 		InputStream is=null;
 		try {
 	        String selectStatement = "select * " + "from filedata where  ID=?";
-	        System.out.println(selectStatement);
 	        PreparedStatement prepStmt = con.prepareStatement(selectStatement);
 	        prepStmt.setInt(1,id);
 	        ResultSet rs = prepStmt.executeQuery();
@@ -76,7 +75,6 @@ public class FileDataDBAO {
     public boolean deleteFileData(int id) throws Exception{
     	try{
     		String stmt="DELETE FROM filedata WHERE ID=?";
-    		System.out.println(stmt);
     		 PreparedStatement prepStmt = con.prepareStatement(stmt);
              prepStmt.setInt(1, id);
             if( prepStmt.executeUpdate()==1){

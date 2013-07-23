@@ -57,7 +57,9 @@ public class FileDBAO{
 	        	file.setFileUploadedTime(rs.getString(rs.findColumn("UploadedTime")));
 	        	file.setFileDeletedTime(rs.getString(rs.findColumn("DeletedTime")));
 	        	file.setEncrypted(rs.getString(rs.findColumn("Encrypted")));
-	        	file.setPrivilege(new PrivilegeDBAO().getPrivilege(file.getFileID()));
+	        	PrivilegeDBAO pdb=new PrivilegeDBAO();
+	        	file.setPrivilege(pdb.getPrivilege(file.getFileID()));
+	        	pdb.remove();
 	        	file.setHash(rs.getString(rs.findColumn("Hash")));
             	
             	
@@ -68,6 +70,7 @@ public class FileDBAO{
 	       
 	        AccountDBAO adb=new AccountDBAO();
 	    	ArrayList<String> nameList=adb.getAccountNames(adb.getAccountDetails(username).getCompanyID());
+	    	adb.remove();
 	    	for(int i=0;i<fileList.size();i++){
 	    		for(String name:nameList)
 	    			if(fileList.get(i).getAccountID().equals(name)){
@@ -183,13 +186,15 @@ public class FileDBAO{
 	            		pdb.remove();
 	            	}
             	}
-            	if(!new FileDataDBAO().createFileData(file.getFileID(), file.getData())){
+            	FileDataDBAO fddb=new FileDataDBAO();
+            	if(!fddb.createFileData(file.getFileID(), file.getData())){
             		success=false;
             	}
             	if(success){
             		prepStmt.close();
             		return true;
             	}
+            	fddb.remove();
             	//new PrivilegeDBAO().deletePrivilege(file.getFileID());
             	//new FileDataDBAO().deleteFileData(file.getFileID());
             	deleteFile(file);

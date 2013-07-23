@@ -232,7 +232,7 @@ function validate_input(){
 			            <div style="width:300px" class="progress progress-striped active">
 											<div class="bar" style="width: <%=used_space/space*100%>%;"></div>
 										</div>
-			            <a class="btn btn-primary btn-large">Add more space now!<br/>Click to view detail</a>
+			            <a href="Index.jsp#start_using" class="btn btn-primary btn-large">Add more space now!<br/>Click to view detail</a>
 			</div>
 				<div class="row-fluid" >
 				<div class="content_space">
@@ -266,7 +266,6 @@ function validate_input(){
 					}
 					for(int i=0;i<pList.size();i++){
 					//Encrypt the department ID
-					System.out.println(pList.get(i).getId());
 					String depid=Integer.toString(pList.get(i).getId());
 					depid=Base64.encodeBase64String(Security.encryptByte(depid.getBytes(),Security.generateAESKey("SYSTEM_KEY"),"AES"));
 

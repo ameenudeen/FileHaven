@@ -906,7 +906,22 @@
 					<a class="navbar-link" onclick="window.location.href=hosturl+'UploadFile.jsp';">Login</a>
 				<%}
 				else{%>
+<<<<<<< HEAD
 				
+=======
+				<%		
+				if(session.getAttribute("externalcompany")==null){
+					if(!response.isCommitted()){
+					response.sendRedirect("Information.jsp");
+					return;}
+    			  }
+				else if(session.getAttribute("externalcompany").equals("true")){
+					if(!response.isCommitted()){
+						response.sendRedirect("Verification.jsp");
+						return;}
+				}
+      				 %>
+>>>>>>> branch 'master' of https://github.com/ameenudeen/FileHaven.git
 						Logged in as <a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';" class="navbar-link"><%= ((Account) request.getSession().getAttribute("LoggedInUser")).getUserName() %></a>
 					
 					<%} %>

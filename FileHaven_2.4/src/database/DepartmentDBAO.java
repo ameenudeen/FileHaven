@@ -35,7 +35,6 @@ public class DepartmentDBAO {
 		try {
 
 			String selectStatement = "SELECT * FROM department WHERE Name=? AND companyID=?";
-			System.out.println(selectStatement);
 			getConnection();
 
 			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
@@ -70,7 +69,6 @@ public class DepartmentDBAO {
 					+ user + "'))";
 			String selectStatement = "insert into department (Name,Description,DepartmentLogo,CompanyID) values(?,?,?,"
 					+ statement;
-			System.out.println(selectStatement);
 
 			getConnection();
 
@@ -83,7 +81,6 @@ public class DepartmentDBAO {
 				status = true;
 				prepStmt.close();
 				releaseConnection();
-				System.out.println("Successful in department");
 			}
 
 		} catch (SQLException ex) {
@@ -103,7 +100,6 @@ public class DepartmentDBAO {
 					+ user + "')";
 			String selectStatement = "UPDATE department SET Name=? , Description=?, DepartmentLogo=?,CompanyID="
 					+ statement + " WHERE ID=?";
-			System.out.println(selectStatement);
 
 			getConnection();
 
@@ -133,7 +129,6 @@ public class DepartmentDBAO {
 		// TODO change the sql statement,change name to username
 		try {
 			String selectStatement = "SELECT * FROM department WHERE CompanyID=(SELECT CompanyID FROM account WHERE UserName=?)";
-			System.out.println(selectStatement);
 			getConnection();
 
 			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
@@ -149,7 +144,7 @@ public class DepartmentDBAO {
 						.findColumn("DepartmentLogo")));
 				department.setDepartmentDescription(rs.getString(rs
 						.findColumn("Description")));
-
+				department.setId(rs.getInt(rs.findColumn("ID")));
 				d1.add(department);
 
 			}
