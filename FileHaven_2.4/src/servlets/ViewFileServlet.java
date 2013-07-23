@@ -44,8 +44,10 @@ public class ViewFileServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session=request.getSession();
+		FileDBAO fdb=null;
 		Files file=null;
 		try{
+			fdb=new FileDBAO();
 			if(session.getAttribute("LoggedInUser")==null){
 				throw new Exception("Invalid log in.Please login");
 			}
@@ -60,7 +62,7 @@ public class ViewFileServlet extends HttpServlet {
 			base64enc=base64enc.replace(' ', '+');
 			//System.out.println(Base64.decodeBase64(base64enc).length);
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-			file=new FileDBAO().getFile(Integer.parseInt(base64enc));
+			file=fdb.getFile(Integer.parseInt(base64enc));
 			if(file==null){
 				throw new Exception("File not found");
 			}
@@ -77,10 +79,16 @@ public class ViewFileServlet extends HttpServlet {
 				else{
 					boolean permit=false;
 					int departmentID=-1;
-					if(login.getType()=='M')
-						departmentID=(new ManagerDBAO().getManagerDetails(login.getUserName())).getDepartmentID();
-					else if(login.getType()=='E')
-						departmentID=(new EmployeeDBAO().getEmployeeDetails(login.getUserName())).getDepartmentID();
+					if(login.getType()=='M'){
+						ManagerDBAO mdb=new ManagerDBAO();
+						departmentID=(mdb.getManagerDetails(login.getUserName())).getDepartmentID();
+						mdb.remove();
+					}
+					else if(login.getType()=='E'){
+						EmployeeDBAO edb=new EmployeeDBAO();
+						departmentID=(edb.getEmployeeDetails(login.getUserName())).getDepartmentID();
+						edb.remove();
+					}
 					for(Privilege p:pList){
 						if(p.getDepartmentID()==departmentID){
 							permit=true;
@@ -93,10 +101,12 @@ public class ViewFileServlet extends HttpServlet {
 			}
 			
 			session.setAttribute("SelectedFile",file);
+			fdb.remove();
 			getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 		}
 		catch(Exception ex){
 			//handle exception
+			fdb.remove();
 			session.setAttribute("info_line1", "View File List Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

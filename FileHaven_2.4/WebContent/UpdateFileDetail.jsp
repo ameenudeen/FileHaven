@@ -171,10 +171,14 @@ function validate_input(){
 				<p class="subtitle" style="margin-top:30px;">Department</p>
 				<div class="inner_space">
 					<%
-					ArrayList<Department> pList=new DepartmentDBAO().getCompanyDepartment(login.getUserName());
+					DepartmentDBAO ddb=new DepartmentDBAO();
+					ArrayList<Department> pList=ddb.getCompanyDepartment(login.getUserName());
+					ddb.remove();
 					if(login.getType()!='C'&&login.getType()!='F'){
 						int departmentID=-1;
-						departmentID=new ManagerDBAO().getManagerDetails(login.getUserName()).getDepartmentID();
+						ManagerDBAO mdb=new ManagerDBAO();
+						departmentID=mdb.getManagerDetails(login.getUserName()).getDepartmentID();
+						mdb.remove();
 						for(int i=0;i<pList.size();i++){
 							if(departmentID!=pList.get(i).getId())
 								pList.remove(i--);

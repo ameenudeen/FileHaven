@@ -75,8 +75,10 @@ public class DeleteFileServlet extends HttpServlet {
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-			file=new FileDBAO().getFile(Integer.parseInt(base64enc));
+			FileDBAO fdb=new FileDBAO();
+			file=fdb.getFile(Integer.parseInt(base64enc));
 			if(file==null){
+				fdb.remove();
 				throw new Exception("File not found");
 			}
 			if(login.getType()!='C'&&login.getType()!='F'){
@@ -84,8 +86,10 @@ public class DeleteFileServlet extends HttpServlet {
 				if(pList==null)
 					pList=new ArrayList<Privilege>();
 				if(pList.isEmpty()){
-					if(!login.getUserName().equals(file.getAccountID()))
+					if(!login.getUserName().equals(file.getAccountID())){
+						fdb.remove();
 						throw new Exception("Access denied");
+					}
 				}
 				else{
 					boolean permit=false;
@@ -95,21 +99,28 @@ public class DeleteFileServlet extends HttpServlet {
 							break;
 						}
 					}
-					if(!permit)
+					if(!permit){
+						fdb.remove();
 						throw new Exception("Access denied");
+					}
 				}
 			}
-			if(new FileDBAO().updateFile(file, "DeletedTime", time)){
-
-				file.setData(new FileDataDBAO().getFileData(file.getFileID()));
+			if(fdb.updateFile(file, "DeletedTime", time)){
+				FileDataDBAO fddb=new FileDataDBAO();
+				file.setData(fddb.getFileData(file.getFileID()));
 				FileReport r=new FileReport();
 				InetAddress clientIp = InetAddress.getLocalHost();
 				r.setIPAddress(clientIp.getHostAddress());
 				r.setFileID(file.getFileID());
 				r.setFileID(file.getFileID());
 				r.setStatus("Delete");
-				new FileReportDBAO().insertFileReport(r,login.getUserName());
-				session.setAttribute("SelectedFile", new FileDBAO().getFile(file.getFileID()));
+				FileReportDBAO frdb=new FileReportDBAO();
+				frdb.insertFileReport(r,login.getUserName());
+				
+				session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
+				fdb.remove();
+				fddb.remove();
+				frdb.remove();
 				getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 			}
 		}

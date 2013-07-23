@@ -54,8 +54,10 @@ public class UpdateFileDetailServlet extends HttpServlet {
 		
 		
 		Files file;
+		FileDBAO fdb = null;
 		String fileName=request.getParameter("FileName");
 		try{
+			fdb=new FileDBAO();
 			if(session.getAttribute("UpdateFile")==null){
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
@@ -74,14 +76,15 @@ public class UpdateFileDetailServlet extends HttpServlet {
 			
 			if(base64enc!=null){
 				if(base64enc.length()==0){
-
+					
 					throw new Exception("Error occur.Please consult FileHaven Administrator");
 				}
 			}
 			else{
 				throw new Exception("Error occur.Please consult FileHaven Administrator");}
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-			file=new FileDBAO().getFile(Integer.parseInt(base64enc));
+			
+			file=fdb.getFile(Integer.parseInt(base64enc));
 
 			if(login.getType()!='C'&&login.getType()!='F'){
 				ArrayList<Privilege> pList=file.getPrivilege();
@@ -91,22 +94,28 @@ public class UpdateFileDetailServlet extends HttpServlet {
 					if(login.getUserName().equals(file.getAccountID())){
 						
 					}
-					else
+					else{
 						throw new Exception("Access denied");
+					}
 				}
 				else{
 					boolean permit=false;
 					int departmentID=-1;
-					if(login.getType()=='M')
-						departmentID=(new ManagerDBAO().getManagerDetails(login.getUserName())).getDepartmentID();
+					if(login.getType()=='M'){
+						ManagerDBAO mdb=new ManagerDBAO();
+						departmentID=(mdb.getManagerDetails(login.getUserName())).getDepartmentID();
+						mdb.remove();
+						}
 					for(Privilege p:pList){
 						if(p.getDepartmentID()==departmentID){
 							permit=true;
 							break;
 						}
 					}
-					if(!permit)
+					if(!permit){
+						fdb.remove();
 						throw new Exception("Access denied");
+					}
 				}
 			}
 			if(fileName==null){
@@ -121,9 +130,10 @@ public class UpdateFileDetailServlet extends HttpServlet {
 				}
 			}
 			file.setFileName(fileName);
+			PrivilegeDBAO pdb=new PrivilegeDBAO();
 			if(file.getPrivilege()!=null){
 				for(int i=0;i<file.getPrivilege().size();i++)
-					new PrivilegeDBAO().deletePrivilege(file.getFileID());
+					pdb.deletePrivilege(file.getFileID());
 			}
 			String[] departments=request.getParameterValues("department");
 			if(departments!=null){
@@ -135,11 +145,13 @@ public class UpdateFileDetailServlet extends HttpServlet {
 					privileges.add(p);
 				}
 			}
-			if(!new FileDBAO().updateFile(file, "Name", fileName)){
+			if(!fdb.updateFile(file, "Name", fileName)){
+				pdb.remove();
 				throw new Exception("Error occur. Please consult FileHaven administrator. Error: File name error");
 			}
 			for(Privilege p:privileges){
-				if(!new PrivilegeDBAO().createPrivilege(p)){
+				if(!pdb.createPrivilege(p)){
+					pdb.remove();
 					throw new Exception("Error occur. Please consult FileHaven administrator. Error: File name error");
 				}
 			}
@@ -150,11 +162,17 @@ public class UpdateFileDetailServlet extends HttpServlet {
 			r.setFileID(file.getFileID());
 			r.setFileID(file.getFileID());
 			r.setStatus("Update");
-			new FileReportDBAO().insertFileReport(r,login.getUserName());
-			session.setAttribute("SelectedFile", new FileDBAO().getFile(file.getFileID()));
+			FileReportDBAO frdb=new FileReportDBAO();
+			frdb.insertFileReport(r,login.getUserName());
+			session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
+			
+			pdb.remove();
+			frdb.remove();
+			fdb.remove();
 			getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 		}
 		catch(Exception ex){
+			fdb.remove();
 			session.setAttribute("info_line1", "Update Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

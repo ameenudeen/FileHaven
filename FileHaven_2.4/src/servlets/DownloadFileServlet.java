@@ -56,6 +56,7 @@ public class DownloadFileServlet extends HttpServlet {
 		HttpSession session=request.getSession();
 		
 		Files file=null;
+		FileDBAO fdb=null;
 		
 		try{
 			if(session.getAttribute("DownloadFile")==null){
@@ -82,7 +83,7 @@ public class DownloadFileServlet extends HttpServlet {
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 				}
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-			file=new FileDBAO().getFile(Integer.parseInt(base64enc));
+			file=fdb.getFile(Integer.parseInt(base64enc));
 			if(file==null){
 				throw new Exception("File not found");
 			}
@@ -99,10 +100,16 @@ public class DownloadFileServlet extends HttpServlet {
 				else{
 					boolean permit=false;
 					int departmentID=-1;
-					if(login.getType()=='M')
-						departmentID=(new ManagerDBAO().getManagerDetails(login.getUserName())).getDepartmentID();
-					else if(login.getType()=='E')
-						departmentID=(new EmployeeDBAO().getEmployeeDetails(login.getUserName())).getDepartmentID();
+					if(login.getType()=='M'){
+						ManagerDBAO mdb=new ManagerDBAO();
+						departmentID=(mdb.getManagerDetails(login.getUserName())).getDepartmentID();
+						mdb.remove();
+					}
+					else if(login.getType()=='E'){
+						EmployeeDBAO edb=new EmployeeDBAO();
+						departmentID=(edb.getEmployeeDetails(login.getUserName())).getDepartmentID();
+						edb.remove();
+					}
 					for(Privilege p:pList){
 						if(p.getDepartmentID()==departmentID){
 							permit=true;
@@ -117,7 +124,10 @@ public class DownloadFileServlet extends HttpServlet {
 				throw new Exception("Access denied:File deleted");
 			}
 			
-			file.setData(new FileDataDBAO().getFileData(file.getFileID()));
+			FileDataDBAO fddb=new FileDataDBAO();
+			file.setData(fddb.getFileData(file.getFileID()));
+			fddb.remove();
+			
 			FileReport r=new FileReport();
 			String ipAddress = request.getHeader("X-FORWARDED-FOR");  
 			if (ipAddress == null) {  
@@ -127,8 +137,9 @@ public class DownloadFileServlet extends HttpServlet {
 			r.setIPAddress(clientIp.getHostAddress());
 			r.setFileID(file.getFileID());
 			r.setStatus("Download");
-			new FileReportDBAO().insertFileReport(r,login.getUserName());
-			
+			FileReportDBAO frdb=new FileReportDBAO();
+			frdb.insertFileReport(r,login.getUserName());
+			frdb.remove();
 			byte[] data;
 			if(file.getEncrypted().equals("TRUE")){
 				//System.out.println(Security.generateAESKey(key, 1).length);
@@ -144,7 +155,8 @@ public class DownloadFileServlet extends HttpServlet {
 			ServletOutputStream out = response.getOutputStream();
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-Disposition","attachment;filename="+file.getFileName()+(file.getFileExtension().equals("*No Extension*")?"":"."+file.getFileExtension()));
- 
+			fdb.remove();
+			
 			for(byte b:data){
 				out.write(b);
 			}
@@ -152,6 +164,7 @@ public class DownloadFileServlet extends HttpServlet {
 			out.close();
 		}
 		catch(BadPaddingException ex){
+			fdb.remove();
 			//Badpaddingexception for wrong password
 			//save to bad password report
 			ServletOutputStream out = response.getOutputStream();
@@ -165,6 +178,7 @@ public class DownloadFileServlet extends HttpServlet {
 			out.close();
 		}
 		catch(Exception ex){
+			fdb.remove();
 			session.setAttribute("info_line1", "Download File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

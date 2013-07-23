@@ -74,10 +74,12 @@ public class RecoverFileServlet extends HttpServlet {
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-			file=new FileDBAO().getFile(Integer.parseInt(base64enc));
-			if(file==null)
+			FileDBAO fdb=new FileDBAO();
+			file=fdb.getFile(Integer.parseInt(base64enc));
+			if(file==null){
+				fdb.remove();
 				throw new Exception("File not found");
-
+			}
 			if(login.getType()!='C'&&login.getType()!='F'){
 				ArrayList<Privilege> pList=file.getPrivilege();
 				if(pList==null)
@@ -86,8 +88,10 @@ public class RecoverFileServlet extends HttpServlet {
 					if(login.getUserName().equals(file.getAccountID())){
 						
 					}
-					else
+					else{
+						fdb.remove();
 						throw new Exception("Access denied");
+					}
 				}
 				else{
 					boolean permit=false;
@@ -102,19 +106,25 @@ public class RecoverFileServlet extends HttpServlet {
 							break;
 						}
 					}
-					if(!permit)
+					if(!permit){
+						fdb.remove();
 						throw new Exception("Access denied");
+					}
 				}
 			}
-			if(new FileDBAO().updateFile(file, "DeletedTime", "NIL")){
+			if(fdb.updateFile(file, "DeletedTime", "NIL")){
 				FileReport r=new FileReport();
 				InetAddress clientIp = InetAddress.getLocalHost();
 				r.setIPAddress(clientIp.getHostAddress());
 				r.setFileID(file.getFileID());
 				r.setFileID(file.getFileID());
 				r.setStatus("Recover");
-				new FileReportDBAO().insertFileReport(r,login.getUserName());
-				session.setAttribute("SelectedFile", new FileDBAO().getFile(file.getFileID()));
+				FileReportDBAO frdb=new FileReportDBAO();
+				frdb.insertFileReport(r,login.getUserName());
+				session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
+				
+				fdb.remove();
+				frdb.remove();
 				getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 			}
 		}

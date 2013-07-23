@@ -109,14 +109,23 @@ padding:60px;
 			response.sendRedirect("Information.jsp");
 			return;
 		}
-		ArrayList<Department> pList=new DepartmentDBAO().getCompanyDepartment(login.getUserName());
+		DepartmentDBAO ddb=new DepartmentDBAO();
+		ArrayList<Department> pList=ddb.getCompanyDepartment(login.getUserName());
+		ddb.remove();
+		
 		System.out.println("PList:"+pList.size());
 		if(login.getType()!='C'&&login.getType()!='F'){
 			int departmentID=-1;
-			if(login.getType()=='E')
-				departmentID=new EmployeeDBAO().getEmployeeDetails(login.getUserName()).getDepartmentID();
-			if(login.getType()=='M')
-				departmentID=new ManagerDBAO().getManagerDetails(login.getUserName()).getDepartmentID();
+			if(login.getType()=='E'){
+				EmployeeDBAO edb=new EmployeeDBAO();
+				departmentID=edb.getEmployeeDetails(login.getUserName()).getDepartmentID();
+				edb.remove();
+				}
+			if(login.getType()=='M'){
+				ManagerDBAO mdb=new ManagerDBAO();
+				departmentID=mdb.getManagerDetails(login.getUserName()).getDepartmentID();
+				mdb.remove();
+				}
 			for(int i=0;i<pList.size();i++){
 				if(departmentID!=pList.get(i).getId())
 					pList.remove(i--);
@@ -136,12 +145,15 @@ padding:60px;
 	$(function() {
 		var availableTags = [
 		<%
-	      ArrayList<Files> files=new FileDBAO().getFileList(login.getUserName());
-		
+			FileDBAO fdb=new FileDBAO();
+	      ArrayList<Files> files=fdb.getFileList(login.getUserName());
+		fdb.remove();
+	      
 		if(login.getType()!='C'&&login.getType()!='F'){
+			PrivilegeDBAO pdb=new PrivilegeDBAO();
 			for(int i=0;i<files.size();i++){
 				//filter privilege
-				ArrayList<Privilege> privilege=new PrivilegeDBAO().getPrivilege(files.get(i).getFileID());
+				ArrayList<Privilege> privilege=pdb.getPrivilege(files.get(i).getFileID());
 				if(privilege==null)
 					privilege=new ArrayList<Privilege>();
 				boolean permit=false;
@@ -165,6 +177,7 @@ padding:60px;
 				if(!permit)
 					files.remove(i--);
 			}
+			pdb.remove();
 		}
 
 			for(int i=0;i<files.size();i++){

@@ -28,6 +28,7 @@ import org.apache.commons.io.IOUtils;
 
 import database.CompanyDBAO;
 import database.FileDBAO;
+import database.FileReportDBAO;
 
 import model.Account;
 import model.FileReport;
@@ -183,21 +184,25 @@ public class UploadFileServlet extends HttpServlet {
 			if(!privileges.isEmpty()){
 				file.setPrivilege(privileges);
 			}
-			
-			int space=new CompanyDBAO().getCompanyDetails(login.getCompanyID()).getStorageSpace();
+			CompanyDBAO cdb=new CompanyDBAO();
+			int space=cdb.getCompanyDetails(login.getCompanyID()).getStorageSpace();
+			cdb.remove();
 			space*=1024;
 			space*=1024;
 			//in GB
-			ArrayList<Files> files=new FileDBAO().getFileList(login.getUserName());
+			FileDBAO fdb=new FileDBAO();
+			ArrayList<Files> files=fdb.getFileList(login.getUserName());
 			double used_space=file.getFileSize();
 			for(Files f:files){
 				used_space+=f.getFileSize();
 			}
 			
-			if(used_space>=space)
+			if(used_space>=space){
+				fdb.remove();
 				throw new Exception("Space not enough. Please check company file list.");
-			
-			if(!new FileDBAO().createFile(file)){
+			}
+			if(!fdb.createFile(file)){
+				fdb.remove();
 				throw new Exception("File encounter. Please consult FileHaven administrator");
 			}
 			is.close();
@@ -207,7 +212,13 @@ public class UploadFileServlet extends HttpServlet {
 			r.setFileID(file.getFileID());
 			r.setFileID(file.getFileID());
 			r.setStatus("Upload");
-			session.setAttribute("SelectedFile",new FileDBAO().getFile(file.getFileID()));
+			FileReportDBAO frdb=new FileReportDBAO();
+			frdb.insertFileReport(r, login.getUserName());
+			
+			frdb.remove();
+			
+			session.setAttribute("SelectedFile",fdb.getFile(file.getFileID()));
+			fdb.remove();
 			getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 		} 
 		catch (Exception ex) {
