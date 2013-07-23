@@ -256,11 +256,15 @@
     </style>
 </head>
 <body>
-<% if(session.getAttribute("LoggedInUser")==null) {%>
-	<%@ include file="LoginHeader.jsp"%> 
-<% } else { %>
-	<%@ include file="header.jsp"%> 
-<%} %>
+<%
+	if(session.getAttribute("LoggedInUser")==null){
+		%>
+		<%@ include file="LoginHeader.jsp"%> 
+		<%
+	}
+	else{%>
+	<%@ include file="header.jsp"%> <% 
+	}%>
       	<div class="span9">
 			<div class="hero-unit">
 			            <h1>Welcome to FileHaven!</h1>
