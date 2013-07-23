@@ -41,12 +41,14 @@ public class ReportServlet extends HttpServlet {
 //				if(request.getParameter("user").toString().equals("")){
 //				 name="Hello User";
 //				}
-				
+				FileReportDBAO  f1=null;
 				try {
-					FileReportDBAO f1 = new FileReportDBAO();
+					f1 = new FileReportDBAO();
 					 reports=f1.getFileReports(0);
+					 f1.remove();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
+					f1.remove();
 					e.printStackTrace();
 				}
 				

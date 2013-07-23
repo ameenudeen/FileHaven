@@ -41,17 +41,19 @@ public class RetrieveCompanyListServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
 		session.removeAttribute("msg");
+		CompanyDBAO dbcom=null;
 		
 		try {
-			CompanyDBAO dbcom = new CompanyDBAO();
+			dbcom = new CompanyDBAO();
 			
 			ArrayList<Company> companyList = dbcom.getCompanysList();
 			
 			session.setAttribute("companyList", companyList);
-			
+			dbcom.remove();
 			response.sendRedirect("CreateAccount.jsp");
 		}catch(Exception e)
 		{
+			dbcom.remove();
 			e.printStackTrace();
 		}
 	}

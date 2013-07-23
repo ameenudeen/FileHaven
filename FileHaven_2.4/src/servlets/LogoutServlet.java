@@ -42,19 +42,20 @@ public class LogoutServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		
 		Account acc = (Account) session.getAttribute("LoggedInUser");
-		
+
+		AccountDBAO dba = null;
 		try{
-			AccountDBAO dba = new AccountDBAO();
-			
+			dba=new AccountDBAO();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			java.util.Date now = new java.util.Date();
 			String logoutTime = sdf.format(now);
 			
 			dba.updateLogoutTime(acc.getUserName(), logoutTime);
-			
+			dba.remove();
 		}catch (Exception e)
 		{
 			e.printStackTrace();
+			dba.remove();
 		}
 		
 		session.invalidate();

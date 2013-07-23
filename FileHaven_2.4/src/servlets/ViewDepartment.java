@@ -43,13 +43,16 @@ public class ViewDepartment extends HttpServlet {
 		System.out.println(request.getParameter("hiddenField"));
 		String departmentName=request.getParameter("hiddenField");
 		session.setAttribute("departmentName",request.getParameter("hiddenField"));
+		DepartmentDBAO d1=null;
 		try {
 			
-			DepartmentDBAO d1 = new DepartmentDBAO();
+			d1 = new DepartmentDBAO();
 			int departmentId=d1.getDepartmentIDOfCompany(departmentName, currentUser.getUserName());
 			session.setAttribute("departmentId", departmentId);
+			d1.remove();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			d1.remove();
 			e.printStackTrace();
 		}
 		

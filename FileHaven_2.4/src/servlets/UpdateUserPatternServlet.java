@@ -45,16 +45,18 @@ public class UpdateUserPatternServlet extends HttpServlet {
 		String creatorID = session.getAttribute("creatorID").toString();
 		
 		String userPattern = request.getParameter("userPattern");
+		AccountDBAO dba=null;
 		
 		try {
-			AccountDBAO dba = new AccountDBAO();
+			dba = new AccountDBAO();
 			
 			String uphash = Hash.hashString(userPattern, creatorID, createdTime);
 			
 			dba.updateUserPattern(userName, uphash);
-			
+			dba.remove();
 		}catch(Exception e)
 		{	
+			dba.remove();
 			e.printStackTrace();
 		}
 		

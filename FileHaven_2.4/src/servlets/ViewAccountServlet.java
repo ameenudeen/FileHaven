@@ -50,11 +50,13 @@ public class ViewAccountServlet extends HttpServlet {
 		
 		String typeFilter = request.getParameter("type");
 		String deptFilter = request.getParameter("departmentID");
+		AccountDBAO dba=null;
+		DepartmentDBAO dbdt=null;
 		
 		try
 		{
-			AccountDBAO dba = new AccountDBAO();
-			DepartmentDBAO dbdt = new DepartmentDBAO();
+			dba = new AccountDBAO();
+			dbdt = new DepartmentDBAO();
 			
 			ArrayList<Account> accList = new ArrayList<Account>();
 			String wStmt = "";
@@ -101,7 +103,7 @@ public class ViewAccountServlet extends HttpServlet {
 				ManagerDBAO dbm = new ManagerDBAO();
 				int deptID = dbm.getManagerDetails(acc.getUserName()).getDepartmentID();
 				wStmt = "AND DepartmentID = " + deptID;
-				
+				dbm.remove();
 				accList = dba.getCompanyEmployees(acc.getCompanyID(), wStmt);
 			}
 			
@@ -156,12 +158,15 @@ public class ViewAccountServlet extends HttpServlet {
 			session.setAttribute("tempList", tempList);
 			session.setAttribute("deptList", deptList);
 			session.setAttribute("accList", accList);
-			
+			dba.remove();
+			dbdt.remove();
 			session.setAttribute("typeFilter", typeFilter);
 			session.setAttribute("deptFilter", deptFilter);
 			
 		}catch(Exception e)
 		{
+			dba.remove();
+			dbdt.remove();
 			e.printStackTrace();
 		}
 		

@@ -43,7 +43,7 @@ public class CreateAccountReportServlet extends HttpServlet {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		java.util.Date now = new java.util.Date();
-		
+		AccountReportDBAO dbar = null;
 		int cc = 0;
 		int uc = 0;
 		int lc = 0;
@@ -77,7 +77,7 @@ public class CreateAccountReportServlet extends HttpServlet {
 		String inUser = "";
 		
 		try {
-			
+			dbar=new AccountReportDBAO();
 			if(session.getAttribute("inUser") == null)
 			{
 				inUser = "Unknown";
@@ -104,10 +104,10 @@ public class CreateAccountReportServlet extends HttpServlet {
 				details = "Login attempt failed " + (tc + 1) + " times for user " + inUser + " due to login attempt at non-working time/lack of permission.";
 			}
 			
-			AccountReportDBAO dbar = new AccountReportDBAO();
+			
 			
 			dbar.insertAccountReport(details, logTime, inUser, comID);
-
+			dbar.remove();
 			session.removeAttribute("cc");
 			session.removeAttribute("uc");
 			session.removeAttribute("lc");
@@ -119,6 +119,7 @@ public class CreateAccountReportServlet extends HttpServlet {
 			
 		}catch(Exception e)
 		{
+			dbar.remove();
 			e.printStackTrace();
 		}
 	}

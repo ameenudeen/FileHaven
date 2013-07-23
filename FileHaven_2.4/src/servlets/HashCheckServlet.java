@@ -73,11 +73,13 @@ public class HashCheckServlet extends HttpServlet {
 		upload.setFileSizeMax(MAX_FILE_SIZE);
 		upload.setSizeMax(REQUEST_SIZE);
 		HttpSession session=request.getSession();
+		FileDBAO fdb=null;
 		
 		try {
 			List<FileItem> formItems = upload.parseRequest(request);
 			Iterator<FileItem> iter = formItems.iterator();
 			InputStream is=null;
+			fdb=new FileDBAO();
 			
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();				if (!item.isFormField()) {
@@ -104,9 +106,7 @@ public class HashCheckServlet extends HttpServlet {
 						String base64enc=item.getString();
 						base64enc=base64enc.replace(' ', '+');
 						base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-						FileDBAO fdb=new FileDBAO();
 						originaFile=fdb.getFile(Integer.parseInt(base64enc));
-						fdb.remove();
 						if(originaFile==null){
 							throw new Exception("Original file not found");
 						}
@@ -119,6 +119,7 @@ public class HashCheckServlet extends HttpServlet {
 			else
 				result=false;
 			is.close();
+			fdb.remove();
 			session.setAttribute("info_line1", "File compare result : "+(result?"Same":"Not Same"));
 			session.setAttribute("info_line2", "Original File SHA-256 HASH :");
 			session.setAttribute("info_line3", originaFile.getHash());
@@ -128,6 +129,7 @@ public class HashCheckServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);
 		} 
 		catch (Exception ex) {
+			fdb.remove();
 			session.setAttribute("info_line1", "File access denied.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

@@ -88,10 +88,10 @@ public class CreatePermissionServlet extends HttpServlet {
 		
 		String extendStart = startHour + ":" + startMinute + ":00";
 		String extendEnd = endHour + ":" + endMinute + ":00";
-		
+
+		PermissionDBAO dbpm = null;
 		try {
-			
-			PermissionDBAO dbpm = new PermissionDBAO();
+			dbpm=new PermissionDBAO();
 			
 			if(stcheck && etcheck)
 			{
@@ -119,11 +119,12 @@ public class CreatePermissionServlet extends HttpServlet {
 			{
 				session.setAttribute("damsg", "Please check that you have entered a valid date value for the start and end date.");
 			}
-			
+			dbpm.remove();
 			response.sendRedirect("SetUserPermission.jsp");
 			
 		}catch (Exception e) 
 		{
+			dbpm.remove();
 			e.printStackTrace();
 		}
 		

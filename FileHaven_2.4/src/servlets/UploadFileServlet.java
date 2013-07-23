@@ -203,11 +203,9 @@ public class UploadFileServlet extends HttpServlet {
 			}
 			
 			if(used_space>=space){
-				fdb.remove();
 				throw new Exception("Space not enough. Please check company file list.");
 			}
 			if(!fdb.createFile(file)){
-				fdb.remove();
 				throw new Exception("File encounter. Please consult FileHaven administrator");
 			}
 			is.close();

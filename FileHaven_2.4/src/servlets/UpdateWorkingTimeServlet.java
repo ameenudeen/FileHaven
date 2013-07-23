@@ -53,21 +53,23 @@ public class UpdateWorkingTimeServlet extends HttpServlet {
 		
 		String startTime = startHour + ":" + startMinute + ":00";
 		String endTime = endHour + ":" + endMinute + ":00";
+		CompanyDBAO dbcom=null;
 		
 		try {
 			
-			CompanyDBAO dbcom = new CompanyDBAO();
+			dbcom = new CompanyDBAO();
 			dbcom.updateWorkingTime(acc.getCompanyID(), startTime, endTime);
 			
 			Company com = dbcom.getCompanyDetails(acc.getCompanyID());
 			
 			session.setAttribute("wtmsg", "Working Time updated successfully.");
 			session.setAttribute("company", com);
-			
+			dbcom.remove();
 			response.sendRedirect("UpdateWorkingTime.jsp");
 			
 		}catch(Exception e)
 		{	
+			dbcom.remove();
 			e.printStackTrace();
 		}
 		

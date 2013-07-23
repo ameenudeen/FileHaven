@@ -34,12 +34,15 @@ public class DepartmentAvailability extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		Account account=(Account)session.getAttribute("LoggedInUser");
 		boolean status=false;
-				
+		DepartmentDBAO d1=null;
+		
 		try {
-			DepartmentDBAO d1 = new DepartmentDBAO();
+			d1 = new DepartmentDBAO();
 			status=d1.checkAvailability(request.getParameter("user"), account.getCompanyID());
+			d1.remove();
 			System.out.println(status);
 		} catch (Exception e) {
+			d1.remove();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

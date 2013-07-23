@@ -65,12 +65,18 @@ public class LoginTimeCheckServlet extends HttpServlet {
 		{
 			tc = Integer.parseInt(session.getAttribute("tc").toString());
 		}
-		
+		CompanyDBAO dbcom=null;
+		AccountDBAO dba=null;
+		NetworkDBAO n1=null;
+		PermissionDBAO dbpm =null;
+	
 		try {
+			dbpm = new PermissionDBAO();
+			n1 = new NetworkDBAO();
+			dba = new AccountDBAO();
+			dbcom = new CompanyDBAO();
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			
-			CompanyDBAO dbcom = new CompanyDBAO();
 			Company com = dbcom.getCompanyDetails(acc.getCompanyID());
 			
 			int startHour = Integer.parseInt(com.getStartTime().substring(0, 2));
@@ -95,7 +101,7 @@ public class LoginTimeCheckServlet extends HttpServlet {
 			if(now.equals(startTime) || now.after(startTime) && now.before(endTime) || acc.getType() == 'C' || acc.getType() == 'A'
 			|| com.getStartTime().substring(0, 2).equalsIgnoreCase("00") && com.getStartTime().substring(3, 5).equalsIgnoreCase("00") && com.getEndTime().substring(0, 2).equalsIgnoreCase("00") && com.getEndTime().substring(3, 5).equalsIgnoreCase("00"))
 			{
-				AccountDBAO dba = new AccountDBAO();
+				
 				
 				session.removeAttribute("VerifyUser");
 				
@@ -105,7 +111,6 @@ public class LoginTimeCheckServlet extends HttpServlet {
 				
 				dba.updateLoginTime(userName, loginTime);
 				
-				NetworkDBAO n1 = new NetworkDBAO();
 				Network network=(Network)n1.getNetworkDetails(acc);
 				
 				long ipLo = n1.ipToLong(InetAddress.getByName(network.getIpAddressStart()));
@@ -128,7 +133,6 @@ public class LoginTimeCheckServlet extends HttpServlet {
 			}
 			else
 			{
-				PermissionDBAO dbpm = new PermissionDBAO();
 				
 				ArrayList<Integer> IDList = dbpm.getUserPermission(userName, sdf.format(now));
 				
@@ -165,7 +169,6 @@ public class LoginTimeCheckServlet extends HttpServlet {
 					
 					if(pmcheck)
 					{
-						AccountDBAO dba = new AccountDBAO();
 						
 						session.setAttribute("LoggedInUser", acc);
 						
@@ -192,7 +195,10 @@ public class LoginTimeCheckServlet extends HttpServlet {
 			{
 				session.setAttribute("inUser", acc.getUserName());
 				session.setAttribute("comID", acc.getCompanyID());
-				
+				dbpm.remove(); 
+				n1.remove();
+				dba.remove();
+				dbcom.remove();
 				RequestDispatcher rd = request.getRequestDispatcher("/CreateAccountReportServlet");
 				rd.forward(request, response);
 			}
@@ -201,7 +207,10 @@ public class LoginTimeCheckServlet extends HttpServlet {
 				session.setAttribute("tc", tc);
 				
 				session.removeAttribute("VerifyUser");
-				
+				dbpm.remove(); 
+				n1.remove();
+				dba.remove();
+				dbcom.remove();
 				if(response.isCommitted() == false)
 				{
 					response.sendRedirect("Login.jsp");
@@ -211,6 +220,10 @@ public class LoginTimeCheckServlet extends HttpServlet {
 			
 		}catch (Exception e) 
 		{
+			dbpm.remove(); 
+		n1.remove();
+		dba.remove();
+		dbcom.remove();
 			e.printStackTrace();
 		}
 		

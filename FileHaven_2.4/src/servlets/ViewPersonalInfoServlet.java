@@ -50,12 +50,18 @@ public class ViewPersonalInfoServlet extends HttpServlet {
 		String name = temp.getName();
 		char type = temp.getType();
 		
+		ManagerDBAO dbm =null;
+		CeoDBAO dbc =null;
+		EmployeeDBAO dbe =null;
+		FilemanagerDBAO dbf =null;
+		AdministratorDBAO dbad =null;
+		
 		try {
-			AdministratorDBAO dbad = new AdministratorDBAO();
-			CeoDBAO dbc = new CeoDBAO();
-			EmployeeDBAO dbe = new EmployeeDBAO();
-			FilemanagerDBAO dbf = new FilemanagerDBAO();
-			ManagerDBAO dbm = new ManagerDBAO();
+			 dbad= new AdministratorDBAO();
+			 dbc= new CeoDBAO();
+			 dbe = new EmployeeDBAO();
+			 dbf= new FilemanagerDBAO();
+			 dbm= new ManagerDBAO();
 			
 			if(type == 'A')
 			{
@@ -99,10 +105,19 @@ public class ViewPersonalInfoServlet extends HttpServlet {
 			}
 			
 			session.setAttribute("viewPersonalInfo", acc);
-			
+			 dbad.remove();
+			 dbc.remove();
+			 dbe.remove();
+			 dbf.remove();
+			 dbm.remove();
 			response.sendRedirect("ViewPersonalInfo.jsp");
 	}catch (Exception e)
-	{
+	{ 
+		dbad.remove();
+		 dbc.remove();
+		 dbe.remove();
+		 dbf.remove();
+		 dbm.remove();
 		e.printStackTrace();
 	}
 		

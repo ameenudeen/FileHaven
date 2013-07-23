@@ -45,25 +45,32 @@ public class DeleteDepartment extends HttpServlet {
 		Account currentUser=(Account) session.getAttribute("LoggedInUser");
 		
 		
-		
+		DepartmentDBAO d1=null;
+		ManagerDBAO m1=null;
+		EmployeeDBAO e1=null;
 		
 		try {
-			DepartmentDBAO d1 = new DepartmentDBAO();
+			d1 = new DepartmentDBAO();
+			m1 = new ManagerDBAO();
+			e1 = new EmployeeDBAO();
+			
 			int departmentId=d1.getDepartmentIDOfCompany(departmentName, currentUser.getUserName());
 			
-			ManagerDBAO m1 = new ManagerDBAO();
 			m1.removeManagersFromDepartment(departmentId, currentUser.getCompanyID());
-			
-			EmployeeDBAO e1 = new EmployeeDBAO();
 			e1.removeEmployeesFromDepartment(departmentId, currentUser.getCompanyID());
-			
 			d1.deleteDepartment(departmentName, currentUser.getCompanyID());
 			
 			System.out.println("Success");
 			
+			d1.remove();
+			m1.remove();
+			e1.remove();
 			response.sendRedirect("/FileHaven/ViewDepartment.jsp");
 			
 		} catch (Exception e) {
+			d1.remove();
+			m1.remove();
+			e1.remove();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

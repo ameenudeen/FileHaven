@@ -48,7 +48,14 @@ public class RecoverFileServlet extends HttpServlet {
 		
 		//check company space
 		Files file;
+
+		FileReportDBAO frdb=null;
+		FileDBAO fdb=null;
+		
 		try{
+			frdb=new FileReportDBAO();
+			fdb=new FileDBAO();
+			
 			if(session.getAttribute("RecoverFile")==null){
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
@@ -74,10 +81,9 @@ public class RecoverFileServlet extends HttpServlet {
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-			FileDBAO fdb=new FileDBAO();
+			
 			file=fdb.getFile(Integer.parseInt(base64enc));
 			if(file==null){
-				fdb.remove();
 				throw new Exception("File not found");
 			}
 			if(login.getType()!='C'&&login.getType()!='F'){
@@ -119,7 +125,6 @@ public class RecoverFileServlet extends HttpServlet {
 				r.setFileID(file.getFileID());
 				r.setFileID(file.getFileID());
 				r.setStatus("Recover");
-				FileReportDBAO frdb=new FileReportDBAO();
 				frdb.insertFileReport(r,login.getUserName());
 				session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
 				
@@ -129,6 +134,8 @@ public class RecoverFileServlet extends HttpServlet {
 			}
 		}
 		catch(Exception ex){
+			fdb.remove();
+			frdb.remove();
 			session.setAttribute("info_line1", "Recover File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

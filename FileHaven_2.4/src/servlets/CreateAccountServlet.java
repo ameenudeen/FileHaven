@@ -82,13 +82,15 @@ public class CreateAccountServlet extends HttpServlet {
 		session.setAttribute("email", email);
 		session.setAttribute("address", address);
 		session.setAttribute("NRIC", NRIC);
+
+		AccountDBAO dba = null;
 		
 		try {
+			dba = new AccountDBAO();
 			password = Hash.hashString(password, acc.getUserName(), createdTime);
 			
 			if(userName != "" && name != "" && password != "" && dateOfBirth != "" && phoneNumber != "" && email != "" && address != "" && NRIC != "")
 			{	
-				AccountDBAO dba = new AccountDBAO();
 				boolean userNameAvail = dba.checkUserNameAvailability(userName);
 				
 				if(userNameAvail == false)
@@ -202,12 +204,15 @@ public class CreateAccountServlet extends HttpServlet {
 			
 		}catch(Exception e)
 		{
+			dba.remove();
+			AccountDBAO db=null;
 			try {
-			AccountDBAO db = new AccountDBAO();
+			db = new AccountDBAO();
 			db.deleteAccount(userName);
 			}catch(Exception ex)
 			{
 				ex.printStackTrace();
+				db.remove();
 				System.out.println("userName catch : " + userName);
 			}
 			

@@ -44,18 +44,20 @@ public class UpdatePersonalPatternServlet extends HttpServlet {
 		Account acc = (Account) session.getAttribute("LoggedInUser");
 		
 		String userPattern = request.getParameter("userPattern");
+		AccountDBAO dba=null;
 		
 		try {
-			AccountDBAO dba = new AccountDBAO();
+			dba = new AccountDBAO();
 			
 			String uphash = Hash.hashString(userPattern, acc.getCreatorID(), acc.getCreatedTime());
 			
 			dba.updateUserPattern(acc.getUserName(), uphash);
 			
 			session.setAttribute("uppmsg", "Secondary password updated successfully.");
-			
+			dba.remove();
 		}catch(Exception e)
 		{	
+			dba.remove();
 			e.printStackTrace();
 		}
 		

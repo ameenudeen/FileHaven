@@ -47,9 +47,10 @@ public class RetrieveAccountListServlet extends HttpServlet {
 		
 		int companyID = acc.getCompanyID();
 		int departmentID = 0;
+		AccountDBAO dba=null;
 		
 		try {
-			AccountDBAO dba = new AccountDBAO();
+			dba = new AccountDBAO();
 			
 			ArrayList<String> userNameList = new ArrayList<String>();
 			ArrayList<String> nameList = new ArrayList<String>();
@@ -58,6 +59,7 @@ public class RetrieveAccountListServlet extends HttpServlet {
 			{
 					ManagerDBAO dbm = new ManagerDBAO();
 					Manager temp = dbm.getManagerDetails(acc.getUserName());
+					dbm.remove();
 					
 					if((Integer) temp.getDepartmentID() != null)
 					{
@@ -79,10 +81,12 @@ public class RetrieveAccountListServlet extends HttpServlet {
 			
 			session.removeAttribute("nameList");
 			session.setAttribute("nameList", nameList);
+			dba.remove();
 			
 			response.sendRedirect("UpdateAccount.jsp");
 	}catch (Exception e)
 	{
+		dba.remove();
 		e.printStackTrace();
 	}
 	}

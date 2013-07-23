@@ -46,9 +46,10 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 		Account temp = new Account();
 		Account acc = null;
 		String userName = request.getParameter("name");
+		AccountDBAO dba=null;
 		
 		try {
-			AccountDBAO dba = new AccountDBAO();
+			dba = new AccountDBAO();
 			
 			temp = (Account) dba.getAccountDetails(userName);
 			
@@ -63,6 +64,7 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 					acc.setName(temp.getName());
 					acc.setType(temp.getType());
 					acc.setCreatorID(temp.getCreatorID());
+					dbc.remove();
 				}
 				else if(temp.getType() == 'E')
 				{
@@ -73,6 +75,7 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 					acc.setName(temp.getName());
 					acc.setType(temp.getType());
 					acc.setCreatorID(temp.getCreatorID());
+					dbe.remove();
 				}
 				else if(temp.getType() == 'F')
 				{
@@ -83,6 +86,7 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 					acc.setName(temp.getName());
 					acc.setType(temp.getType());
 					acc.setCreatorID(temp.getCreatorID());
+					dbf.remove();
 				}
 				else
 				{
@@ -93,14 +97,16 @@ public class RetrieveAccountDetailsServlet extends HttpServlet {
 					acc.setName(temp.getName());
 					acc.setType(temp.getType());
 					acc.setCreatorID(temp.getCreatorID());
+					dbm.remove();
 				}
 			
 				session.setAttribute("updateViewAccount", acc);
 			}
-			
+			dba.remove();
 			response.sendRedirect("UpdateAccount.jsp");
 	}catch (Exception e)
 	{
+		dba.remove();
 		e.printStackTrace();
 	}
 	}

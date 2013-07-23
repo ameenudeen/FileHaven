@@ -47,10 +47,10 @@ public class ViewPermissionServlet extends HttpServlet {
 		Account acc = (Account) session.getAttribute("LoggedInUser");
 		
 		String dateFilter = request.getParameter("date");
-		
+		PermissionDBAO dbpm=null;
 		try
 		{
-			PermissionDBAO dbpm = new PermissionDBAO();
+			 dbpm = new PermissionDBAO();
 			
 			ArrayList<Permission> pmList = new ArrayList<Permission>();
 			String dStmt = "AND (EndTime > DATE_SUB(now(), INTERVAL " + dateFilter + " DAY))";
@@ -72,9 +72,10 @@ public class ViewPermissionServlet extends HttpServlet {
 			session.setAttribute("pmList", pmList);
 			
 			session.setAttribute("dateFilter", dateFilter);
-			
+			dbpm.remove();
 		}catch(Exception e)
 		{
+			dbpm.remove();
 			e.printStackTrace();
 		}
 		

@@ -46,18 +46,21 @@ public class RetrieveWorkingTimeServlet extends HttpServlet {
 		session.removeAttribute("company");
 		
 		Account acc = (Account) session.getAttribute("LoggedInUser");
+		CompanyDBAO dbcom=null;
 		
 		try {
 			
-			CompanyDBAO dbcom = new CompanyDBAO();
+			dbcom = new CompanyDBAO();
 			Company com = dbcom.getCompanyDetails(acc.getCompanyID());
 			
 			session.setAttribute("company", com);
 			
+			dbcom.remove();
 			response.sendRedirect("UpdateWorkingTime.jsp");
 			
 		}catch(Exception e)
 		{	
+			dbcom.remove();
 			e.printStackTrace();
 		}
 		

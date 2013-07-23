@@ -68,15 +68,16 @@ public class LoginServlet extends HttpServlet {
 		{
 			lc = Integer.parseInt(session.getAttribute("lc").toString());
 		}
-		
+		AccountDBAO dba = null;
 		try {
+			dba=new AccountDBAO();
 			if (captcha != null && code != null && code != "") 
 			{
 				if (captcha.equals(code))
 				{
 					if(userName != "" && !(userName.equalsIgnoreCase("/' OR 1 = 1")) && password != "")
 					{
-						AccountDBAO dba = new AccountDBAO();
+						
 						if(dba.getPassword(userName) != "")
 						{
 							Account acc = dba.getAccountDetails(userName);
@@ -91,6 +92,7 @@ public class LoginServlet extends HttpServlet {
 								
 								session.setAttribute("VerifyUser", acc);
 								
+								dba.remove();
 								RequestDispatcher rd = request.getRequestDispatcher("/LoginTimeCheckServlet");
 								rd.forward(request, response);
 							}
@@ -126,16 +128,16 @@ public class LoginServlet extends HttpServlet {
 			
 			if(cc >= 5 || uc >= 3)
 			{
+				dba.remove();
 				RequestDispatcher rd = request.getRequestDispatcher("/CreateAccountReportServlet");
 				rd.forward(request, response);
 			}
 			else if(lc >= 3)
 			{
-				AccountDBAO dba = new AccountDBAO();
 				
 				session.setAttribute("comID", dba.getAccountDetails(userName).getCompanyID());
 				session.setAttribute("inUser", userName);
-				
+				dba.remove();
 				RequestDispatcher rd = request.getRequestDispatcher("/CreateAccountReportServlet");
 				rd.forward(request, response);
 			}
@@ -147,12 +149,14 @@ public class LoginServlet extends HttpServlet {
 				
 				if(response.isCommitted() == false)
 				{
+					dba.remove();
 					response.sendRedirect("Login.jsp");
 				}
 			}
 			
 		}catch (Exception e)
 		{
+			dba.remove();
 			e.printStackTrace();
 		}
 	}

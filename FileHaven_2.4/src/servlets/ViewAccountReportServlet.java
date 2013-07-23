@@ -48,10 +48,11 @@ public class ViewAccountReportServlet extends HttpServlet {
 		
 		String knownFilter = request.getParameter("userName");
 		String dateFilter = request.getParameter("date");
+		AccountReportDBAO dbar=null;
 		
 		try
 		{
-			AccountReportDBAO dbar = new AccountReportDBAO();
+			dbar = new AccountReportDBAO();
 			
 			ArrayList<AccountReport> arList = new ArrayList<AccountReport>();
 			String uStmt = "";
@@ -85,12 +86,13 @@ public class ViewAccountReportServlet extends HttpServlet {
 			}
 			
 			session.setAttribute("arList", arList);
-			
+			dbar.remove();
 			session.setAttribute("knownFilter", knownFilter);
 			session.setAttribute("dateFilter", dateFilter);
 			
 		}catch(Exception e)
 		{
+			dbar.remove();
 			e.printStackTrace();
 		}
 		
