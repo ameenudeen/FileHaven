@@ -85,10 +85,7 @@ $(document).ready(function(){
 		response.sendRedirect("Information.jsp");	
 	}
 	
-	else if(login.getType()=='C')
-	{
-		response.sendRedirect("ViewDepartment.jsp");	
-	}
+	
 	
 	
 		
