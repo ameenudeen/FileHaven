@@ -493,7 +493,7 @@ public class ManagerDBAO {
 //	
 //		try {
 //			ManagerDBAO m1 = new ManagerDBAO();
-//			System.out.println(m1.removeManagersFromDepartment(37, 8));
+//			System.out.println(m1.removeManagersFromDepartment(39, 8));
 ////			System.out.println(test.size());
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
