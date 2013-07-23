@@ -94,7 +94,7 @@ public class AccountDBAO {
     	Account acc = new Account();
     	
         try {
-            String selectStatement = "SELECT Name, Type, Availability, CreatorID, CreatedTime, CompanyID FROM account where UserName = ? ";
+            String selectStatement = "SELECT Name, Type, Availability, CreatorID, CreatedTime, CompanyID,UserPattern FROM account where UserName = ? ";
             PreparedStatement prepStmt = con.prepareStatement(selectStatement);
             prepStmt.setString(1, userName);
             ResultSet rs = prepStmt.executeQuery();
@@ -104,6 +104,7 @@ public class AccountDBAO {
             	acc.setType(rs.getString("Type").charAt(0));
             	acc.setAvailability(rs.getString("Availability"));
                 acc.setCreatorID(rs.getString("CreatorID"));
+                acc.setUserPattern(rs.getString("UserPattern"));
                 
                 String createdTime = rs.getTimestamp("CreatedTime").toString();
                 java.util.Date tempDate = sdf.parse(createdTime);

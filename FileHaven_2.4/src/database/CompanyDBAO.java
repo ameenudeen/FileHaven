@@ -86,6 +86,30 @@ public class CompanyDBAO {
         return com;
     }
     
+    // Retrieve a single Company's ID by name
+    
+    public int getCompanyID(String companyName) throws Exception {
+        int id = 0;
+        
+        try {
+            String selectStatement = "SELECT ID FROM company where Name = ?";
+            PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+            prepStmt.setString(1, companyName);
+            ResultSet rs = prepStmt.executeQuery();
+            
+            while (rs.next()) {
+                id = rs.getInt("ID");
+            }
+            
+            rs.close();
+            prepStmt.close();
+        } catch (SQLException ex) {
+            throw new Exception("getCompanyID Exception : " + ex.getMessage());
+        }
+        
+        return id;
+    }
+    
     // Retrieve a list of Companys details
     
     public ArrayList<Company> getCompanysList() throws Exception {

@@ -83,7 +83,7 @@ padding:60px;
 			} 
 			%>
 			
-			<form action='CreateCompanyServlet' method='post'>
+			<form action='CreateCompanyServlet' method='post' enctype="multipart/form-data">
 				
 				<table cellspacing=15 cellpadding=10>
 				<tr><td>Company Name :</td><td><input type=text id="companyName" name="companyName" style="height: 20px; width:180px"/></td></tr>
@@ -107,6 +107,30 @@ padding:60px;
 				</tr>
 				<tr><td>Company Logo :</td><td><input type="file" id="companyLogo" name="companyLogo"></td></tr>
 				
+				</table>
+				
+				<br>
+				
+				<%
+				String nwmsg = (String) session.getAttribute("nwmsg");
+				if(nwmsg == null){
+				} else {
+				%>
+				<td>
+				<div class="invalidAlert">
+				<%= nwmsg%>
+				</div>
+				</td>
+				<%
+				}
+				%>
+				
+				<br>
+				
+				<table cellspacing=15 cellpadding=10>
+				<tr><td>Starting IP Address :</td><td><input type=text id="ipStart" name="ipStart" style="height: 20px; width:180px"/></td><td>E.g. (192.168.80.0)</td></tr>
+				<tr><td>Ending IP Address :</td><td><input type=text id="ipEnd" name="ipEnd" style="height: 20px; width:180px"/></td><td>E.g. (192.168.80.127)</td></tr>
+				<tr><td>Subnet Mask :</td><td><input type=text id="subnetMask" name="subnetMask" style="height: 20px; width:80px"/></td></tr>
 				</table>
 				
 				<p><input type="submit" value="Submit" name="submit" onclick="" class="btn"/></p>

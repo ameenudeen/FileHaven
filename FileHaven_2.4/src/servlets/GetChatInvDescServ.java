@@ -38,7 +38,7 @@ public class GetChatInvDescServ extends HttpServlet {
 		}
     	
     	int invindex=-1;
-    	for(int i=0;i<cs.getChatroomList().size();i++){
+    	for(int i=0;i<cs.getChatInvList().size();i++){
     		if(cs.getChatInvList().get(i).getClientIid()==Integer.parseInt(request.getParameter("clientiid"))){
     			invindex=i;
     		}
