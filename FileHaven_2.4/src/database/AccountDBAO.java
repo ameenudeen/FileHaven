@@ -16,7 +16,7 @@ public class AccountDBAO {
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	//Date sqldate = new Date(sdf.parse("").getTime());
-    
+    //leon
     public AccountDBAO() throws Exception {
         try {
         	DB db = new DB();
