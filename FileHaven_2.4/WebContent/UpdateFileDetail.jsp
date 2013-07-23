@@ -192,14 +192,14 @@ function validate_input(){
 					%>
 					<div><input id="department<%=depid%>" type="checkbox" name="department" value="<%=depid%>"  onclick="select_department('department<%=depid%>')">
 					<span style="padding-left:25px;overflow:hidden">
-					 Department <%=i%>
+					 <%=pList.get(i).getDepartmentName()%>
 					</span>
 					</div>
 					<% 
 					}
 					%>
 				</div>
-				<p style="margin-bottom:0px"><span style="text-decoration:underline">0</span> department/s selected</p>
+				<p style="margin-bottom:0px"><span id="number_department" style="text-decoration:underline">0</span> department/s selected</p>
 				<p id="hint_no_department" style="font-style:italic;text-decoration:underline;">*If no department selected,the file will be private</p>
 				<div style="margin-bottom:90px"></div>
 				<input class="btn btn-primary btn-large" type="Submit" value="Submit">
