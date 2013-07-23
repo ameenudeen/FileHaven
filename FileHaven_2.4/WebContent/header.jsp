@@ -960,7 +960,13 @@
 						        <li><a onclick="window.location.href=hosturl+'ViewPermissionServlet';">View Permissions</a></li>
 		        				<li><a onclick="window.location.href=hosturl+'ViewAccountReportServlet';">View Login Attempts</a></li>
 		        				</ul></li>
+		        				
+		        			<li><a>Department</a><ul>
+		        				<li><a onclick="window.location.href=hosturl+'CreateDepartment.jsp';">Create Department</a></li>
+		        				<li><a onclick="window.location.href=hosturl+'ViewDepartment.jsp';">View/Edit Departments</a></li>
+		        				</ul></li>	
 							<li><a>Notification</a></li>
+							
 						</ul>
 					<% } %>
 					
