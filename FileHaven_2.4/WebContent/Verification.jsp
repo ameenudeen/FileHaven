@@ -49,7 +49,7 @@
 			<div class="row-fluid">
 
 
-				<form method="post" action="Index.jsp" onsubmit="return submitform()">
+				<form method="post" action="Verification" onsubmit="return submitform()">
 					<h2>Before we proceed...</h2>
 
 					<div>

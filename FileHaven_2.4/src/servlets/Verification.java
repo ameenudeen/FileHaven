@@ -34,7 +34,7 @@ public class Verification extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
-		session.setAttribute("externalcompany", "true");
+		session.setAttribute("externalcompany", "false");
 		response.sendRedirect("Index.jsp");
 	}
 
