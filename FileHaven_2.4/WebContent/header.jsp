@@ -906,12 +906,17 @@
 					<a class="navbar-link" onclick="window.location.href=hosturl+'UploadFile.jsp';">Login</a>
 				<%}
 				else{%>
-				<%		if(session.getAttribute("externalcompany")==null){
-       				response.sendRedirect("Information.jsp");
+				<%		
+				if(session.getAttribute("externalcompany")==null){
+					if(!response.isCommitted()){
+					response.sendRedirect("Information.jsp");
+					return;}
     			  }
-     			 if(session.getAttribute("externalcompany").equals("true"))
-      				 response.sendRedirect("Verification.jsp");
-      				 
+				else if(session.getAttribute("externalcompany").equals("true")){
+					if(!response.isCommitted()){
+						response.sendRedirect("Verification.jsp");
+						return;}
+				}
       				 %>
 						Logged in as <a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';" class="navbar-link"><%= ((Account) request.getSession().getAttribute("LoggedInUser")).getUserName() %></a>
 					

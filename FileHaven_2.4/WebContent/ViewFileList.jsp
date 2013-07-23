@@ -113,7 +113,6 @@ padding:60px;
 		ArrayList<Department> pList=ddb.getCompanyDepartment(login.getUserName());
 		ddb.remove();
 		
-		System.out.println("PList:"+pList.size());
 		if(login.getType()!='C'&&login.getType()!='F'){
 			int departmentID=-1;
 			if(login.getType()=='E'){
