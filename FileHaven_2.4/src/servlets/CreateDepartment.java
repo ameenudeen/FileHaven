@@ -177,13 +177,15 @@ public class CreateDepartment extends HttpServlet {
 //				notification.insertNotification(message, messageRead, sender,m1);
 //				
 				System.out.println("Success");
+//				session.setAttribute("info_line1","Create Department");
+//				session.setAttribute("info_line2","Department created successfully");
 				
 				PrintWriter out = response.getWriter();  
 				response.setContentType("text/html");  
 				out.println("<script type=\"text/javascript\">");  
 				out.println("alert('Department Successfully Created');");  
 				out.println("var hosturl = location.origin + '/' + location.pathname.split('/')[1] + '/';");
-				out.println("window.location.href=hosturl+'Information.jsp';");
+				out.println("window.location.href=hosturl+'ViewDepartment.jsp';");
 				out.println("</script>");
 				
 				

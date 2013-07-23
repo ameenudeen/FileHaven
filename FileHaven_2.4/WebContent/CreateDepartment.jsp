@@ -142,6 +142,40 @@
 	}
 </script>
 
+<script>
+$(document).ready(function(){
+	<%
+	Account login=(Account)session.getAttribute("LoggedInUser");
+	if(session.getAttribute("LoggedInUser")==null){
+		response.sendRedirect("Login.jsp");
+		return;
+	}
+	
+	else if(login.getType()=='A')
+	{
+		response.sendRedirect("Information.jsp");
+	}
+	
+	else if(login.getType()=='M')
+	{
+		response.sendRedirect("Information.jsp");	
+	}
+	
+	else if(login.getType()=='E')
+	{
+		response.sendRedirect("Information.jsp");	
+	}
+	
+	else if(login.getType()=='F')
+	{
+		response.sendRedirect("Information.jsp");	
+	}
+		
+	
+	
+	%>
+	</script>
+
 </head>
 
 <%@ page import="database.*,model.*, java.util.*"%>
