@@ -224,8 +224,8 @@ public class UploadFileServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 		} 
 		catch (Exception ex) {
-			fdb.remove();
-			frdb.remove();
+			if(fdb!=null)fdb.remove();
+			if(frdb!=null)frdb.remove();
 			session.setAttribute("info_line1", "Upload File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

@@ -52,7 +52,7 @@ public class ViewDepartment extends HttpServlet {
 			d1.remove();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			d1.remove();
+			if(d1!=null)d1.remove();
 			e.printStackTrace();
 		}
 		

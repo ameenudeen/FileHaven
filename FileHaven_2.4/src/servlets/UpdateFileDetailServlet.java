@@ -173,9 +173,9 @@ public class UpdateFileDetailServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/ViewFile.jsp").forward(request,response);
 		}
 		catch(Exception ex){
-			pdb.remove();
-			frdb.remove();
-			fdb.remove();
+			if(pdb!=null)pdb.remove();
+			if(frdb!=null)frdb.remove();
+			if(fdb!=null)fdb.remove();
 			session.setAttribute("info_line1", "Update Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

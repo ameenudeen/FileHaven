@@ -168,9 +168,13 @@ public class DownloadFileServlet extends HttpServlet {
 			out.close();
 		}
 		catch(BadPaddingException ex){
-			fdb.remove();
-			frdb.remove();
-			fddb.remove();
+			if(fdb!=null)
+				fdb.remove();
+			if(frdb!=null)
+				frdb.remove();
+			if(fddb!=null)
+				fddb.remove();
+			
 			//Badpaddingexception for wrong password
 			//save to bad password report
 			ServletOutputStream out = response.getOutputStream();
@@ -184,9 +188,12 @@ public class DownloadFileServlet extends HttpServlet {
 			out.close();
 		}
 		catch(Exception ex){
-			fdb.remove();
-			frdb.remove();
-			fddb.remove();
+			if(fdb!=null)
+				fdb.remove();
+			if(frdb!=null)
+				frdb.remove();
+			if(fddb!=null)
+				fddb.remove();
 			session.setAttribute("info_line1", "Download File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

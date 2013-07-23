@@ -86,7 +86,7 @@ public class ChangePasswordServlet extends HttpServlet {
 		{
 			e.printStackTrace();
 		}
-		dba.remove();
+		if(dba!=null)dba.remove();
 		response.sendRedirect("ChangePassword.jsp");
 		
 	}

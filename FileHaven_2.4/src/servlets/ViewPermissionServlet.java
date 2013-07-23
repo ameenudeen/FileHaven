@@ -75,7 +75,7 @@ public class ViewPermissionServlet extends HttpServlet {
 			dbpm.remove();
 		}catch(Exception e)
 		{
-			dbpm.remove();
+			if(dbpm!=null)dbpm.remove();
 			e.printStackTrace();
 		}
 		

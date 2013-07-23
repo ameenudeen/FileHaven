@@ -124,7 +124,7 @@ public class CreatePermissionServlet extends HttpServlet {
 			
 		}catch (Exception e) 
 		{
-			dbpm.remove();
+			if(dbpm!=null)dbpm.remove();
 			e.printStackTrace();
 		}
 		

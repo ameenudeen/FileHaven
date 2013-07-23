@@ -56,7 +56,7 @@ public class UpdateUserPatternServlet extends HttpServlet {
 			dba.remove();
 		}catch(Exception e)
 		{	
-			dba.remove();
+			if(dba!=null)dba.remove();
 			e.printStackTrace();
 		}
 		

@@ -204,7 +204,7 @@ public class CreateAccountServlet extends HttpServlet {
 			
 		}catch(Exception e)
 		{
-			dba.remove();
+			if(dba!=null)dba.remove();
 			AccountDBAO db=null;
 			try {
 			db = new AccountDBAO();
@@ -212,7 +212,7 @@ public class CreateAccountServlet extends HttpServlet {
 			}catch(Exception ex)
 			{
 				ex.printStackTrace();
-				db.remove();
+				if(db!=null)db.remove();
 				System.out.println("userName catch : " + userName);
 			}
 			

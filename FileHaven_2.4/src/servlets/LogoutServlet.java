@@ -55,7 +55,7 @@ public class LogoutServlet extends HttpServlet {
 		}catch (Exception e)
 		{
 			e.printStackTrace();
-			dba.remove();
+			if(dba!=null)dba.remove();
 		}
 		
 		session.invalidate();

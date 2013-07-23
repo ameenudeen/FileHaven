@@ -129,9 +129,9 @@ public class DeleteFileServlet extends HttpServlet {
 			}
 		}
 		catch(Exception ex){
-			fdb.remove();
-			fddb.remove();
-			frdb.remove();
+			if(fdb!=null)fdb.remove();
+			if(fddb!=null)fddb.remove();
+			if(frdb!=null)frdb.remove();
 			session.setAttribute("info_line1", "Delete File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);
