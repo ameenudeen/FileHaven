@@ -921,6 +921,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 					<a class="navbar-link" onclick="window.location.href=hosturl+'UploadFile.jsp';">Login</a>
 				<%}
 				else{%>
+				
 				<%		
 				
       				 %>

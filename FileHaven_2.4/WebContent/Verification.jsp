@@ -38,16 +38,21 @@
 			</h2>
 
 		</div>
+<<<<<<< HEAD
 		<%
 		session.setAttribute("AtVerify","TRUE");%>
 		<%@ include file="header.jsp"%>
 		<%
 		session.setAttribute("AtVerify","FALSE");%> 
+=======
+
+
+>>>>>>> branch 'master' of https://github.com/ameenudeen/FileHaven.git
 		<div class="span9">
 			<div class="row-fluid">
 
 
-				<form method="post" action="Index.jsp" onsubmit="return submitform()">
+				<form method="post" action="Verification" onsubmit="return submitform()">
 					<h2>Before we proceed...</h2>
 
 					<div>

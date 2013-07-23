@@ -558,6 +558,13 @@
   	<servlet-name>ViewPermissionServlet</servlet-name>
   	<servlet-class>servlets.ViewPermissionServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>Verification</display-name>
+  	<servlet-name>Verification</servlet-name>
+  	<servlet-class>servlets.Verification</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>RetrieveWorkingTimeServlet</servlet-name>
   	<url-pattern>/RetrieveWorkingTimeServlet</url-pattern>
@@ -597,6 +604,10 @@
   <servlet-mapping>
   	<servlet-name>ViewPermissionServlet</servlet-name>
   	<url-pattern>/ViewPermissionServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Verification</servlet-name>
+  	<url-pattern>/Verification</url-pattern>
   </servlet-mapping>
   
 	<welcome-file-list>
