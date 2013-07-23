@@ -149,7 +149,7 @@ public class DepartmentDBAO {
 						.findColumn("DepartmentLogo")));
 				department.setDepartmentDescription(rs.getString(rs
 						.findColumn("Description")));
-
+				department.setId(rs.getInt(rs.findColumn("ID")));
 				d1.add(department);
 
 			}
