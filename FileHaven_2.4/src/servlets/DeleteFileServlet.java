@@ -47,9 +47,17 @@ public class DeleteFileServlet extends HttpServlet {
 		HttpSession session=request.getSession();
 		
 		Files file;
+		FileDBAO fdb=null;
+		FileDataDBAO fddb=null;
+		FileReportDBAO frdb=null;
+		
 		GregorianCalendar c=new GregorianCalendar();
 		String time=c.get(Calendar.YEAR)+"-"+(c.get(Calendar.MONTH)+1)+"-"+c.get(Calendar.DATE)+"-"+c.get(Calendar.HOUR_OF_DAY)+":"+(c.get(Calendar.MINUTE)<10?"0"+c.get(Calendar.MINUTE):c.get(Calendar.MINUTE));
 		try{
+			fddb=new FileDataDBAO();
+			frdb=new FileReportDBAO();
+			fdb=new FileDBAO();
+			
 			if(session.getAttribute("DeleteFile")==null){
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
@@ -75,10 +83,9 @@ public class DeleteFileServlet extends HttpServlet {
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-			FileDBAO fdb=new FileDBAO();
+			
 			file=fdb.getFile(Integer.parseInt(base64enc));
 			if(file==null){
-				fdb.remove();
 				throw new Exception("File not found");
 			}
 			if(login.getType()!='C'&&login.getType()!='F'){
@@ -87,7 +94,6 @@ public class DeleteFileServlet extends HttpServlet {
 					pList=new ArrayList<Privilege>();
 				if(pList.isEmpty()){
 					if(!login.getUserName().equals(file.getAccountID())){
-						fdb.remove();
 						throw new Exception("Access denied");
 					}
 				}
@@ -100,13 +106,12 @@ public class DeleteFileServlet extends HttpServlet {
 						}
 					}
 					if(!permit){
-						fdb.remove();
 						throw new Exception("Access denied");
 					}
 				}
 			}
 			if(fdb.updateFile(file, "DeletedTime", time)){
-				FileDataDBAO fddb=new FileDataDBAO();
+				
 				file.setData(fddb.getFileData(file.getFileID()));
 				FileReport r=new FileReport();
 				InetAddress clientIp = InetAddress.getLocalHost();
@@ -114,7 +119,6 @@ public class DeleteFileServlet extends HttpServlet {
 				r.setFileID(file.getFileID());
 				r.setFileID(file.getFileID());
 				r.setStatus("Delete");
-				FileReportDBAO frdb=new FileReportDBAO();
 				frdb.insertFileReport(r,login.getUserName());
 				
 				session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
@@ -125,6 +129,9 @@ public class DeleteFileServlet extends HttpServlet {
 			}
 		}
 		catch(Exception ex){
+			fdb.remove();
+			fddb.remove();
+			frdb.remove();
 			session.setAttribute("info_line1", "Delete File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

@@ -107,7 +107,7 @@ public class CreateAccountReportServlet extends HttpServlet {
 			AccountReportDBAO dbar = new AccountReportDBAO();
 			
 			dbar.insertAccountReport(details, logTime, inUser, comID);
-			
+
 			session.removeAttribute("cc");
 			session.removeAttribute("uc");
 			session.removeAttribute("lc");

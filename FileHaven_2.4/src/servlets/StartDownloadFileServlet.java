@@ -34,20 +34,22 @@ public class StartDownloadFileServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Files file;
 		HttpSession session=request.getSession();
+		FileDBAO fdb=null;
 		try{
+			fdb=new FileDBAO();
 		String base64enc=request.getParameter("ID");
 		base64enc=base64enc.replace(' ', '+');
 		base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
-		FileDBAO fdb=new FileDBAO();
 		file=fdb.getFile(Integer.parseInt(base64enc));
-		fdb.remove();
 		if(file==null){
 			throw new Exception("File not found.");
 		}
+		fdb.remove();
 		session.setAttribute("DownloadFile",file);
 		getServletContext().getRequestDispatcher("/DownloadFile.jsp").forward(request,response);
 		}
 		catch(Exception ex){
+			fdb.remove();
 			session.setAttribute("info_line1", "File access denied.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);

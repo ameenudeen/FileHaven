@@ -57,8 +57,14 @@ public class DownloadFileServlet extends HttpServlet {
 		
 		Files file=null;
 		FileDBAO fdb=null;
+		FileDataDBAO fddb=null;
+		FileReportDBAO frdb=null;
 		
 		try{
+			frdb=new FileReportDBAO();
+			fdb=new FileDBAO();
+			fddb=new FileDataDBAO();
+			
 			if(session.getAttribute("DownloadFile")==null){
 				throw new Exception("Error occur.Please consult FileHaven Administrator");
 			}
@@ -124,9 +130,7 @@ public class DownloadFileServlet extends HttpServlet {
 				throw new Exception("Access denied:File deleted");
 			}
 			
-			FileDataDBAO fddb=new FileDataDBAO();
 			file.setData(fddb.getFileData(file.getFileID()));
-			fddb.remove();
 			
 			FileReport r=new FileReport();
 			String ipAddress = request.getHeader("X-FORWARDED-FOR");  
@@ -137,9 +141,7 @@ public class DownloadFileServlet extends HttpServlet {
 			r.setIPAddress(clientIp.getHostAddress());
 			r.setFileID(file.getFileID());
 			r.setStatus("Download");
-			FileReportDBAO frdb=new FileReportDBAO();
 			frdb.insertFileReport(r,login.getUserName());
-			frdb.remove();
 			byte[] data;
 			if(file.getEncrypted().equals("TRUE")){
 				//System.out.println(Security.generateAESKey(key, 1).length);
@@ -156,6 +158,8 @@ public class DownloadFileServlet extends HttpServlet {
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-Disposition","attachment;filename="+file.getFileName()+(file.getFileExtension().equals("*No Extension*")?"":"."+file.getFileExtension()));
 			fdb.remove();
+			frdb.remove();
+			fddb.remove();
 			
 			for(byte b:data){
 				out.write(b);
@@ -165,6 +169,8 @@ public class DownloadFileServlet extends HttpServlet {
 		}
 		catch(BadPaddingException ex){
 			fdb.remove();
+			frdb.remove();
+			fddb.remove();
 			//Badpaddingexception for wrong password
 			//save to bad password report
 			ServletOutputStream out = response.getOutputStream();
@@ -179,6 +185,8 @@ public class DownloadFileServlet extends HttpServlet {
 		}
 		catch(Exception ex){
 			fdb.remove();
+			frdb.remove();
+			fddb.remove();
 			session.setAttribute("info_line1", "Download File Failed.");
 			session.setAttribute("info_line2", ex.getMessage());
 			getServletContext().getRequestDispatcher("/Information.jsp").forward(request,response);
