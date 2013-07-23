@@ -50,88 +50,96 @@
 
 
 <script type="text/javascript">
-	$(function() {		
-		$("#tablesorter-demo").tablesorter({sortList:[[0,0],[2,1]], widgets: ['zebra']});
-		$("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
-	});	
-	</script>
+	$(function() {
+		$("#tablesorter-demo").tablesorter({
+			sortList : [ [ 0, 0 ], [ 2, 1 ] ],
+			widgets : [ 'zebra' ]
+		});
+		$("#options").tablesorter({
+			sortList : [ [ 0, 0 ] ],
+			headers : {
+				3 : {
+					sorter : false
+				},
+				4 : {
+					sorter : false
+				}
+			}
+		});
+	});
+</script>
 
 <script>
-            $(document).ready(function() {                        
-                $('#availability').click(function(event) {  
-                    var username=$('#inputDepartmentName').val();
-                	$.get('DepartmentAvailability',{user:username},function(responseText) { 
-                        $('#checkavailability').text(responseText);   
-                    });
-                });
-            });
-        </script>
+	$(document).ready(function() {
+		$('#availability').click(function(event) {
+			var username = $('#inputDepartmentName').val();
+			$.get('DepartmentAvailability', {
+				user : username
+			}, function(responseText) {
+				$('#checkavailability').text(responseText);
+			});
+		});
+	});
+</script>
 
 <script type="text/javascript">
-function validateForm()
-{
-    if(document.testRemove.departmentName.value=="")
-    {
-      alert("Department name should not be left blank");
-      document.testRemove.departmentName.focus();
-      return false;
-    }
-    
-        
-    else if(document.testRemove.sometext.value=="")
-    {
-    		alert("Please select at least one manager");
-    		 document.testRemove.sometext.focus();
-    		 return false;
-    }
-    
-    else if(document.testRemove.employees.value=="")
-    {
-    		alert("Please select at least one employee");
-    		 document.testRemove.employees.focus();
-    		 return false;
-    		 
-    }
-    
-    else if(document.testRemove.departmentDescription.value=="")
-    {
-      alert("Department description should not be blank");
-      document.testRemove.departmentDescription.focus();
-      return false;
-    }
-    
-    else if(document.testRemove.test.value=="")
-    {
-    	alert("Please upload a department picture");
-         return false;
-    
-    }
-    
-    var fup = document.testRemove.test.value;
-    var fileName = fup.value;
-    var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+	function validateForm() {
+		if (document.testRemove.departmentName.value == "") {
+			alert("Department name should not be left blank");
+			document.testRemove.departmentName.focus();
+			return false;
+		}
 
-	if(ext =="JPG" || ext=="jpg")
-{
-    return true;
-}
-else
-{
-    alert("Upload jpeg Images only");
-    return false;
-}
-    
-   
-    
-  
-}
+		else if (document.testRemove.sometext.value == "") {
+			alert("Please select at least one manager");
+			document.testRemove.sometext.focus();
+			return false;
+		}
+
+		else if (document.testRemove.employees.value == "") {
+			alert("Please select at least one employee");
+			document.testRemove.employees.focus();
+			return false;
+
+		}
+
+		else if (document.testRemove.departmentDescription.value == "") {
+			alert("Department description should not be blank");
+			document.testRemove.departmentDescription.focus();
+			return false;
+		}
+
+		else if (document.testRemove.test.value == "") {
+			alert("Please upload a department picture");
+			return false;
+
+		}
+		
+		else if(document.testRemove.test.value != "")
+			{
+			var fup = document.testRemove.test.value;
+			var fileName = fup.value;
+			var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+
+			if (ext == "JPG" || ext == "jpg") {
+				return true;
+			} else {
+				alert("Upload jpeg Images only");
+				return false;
+			}
+
+			
+			}
+
+		
+	}
 </script>
 
 </head>
 
 <%@ page import="database.*,model.*, java.util.*"%>
 <%
-Account currentUser=(Account)session.getAttribute("LoggedInUser");
+	Account currentUser=(Account)session.getAttribute("LoggedInUser");
 	ManagerDBAO m1 = new ManagerDBAO();
 	
 	ArrayList<Manager> allManagers = m1.getAllManagers(currentUser.getCompanyID());
@@ -287,7 +295,7 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 
 							<%
 								for (int i=0; i<allManagers.size(); i++) {
-																	Manager m2ama = (Manager)allManagers.get(i);
+																						Manager m2ama = (Manager)allManagers.get(i);
 							%>
 							<tr class="gradeA">
 
@@ -321,118 +329,114 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 				<SCRIPT LANGUAGE="JavaScript">
 				<!--
 					function removeManager(removingValue) {
-						
-						
+
 						var re = removingValue;
 						var str = document.lewis.alonso.value;
 
-						if ( str.search(re) == -1 ){
-						    alert("does not contain apples "+value );
-						    
-							
+						if (str.search(re) == -1) {
+							alert("does not contain apples " + value);
+
 							name.submit();
-						}else{
-						   alert("contains apples!" );
-						   
-						   var success = document.lewis.alonso.value;
-						   var works= success.replace(re,"");
-						   alert(works);
-						   document.lewis.alonso.value=works;
-						   document.getElementById(removingValue).disabled=false;
-							document.getElementById("123"+removingValue).disabled=true;
-						   
-						   var array1 = [];
-						   var removingFromArray = document.getElementById("managerID");
-						   for(var i=0;i<document.getElementById("managerID").options.length;i++)
-							   {
-							   	array1.push(document.getElementById("managerID").options[i].value);
-							   }
-						  
-						  
-						  alert(removingFromArray.options[0].value);
-						  
-						 alert("Before index"+removingValue);
-						 alert("Contents in an array"+array1);
-						  var index = array1.indexOf(removingValue);
-						  alert(index);
-						  var removed = array1.splice(index, 1);
-						  alert("Final"+removed);
-						  for (i=0; i<array1.length; i++) {
-							  
-							  console.log(array1[i]);
-						  }
-			                document.testRemove.managerID.length = 0;
-			              	alert(array1.length);
-			              						  
-			                for(var i=0;i<array1.length;i++){
-			                    var select = document.getElementById("managerID");
-			                    select.options[select.options.length] = new Option(array1[i], array1[i]);
-			                }
-						  
-						  
-						   
+						} else {
+							alert("contains apples!");
+
+							var success = document.lewis.alonso.value;
+							var works = success.replace(re, "");
+							alert(works);
+							document.lewis.alonso.value = works;
+							document.getElementById(removingValue).disabled = false;
+							document.getElementById("123" + removingValue).disabled = true;
+
+							var array1 = [];
+							var removingFromArray = document
+									.getElementById("managerID");
+							for ( var i = 0; i < document
+									.getElementById("managerID").options.length; i++) {
+								array1
+										.push(document
+												.getElementById("managerID").options[i].value);
+							}
+
+							alert(removingFromArray.options[0].value);
+
+							alert("Before index" + removingValue);
+							alert("Contents in an array" + array1);
+							var index = array1.indexOf(removingValue);
+							alert(index);
+							var removed = array1.splice(index, 1);
+							alert("Final" + removed);
+							for (i = 0; i < array1.length; i++) {
+
+								console.log(array1[i]);
+							}
+							document.testRemove.managerID.length = 0;
+							alert(array1.length);
+
+							for ( var i = 0; i < array1.length; i++) {
+								var select = document
+										.getElementById("managerID");
+								select.options[select.options.length] = new Option(
+										array1[i], array1[i]);
+							}
+
 						}
-						
+
 					}
 
 					function addManager(value) {
 						var value1 = document.lewis.alonso.value;
 						var array = [];
 						if (value1 == "") {
-							
-							
 
 							array.push(value);
-							for(var i=0;i<array.length;i++){
-			                    var select = document.getElementById("managerID");
-			                    select.options[select.options.length] = new Option(array[i], array[i]);
-			                }
+							for ( var i = 0; i < array.length; i++) {
+								var select = document
+										.getElementById("managerID");
+								select.options[select.options.length] = new Option(
+										array[i], array[i]);
+							}
 							document.lewis.alonso.value = value;
-							document.getElementById(value).disabled=true;
-							document.getElementById("123"+value).disabled=false;
-							
-							
+							document.getElementById(value).disabled = true;
+							document.getElementById("123" + value).disabled = false;
+
 						} else {
-							
+
 							var re = value;
 							var str = document.lewis.alonso.value;
 
-							if ( str.search(re) == -1 ){
-							    alert("Does not contain "+value );
-							    array.push(value);
-								for(var i=0;i<array.length;i++){
-				                    var select = document.getElementById("managerID");
-				                    select.options[select.options.length] = new Option(array[i], array[i]);
-				                }
-							    document.lewis.alonso.value = value1 + "," + value;
-								document.getElementById(value).disabled=true;
-								document.getElementById("123"+value).disabled=false;
-								
-								
-							}else{
-							   alert("You can't add the same manager!" );
+							if (str.search(re) == -1) {
+								alert("Does not contain " + value);
+								array.push(value);
+								for ( var i = 0; i < array.length; i++) {
+									var select = document
+											.getElementById("managerID");
+									select.options[select.options.length] = new Option(
+											array[i], array[i]);
+								}
+								document.lewis.alonso.value = value1 + ","
+										+ value;
+								document.getElementById(value).disabled = true;
+								document.getElementById("123" + value).disabled = false;
+
+							} else {
+								alert("You can't add the same manager!");
 							}
 
-							
-							
 						}
 
 					}
-					
-	
+
 					function checkSubmit() {
-						
+
 						alert("hello");
-						
-						
-						 var select = document.getElementById("managerID");
-						for (var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
-						    if (children[i].tagName === "OPTION") children[i].selected = true;
+
+						var select = document.getElementById("managerID");
+						for ( var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
+							if (children[i].tagName === "OPTION")
+								children[i].selected = true;
 						}
-						
-						
+
 					}
-				
 				// -->
 				</SCRIPT>
 
@@ -482,9 +486,9 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 
 
 					<%
-								for (int i=0; i<employMama.size(); i++) {
-																	Employee employ = (Employee)employMama.get(i);
-							%>
+						for (int i=0; i<employMama.size(); i++) {
+																				Employee employ = (Employee)employMama.get(i);
+					%>
 					<tr>
 
 						<td><%=employ.getName()%></td>
@@ -502,172 +506,154 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 						</td>
 					</tr>
 					<%
-								}
-							%>
+						}
+					%>
 
 				</tbody>
 			</table>
 
 
 			<SCRIPT LANGUAGE="JavaScript">
-				<!--
-				
-				function notWorking(value)
-				{
+			<!--
+				function notWorking(value) {
 					var value1 = document.lewis1.alonso1.value;
 					var array = [];
 					if (value1 == "") {
-						
-						
 
 						array.push(value);
-						for(var i=0;i<array.length;i++){
-		                    var select = document.getElementById("populate1");
-		                    select.options[select.options.length] = new Option(array[i], array[i]);
-		                }
+						for ( var i = 0; i < array.length; i++) {
+							var select = document.getElementById("populate1");
+							select.options[select.options.length] = new Option(
+									array[i], array[i]);
+						}
 						document.lewis1.alonso1.value = value;
-						document.getElementById(value).disabled=true;
-						document.getElementById("123"+value).disabled=false;
-						
-						
-												
-						
+						document.getElementById(value).disabled = true;
+						document.getElementById("123" + value).disabled = false;
+
 					} else {
-						
+
 						var re = value;
 						var str = document.lewis1.alonso1.value;
 
-						if ( str.search(re) == -1 ){
-						    alert("Does not contain "+value );
-						    array.push(value);
-							for(var i=0;i<array.length;i++){
-			                    var select = document.getElementById("populate1");
-			                    select.options[select.options.length] = new Option(array[i], array[i]);
-			                }
-						    document.lewis1.alonso1.value = value1 + "," + value;
-							document.getElementById(value).disabled=true;
-							document.getElementById("123"+value).disabled=false;
-							
-							
-						}else{
-						   alert("You can't add the same manager!" );
-						}
-						
-												
-						
-					}
-
-	
-				}
-					function myFunction1(removingValue) {
-						
-						
-						var re = removingValue;
-						var str = document.lewis1.alonso1.value;
-
-						if ( str.search(re) == -1 ){
-						    alert("does not contain apples "+value );
-						    
-							
-							name.submit();
-						}else{
-						   alert("contains apples!" );
-						   
-						   var success = document.lewis1.alonso1.value;
-						   var works= success.replace(re,"");
-						   alert(works);
-						   document.lewis1.alonso1.value=works;
-						   document.getElementById(removingValue).disabled=false;
-							document.getElementById("123"+removingValue).disabled=true;
-						   
-						   var array1 = [];
-						   var removingFromArray = document.getElementById("populate1");
-						   for(var i=0;i<document.getElementById("populate1").options.length;i++)
-							   {
-							   	array1.push(document.getElementById("populate1").options[i].value);
-							   }
-						  
-						  
-						  alert(removingFromArray.options[0].value);
-						  
-						 
-						  var index = array1.indexOf(removingValue);
-						  alert(index);
-						  var removed = array1.splice(index, 1);
-						  alert("hey"+array1.length);
-						  document.testRemove.populate1.length = 0;
-						  
-						  for(var i=0;i<array1.length;i++){
-							  var select = document.getElementById("populate1");
-			                    select.options[select.options.length] = new Option(array1[i], array1[i]);
-			                    
-			                }
-						  
-						  
-						  
-						   
-						}
-						
-					}
-
-					function addEmployee(value) {
-						var array = [];
-						if (value1 == "") {
-							
-							
-
+						if (str.search(re) == -1) {
+							alert("Does not contain " + value);
 							array.push(value);
-							for(var i=0;i<array.length;i++){
-			                    var select = document.getElementById("populate1");
-			                    select.options[select.options.length] = new Option(array[i], array[i]);
-			                }
-							
-							document.getElementById(value).disabled=true;
-							document.getElementById("123"+value).disabled=false;
-							
-							
-						} else {
-							
-							var re = value;
-							
-
-							if ( str.search(re) == -1 ){
-							    alert("Does not contain "+value );
-							    array.push(value);
-								for(var i=0;i<array.length;i++){
-				                    var select = document.getElementById("populate1");
-				                    select.options[select.options.length] = new Option(array[i], array[i]);
-				                }
-								document.getElementById(value).disabled=true;
-								document.getElementById("123"+value).disabled=false;
-								
-								
-							}else{
-							   alert("You can't add the same manager!" );
+							for ( var i = 0; i < array.length; i++) {
+								var select = document
+										.getElementById("populate1");
+								select.options[select.options.length] = new Option(
+										array[i], array[i]);
 							}
+							document.lewis1.alonso1.value = value1 + ","
+									+ value;
+							document.getElementById(value).disabled = true;
+							document.getElementById("123" + value).disabled = false;
 
-							
-							
+						} else {
+							alert("You can't add the same manager!");
 						}
 
 					}
-					
-	
-					function checkSubmit1() {
-						
-						alert("hello");
-						
-						
-						 var select = document.getElementById("populate1");
-						for (var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
-						    if (children[i].tagName === "OPTION") children[i].selected = true;
+
+				}
+				function myFunction1(removingValue) {
+
+					var re = removingValue;
+					var str = document.lewis1.alonso1.value;
+
+					if (str.search(re) == -1) {
+						alert("does not contain apples " + value);
+
+						name.submit();
+					} else {
+						alert("contains apples!");
+
+						var success = document.lewis1.alonso1.value;
+						var works = success.replace(re, "");
+						alert(works);
+						document.lewis1.alonso1.value = works;
+						document.getElementById(removingValue).disabled = false;
+						document.getElementById("123" + removingValue).disabled = true;
+
+						var array1 = [];
+						var removingFromArray = document
+								.getElementById("populate1");
+						for ( var i = 0; i < document
+								.getElementById("populate1").options.length; i++) {
+							array1
+									.push(document.getElementById("populate1").options[i].value);
 						}
-						
-						
+
+						alert(removingFromArray.options[0].value);
+
+						var index = array1.indexOf(removingValue);
+						alert(index);
+						var removed = array1.splice(index, 1);
+						alert("hey" + array1.length);
+						document.testRemove.populate1.length = 0;
+
+						for ( var i = 0; i < array1.length; i++) {
+							var select = document.getElementById("populate1");
+							select.options[select.options.length] = new Option(
+									array1[i], array1[i]);
+
+						}
+
 					}
-				
-				// -->
-				</SCRIPT>
+
+				}
+
+				function addEmployee(value) {
+					var array = [];
+					if (value1 == "") {
+
+						array.push(value);
+						for ( var i = 0; i < array.length; i++) {
+							var select = document.getElementById("populate1");
+							select.options[select.options.length] = new Option(
+									array[i], array[i]);
+						}
+
+						document.getElementById(value).disabled = true;
+						document.getElementById("123" + value).disabled = false;
+
+					} else {
+
+						var re = value;
+
+						if (str.search(re) == -1) {
+							alert("Does not contain " + value);
+							array.push(value);
+							for ( var i = 0; i < array.length; i++) {
+								var select = document
+										.getElementById("populate1");
+								select.options[select.options.length] = new Option(
+										array[i], array[i]);
+							}
+							document.getElementById(value).disabled = true;
+							document.getElementById("123" + value).disabled = false;
+
+						} else {
+							alert("You can't add the same manager!");
+						}
+
+					}
+
+				}
+
+				function checkSubmit1() {
+
+					alert("hello");
+
+					var select = document.getElementById("populate1");
+					for ( var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
+						if (children[i].tagName === "OPTION")
+							children[i].selected = true;
+					}
+
+				}
+			// -->
+			</SCRIPT>
 			<form name="lewis1">
 
 				<input name="alonso1" type="text">
@@ -695,17 +681,21 @@ Account currentUser=(Account)session.getAttribute("LoggedInUser");
 		<div class="modal-body">
 
 
-			<% for(int i=0;i<notifications.size();i++){
-            Notification displayNotifications = (Notification)notifications.get(i);
-            %>
+			<%
+				for (int i = 0; i < notifications.size(); i++) {
+					Notification displayNotifications = (Notification) notifications
+							.get(i);
+			%>
 			<div class="alert fade in">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<strong><%= displayNotifications.getMessageDateTime()%></strong>
-				<%=displayNotifications.getMessage() %>
+				<strong><%=displayNotifications.getMessageDateTime()%></strong>
+				<%=displayNotifications.getMessage()%>
 
 
 			</div>
-			<%} %>
+			<%
+				}
+			%>
 		</div>
 
 		<div class="modal-footer">

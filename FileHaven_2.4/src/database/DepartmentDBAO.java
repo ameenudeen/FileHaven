@@ -182,6 +182,7 @@ public class DepartmentDBAO {
 
 			while (rs.next()) {
 				Department department = new Department();
+				department.setId(rs.getInt("ID"));
 				department
 						.setDepartmentName(rs.getString(rs.findColumn("Name")));
 				department.setDepartmentLogo(rs.getString(rs
