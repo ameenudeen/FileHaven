@@ -121,7 +121,6 @@ public class LoginTimeCheckServlet extends HttpServlet {
 		        if((ipToTest >= ipLo && ipToTest <= ipHi)==false)
 		        {
 		        	
-		        	session.setAttribute("externalcompany", "true");
 		        	response.sendRedirect("Verification.jsp");
 		        }
 		        
