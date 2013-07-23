@@ -38,8 +38,16 @@
 			</h2>
 
 		</div>
+<<<<<<< HEAD
+		<%
+		session.setAttribute("AtVerify","TRUE");%>
+		<%@ include file="header.jsp"%>
+		<%
+		session.setAttribute("AtVerify","FALSE");%> 
+=======
 
 
+>>>>>>> branch 'master' of https://github.com/ameenudeen/FileHaven.git
 		<div class="span9">
 			<div class="row-fluid">
 
@@ -68,7 +76,6 @@
 				alert("Success");
 				return true;
 			}
-			
 			else {
 				alert("Wrong Pattern");
 				 location.reload();

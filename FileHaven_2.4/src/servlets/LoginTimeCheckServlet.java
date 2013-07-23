@@ -118,9 +118,12 @@ public class LoginTimeCheckServlet extends HttpServlet {
 		        long ipToTest = n1.ipToLong(InetAddress.getByName(Inet4Address.getLocalHost().getHostAddress()));
 
 		        System.out.println(ipToTest >= ipLo && ipToTest <= ipHi);
+		        session.setAttribute("AtVerify", "FALSE");
 		        if((ipToTest >= ipLo && ipToTest <= ipHi)==false)
 		        {
-		        	
+
+		        	session.setAttribute("AtVerify","TRUE");
+		        	session.setAttribute("externalcompany", "true");
 		        	response.sendRedirect("Verification.jsp");
 		        }
 		        

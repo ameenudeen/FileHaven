@@ -9,7 +9,6 @@
 <link href="resources/css/smoothness/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/smoothness/demo_table_jui.css" rel="stylesheet" type="text/css" />
 
-
 	
 		<!-- Le javascript
     ================================================== -->
@@ -38,11 +37,26 @@
 
 <%@ page import="database.*,model.*, java.util.*"%>
 
-<% 	if(session.getAttribute("LoggedInUser")==null){
+<% 	
+if(session.getAttribute("LoggedInUser")==null){
 		response.sendRedirect("Login.jsp");
 		return;
-} %>
+}
+if(session.getAttribute("externalcompany")==null||session.getAttribute("AtVerify")==null){
+	response.sendRedirect("Information.jsp");
+	return;
+}
+else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("externalcompany").equals("false")){
+	//correct verify
+	
+}
+else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("externalcompany").equals("true")){
+	//not at verify page
+	response.sendRedirect("Verification.jsp");
+	return;
+}
 
+%>
 <%
 	Account user = (Account) session.getAttribute("LoggedInUser");
 
@@ -902,22 +916,14 @@
 								class="btn btn-danger" type="button"><%=notifications.size() %>
 								New Notifications
 							</button></a>
+							
 				<%if(session.getAttribute("LoggedInUser")==null) {%>
 					<a class="navbar-link" onclick="window.location.href=hosturl+'UploadFile.jsp';">Login</a>
 				<%}
 				else{%>
 				
 				<%		
-				if(session.getAttribute("externalcompany")==null){
-					if(!response.isCommitted()){
-					response.sendRedirect("Information.jsp");
-					return;}
-    			  }
-				else if(session.getAttribute("externalcompany").equals("true")){
-					if(!response.isCommitted()){
-						response.sendRedirect("Verification.jsp");
-						return;}
-				}
+				
       				 %>
 						Logged in as <a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';" class="navbar-link"><%= ((Account) request.getSession().getAttribute("LoggedInUser")).getUserName() %></a>
 					
