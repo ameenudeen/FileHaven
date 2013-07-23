@@ -115,11 +115,12 @@
 
 		}
 		
+		
 		else if(document.testRemove.test.value != "")
 			{
 			var fup = document.testRemove.test.value;
-			var fileName = fup.value;
-			var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+			alert("Image:"+fup);
+			var ext = fup.substring(fup.lastIndexOf('.') + 1);
 
 			if (ext == "JPG" || ext == "jpg") {
 				return true;
