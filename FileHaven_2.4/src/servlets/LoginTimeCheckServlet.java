@@ -121,12 +121,9 @@ public class LoginTimeCheckServlet extends HttpServlet {
 		        session.setAttribute("AtVerify", "FALSE");
 		        if((ipToTest >= ipLo && ipToTest <= ipHi)==false)
 		        {
-<<<<<<< HEAD
+
 		        	session.setAttribute("AtVerify","TRUE");
 		        	session.setAttribute("externalcompany", "true");
-=======
-		        	
->>>>>>> branch 'master' of https://github.com/ameenudeen/FileHaven.git
 		        	response.sendRedirect("Verification.jsp");
 		        }
 		        
