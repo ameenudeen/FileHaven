@@ -99,7 +99,7 @@ public class Verification extends HttpServlet {
 				}
 			}
 			session.setAttribute("externalcompany", "false");
-			getServletContext().getRequestDispatcher("/Index.jsp").forward(request,response);
+			response.sendRedirect("Index.jsp");
 			
 		}
 		catch(Exception ex){
