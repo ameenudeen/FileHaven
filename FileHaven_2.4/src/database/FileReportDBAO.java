@@ -195,42 +195,21 @@ public class FileReportDBAO {
 		notify();
 	}
 	
-	public static void main(String args[])
-	{
-		
-//		final Date currentTime = new Date();
-//
-//		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//		final SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss");
-//
-//
-//		// Give it to me in GMT time.
-//		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-//		sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
-//		System.out.println("GMT date: " + sdf.format(currentTime));
-//		System.out.println("GMT time: " + sdf1.format(currentTime));
-//		
-//		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//		DateFormat dateFormat1 = new SimpleDateFormat("HH:MM:SS");
-//		Date date = new Date();
-//		System.out.println(dateFormat.format(date));
-//		System.out.println(dateFormat1.format(date));
-		
-//		
+//	public static void main(String args[])
+//	{
+//		FileReportDBAO f1;
 //		try {
-//			FileReportDBAO f1 = new FileReportDBAO();
-//			ArrayList<String> reports=f1.getReports(3);
-//			for(int i=0;i<reports.size();i++)
+//			f1 = new FileReportDBAO();
+//			ArrayList<FileReport> test= f1.getFileReports(44);
+//			for(int i=0;i<test.size();i++)
 //			{
-//				System.out.println(reports.get(i));
+//				System.out.println(test.get(i).getFileName());
 //			}
-//			
-//		
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //		
-	}
+//	}
 
 }

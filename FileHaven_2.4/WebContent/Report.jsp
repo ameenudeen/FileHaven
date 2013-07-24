@@ -6,26 +6,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>FileHaven</title>
 
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 
-<script>
-	$(document).ready(function() {
+<link href="resources/css/bootstrap.css" rel="stylesheet"
+	type="text/css" />
+<link href="resources/css/bootstrap-responsive.css" rel="stylesheet"
+	type="text/css" />
+<link href="resources/css/application.css" rel="stylesheet"
+	type="text/css" />
 
-		$('#submit').click(function(event) {
+<style type="text/css" title="currentStyle">
+@import "resources/css/demo_table.css";
+</style>
 
-			var dep = $('#department').val();
-
-			$.get('ReportServlet', {
-				department : dep
-			}, function(html) {
-
-				$('#demo').html(html);
-
-			});
-
-		});
-
-	});
-</script>
 <script type="text/javascript" language="javascript"
 	src="resources/js/jquery.dataTables.js"></script>
 
@@ -50,12 +43,6 @@
 		});
 	});
 </script>
-<link href="resources/css/bootstrap.css" rel="stylesheet"
-	type="text/css" />
-<link href="resources/css/bootstrap-responsive.css" rel="stylesheet"
-	type="text/css" />
-<link href="resources/css/application.css" rel="stylesheet"
-	type="text/css" />
 </head>
 
 <%@ page import="database.*,model.*, java.util.*"%>
@@ -80,7 +67,7 @@
 
 	<div class="span9">
 
-		<form id="form1" method="post" action="/FileHaven/PDF">
+		<form method='POST' action='ReportServlet'>
 			<h2>File Statistics</h2>
 			Select your department <select id="department">
 				<%
@@ -91,16 +78,96 @@
 				<%
 					}
 				%>
-			</select> <input type="button" class="btn  btn-primary" id="submit"
-				value="Search" />
-			<button class="btn  btn-primary" type="submit">Export to Pdf
-				File</button>
-
-
-
-			<div id="demo"></div>
+			</select> <input type="submit" value="Submit" class="btn btn-primary">
 		</form>
 
+
+
+		<% if(session.getAttribute("report")==null){ %>
+
+		<div id="demo">
+
+			<table cellpadding="0" cellspacing="0" border="0" class="display"
+				id="example">
+
+
+				<thead>
+					<tr>
+
+						<th>File Name</th>
+						<th>Name/IP Address</th>
+						<th>Position</th>
+						<th>Access Date</th>
+						<th>Access Time</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<tr class="gradeA">
+
+						<td>test</td>
+						<td>test</td>
+						<td>test</td>
+						<td>test</td>
+						<td>test</td>
+					</tr>
+				</tbody>
+				<tfoot>
+
+				</tfoot>
+			</table>
+
+		</div>
+		<%} else{ ArrayList<FileReport> report = (ArrayList<FileReport>)session.getAttribute("report");
+			
+			
+			%>
+		<div class="row-fluid">
+			<div class="span5 offset5">
+				<input type="submit" value="Export to PDF" class="btn btn-primary">
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div id="demo">
+
+				<table cellpadding="0" cellspacing="0" border="0" class="display"
+					id="example">
+
+
+					<thead>
+						<tr>
+
+							<th>File Name</th>
+							<th>Name/IP Address</th>
+							<th>Position</th>
+							<th>Access Date</th>
+							<th>Access Time</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<% for (int i=0;i<report.size();i++){ %>
+						<tr class="gradeA">
+
+							<td><%=report.get(i).getFileName() %></td>
+							<td><%=report.get(i).getIPAddress() %></td>
+							<td><%=report.get(i).getDownloadedDate() %></td>
+							<td><%=report.get(i).getDownloadedDate() %></td>
+							<td><%=report.get(i).getDownloadedTime() %></td>
+
+						</tr>
+						<%} %>
+					</tbody>
+					<tfoot>
+
+					</tfoot>
+				</table>
+
+			</div>
+		</div>
+
+		<%} %>
 
 	</div>
 </body>
