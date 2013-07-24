@@ -42,6 +42,10 @@ public class Verification extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		
 		try{
+			if(session.getAttribute("externalcompany").equals("false")){
+				getServletContext().getRequestDispatcher("/Index.jsp").forward(request,response);
+				return;
+			}
 			String base64enc=request.getParameter("hidden_timestamp");
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
 			
