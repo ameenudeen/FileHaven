@@ -33,9 +33,10 @@ import database.FileDBAO;
 public class HashCheckServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private static final int THRESHOLD_SIZE = Integer.MAX_VALUE;   
-	private static final int MAX_FILE_SIZE = Integer.MAX_VALUE;   
-	private static final int REQUEST_SIZE = Integer.MAX_VALUE;   
+	private static final int THRESHOLD_SIZE = 51*1024*1024;
+	private static final int MAX_FILE_SIZE = 52*1024*1024;
+	private static final int REQUEST_SIZE = 53*1024*1024;
+	private static final int MAX_ALLOW_SIZE=50*1024*1024;  
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -92,10 +93,10 @@ public class HashCheckServlet extends HttpServlet {
 					}
 					file.setFileExtension(contentName);
 					is =item.getInputStream();
-					if(is.available()>=(Integer.MAX_VALUE)){
-						throw new Exception("Error occur. Please consult FileHaven administrator. Error: File size too big");
+					if(is.available()>=(MAX_ALLOW_SIZE)){
+						throw new Exception("File size too big");
 					}
-
+					
 					file.setHash(Security.hashStream(is, "SHA-256"));
 					is.reset();
 					file.setFileSize((double)(item.getSize())/1024);

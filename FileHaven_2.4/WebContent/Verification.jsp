@@ -16,7 +16,32 @@
 	type="text/css" />
 	
 <script src="resources/js/patternlock.js"></script>
+<%@page import="java.util.GregorianCalendar,security.Security,org.apache.commons.codec.binary.Base64" %>
 
+<script>
+$(document).ready(function(){
+	<%
+	if(session.getAttribute("LoggedInUser")==null){
+		response.sendRedirect("Login.jsp");
+		return;
+	}
+	if(session.getAttribute("externalcompany").equals("false")){
+		response.sendRedirect("Index.jsp");
+		return;
+	}
+		GregorianCalendar c=new GregorianCalendar();
+		String str="";
+		// eg:2013:5:3:15:20
+		str+=c.get(Calendar.YEAR)+":";
+		str+=c.get(Calendar.MONTH)+":";
+		str+=c.get(Calendar.DATE)+":";
+		str+=c.get(Calendar.HOUR_OF_DAY)+":";
+		str+=c.get(Calendar.MINUTE);
+		str=Base64.encodeBase64String(Security.encryptByte(str.getBytes(),Security.generateAESKey("SYSTEM_KEY"),"AES"));
+	%>
+		document.getElementById("hidden_timestamp").value="<%=str%>";
+});
+</script>
 </head>
 
 <%@ page import="database.*,model.*, java.util.*"%>
@@ -53,6 +78,7 @@
 					<h2>Before we proceed...</h2>
 
 					<div>
+					<input type='text' id="hidden_timestamp" style='display:none' name='hidden_timestamp' >
 						<input type="password" id="password" name="password"
 							class="patternlock" /> <input type="submit" value="login" />
 					</div>

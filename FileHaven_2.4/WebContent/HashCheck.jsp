@@ -120,6 +120,12 @@ function validate_input(){
 		$("body").scrollTop($("body").offset().top);
 		return false;
 	}
+	var file = document.getElementById('input_file_browse').files[0];
+	if(file.size>(50*1024*1024)){
+		$("#information_file_browse").text("Maximum size allowed:50mb");
+		$("body").scrollTop($("body").offset().top);
+		return false;
+	}
 	return true;
 }
 
