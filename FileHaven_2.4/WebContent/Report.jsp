@@ -69,7 +69,7 @@
 
 		<form method='POST' action='ReportServlet'>
 			<h2>File Statistics</h2>
-			Select your department <select id="department">
+			Select your department <select id="department" name="depValue">
 				<%
 					ArrayList<String> deps = departments;
 					for (int i = 0; i < departments.size(); i++) {
