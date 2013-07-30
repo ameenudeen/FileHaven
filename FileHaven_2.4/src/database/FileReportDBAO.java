@@ -115,17 +115,17 @@ public class FileReportDBAO {
      
 	}
 	
-	public ArrayList<FileReport> getFileReports(int departmentID)
+	public ArrayList<FileReport> getFileReports(int companyID)
 	{
 		ArrayList<FileReport> m1 = new ArrayList<FileReport>();
 		
 
 		try {
-			String selectStatement = "SELECT * FROM filereport r INNER JOIN file f ON r.FileID=f.ID INNER JOIN privilege p ON f.ID=p.FileID INNER JOIN department d ON p.DepartmentID=d.ID WHERE departmentID=?";
+			String selectStatement = "SELECT * FROM filereport WHERE CompanyID=?";
 			getConnection();
 
 			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setInt(1, departmentID);
+			prepStmt.setInt(1, companyID);
 
 			ResultSet rs = prepStmt.executeQuery();
 
@@ -135,9 +135,10 @@ public class FileReportDBAO {
 				f1.setIPAddress(rs.getString("IPAddress"));
 				f1.setDownloadedTime(rs.getString("DownloadedTime"));
 				f1.setStatus(rs.getString("Status"));
-				f1.setAccountID(rs.getString("AccountID"));
-				f1.setFileName(rs.getString("Name"));
+				f1.setAccountID(rs.getString("OwnerID"));
+				f1.setFileName(rs.getString("FileName"));
 				f1.setDownloadedDate(rs.getDate("DownloadedDate"));
+				f1.
 				m1.add(f1);
 
 			}
@@ -244,21 +245,21 @@ public class FileReportDBAO {
     	}
     }
 	
-	public static void main(String args[])
-	{
-		FileReportDBAO f1;
-		try {
-			f1 = new FileReportDBAO();
-			ArrayList<FileReport> test= f1.chartFileReports(44);
-			for(int i=0;i<test.size();i++)
-			{
-				System.out.println(test.get(i).getFileName());
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+//	public static void main(String args[])
+//	{
+//		FileReportDBAO f1;
+//		try {
+//			f1 = new FileReportDBAO();
+//			ArrayList<FileReport> test= f1.chartFileReports(44);
+//			for(int i=0;i<test.size();i++)
+//			{
+//				System.out.println(test.get(i).getFileName());
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//	}
 	
 }

@@ -2,17 +2,42 @@ package model;
 
 import java.sql.Date;
 
-public class FileReport extends Files {
+public class FileReport {
 	
 	private int ID;
 	private String IPAddress;
 	private Date downloadedDate;
-	private String downloadedTime;
 	private String status;
 	private int fileID;
+	private String UserName;
+	private String downloadedTime;
+	private String FileName;
+	private int CompanyID;
 	private String AccountID;
 	
 	
+	
+		
+	
+	
+	public String getFileName() {
+		return FileName;
+	}
+	public void setFileName(String fileName) {
+		FileName = fileName;
+	}
+	public String getUserName() {
+		return UserName;
+	}
+	public void setUserName(String userName) {
+		UserName = userName;
+	}
+	public int getCompanyID() {
+		return CompanyID;
+	}
+	public void setCompanyID(int companyID) {
+		CompanyID = companyID;
+	}
 	public Date getDownloadedDate() {
 		return downloadedDate;
 	}
