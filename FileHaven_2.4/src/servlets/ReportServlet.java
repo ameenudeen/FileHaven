@@ -69,14 +69,14 @@ public class ReportServlet extends HttpServlet {
 			
 		}
 		
-		try{
-			Test t1 = new Test();
-			t1.writeChartToPDF(chart, width, height, fileName)
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+//		try{
+//			Test t1 = new Test();
+//			t1.writeChartToPDF(chart, width, height, fileName)
+//		}
+//		catch(Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 		
 		
 		

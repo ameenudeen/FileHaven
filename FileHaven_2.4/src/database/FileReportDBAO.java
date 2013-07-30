@@ -44,7 +44,7 @@ public class FileReportDBAO {
 		ArrayList<String> report=new ArrayList<String>();
 
 		try {
-			String selectStatement = "SELECT * FROM department d INNER JOIN privilege p ON d.ID=p.DepartmentID INNER JOIN file r ON r.ID=p.FileID INNER JOIN filereport f ON r.ID=f.FileID WHERE CompanyID=?";
+			String selectStatement = "SELECT * FROM filereport WHERE CompanyID=?";
 			getConnection();
 
 			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
@@ -53,19 +53,12 @@ public class FileReportDBAO {
 			ResultSet rs = prepStmt.executeQuery();
 
 			while (rs.next()) {
-				Department department = new Department();
-				department.setId(rs.getInt("ID"));
-				department.setDepartmentName(rs.getString("Name"));
-				m1.add(department.getDepartmentName());
+				FileReport f1 = new FileReport();
+				f1.setFileName(rs.getString("FileName"));
+				m1.add(f1.getFileName());
 
 			}
-			
-			ArrayList<String> gasList = m1;
-			Set<String> uniqueGas = new HashSet<String>(gasList);
-			System.out.println("Unique gas count: " + uniqueGas.toString());
-			
-			report.clear();
-			report.addAll(uniqueGas);
+						
 			
 			prepStmt.close();
 			releaseConnection();

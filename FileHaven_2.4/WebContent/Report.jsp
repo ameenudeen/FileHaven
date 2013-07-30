@@ -69,7 +69,7 @@
 
 		<form method='POST' action='ReportServlet'>
 			<h2>File Statistics</h2>
-			Select your department <select id="department" name="depValue">
+			Select your file <select id="department" name="depValue">
 				<%
 					ArrayList<String> deps = departments;
 					for (int i = 0; i < departments.size(); i++) {
@@ -94,9 +94,10 @@
 				<thead>
 					<tr>
 
-						<th>File Name</th>
-						<th>Name/IP Address</th>
-						<th>Position</th>
+						<th>Name</th>
+						<th>IP Address</th>
+						<th>File Owner</th>
+						<th>Status</th>
 						<th>Access Date</th>
 						<th>Access Time</th>
 					</tr>
@@ -106,11 +107,12 @@
 
 					<tr class="gradeA">
 
-						<td>test</td>
-						<td>test</td>
-						<td>test</td>
-						<td>test</td>
-						<td>test</td>
+						<td>No Data</td>
+						<td>No Data</td>
+						<td>No Data</td>
+						<td>No Data</td>
+						<td>No Data</td>
+						<th>No Data</th>
 					</tr>
 				</tbody>
 				<tfoot>
