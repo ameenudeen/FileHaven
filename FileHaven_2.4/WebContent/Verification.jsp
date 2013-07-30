@@ -74,7 +74,7 @@ $(document).ready(function(){
 			<div class="row-fluid">
 
 
-				<form method="post" action="Verification" onsubmit="return submitform()">
+				<form method="post" action="Verification" >
 					<h2>Before we proceed...</h2>
 
 					<div>
@@ -93,20 +93,7 @@ $(document).ready(function(){
 		<!--/row-->
 	</div>
 
-	<script>
-		function submitform() {
-			if(document.getElementById("password").value==<%=currentUser.getUserPattern() %>){
-				alert("Success");
-				return true;
-			}
-			else {
-				alert("Wrong Pattern");
-				 location.reload();
 
-				return false;
-			}
-			
-		}
 	</script>
 	
 	

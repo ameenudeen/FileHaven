@@ -45,7 +45,11 @@ padding:60px;
 </script>
 </head>
 <body>
-<%@ include file="header.jsp"%> 
+<%
+		session.setAttribute("AtVerify","TRUE");%>
+		<%@ include file="header.jsp"%>
+		<%
+		session.setAttribute("AtVerify","FALSE");%> 
       	<div class="span9">
 			<div class="hero-unit">
 			            <h1>Information</h1>

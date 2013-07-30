@@ -53,8 +53,9 @@ public class Verification extends HttpServlet {
 			}
 			Hash h1 = new Hash();
 			String hashedValue=h1.hashString(password, currentUser.getCreatorID(),currentUser.getCreatedTime());
-			
-			if(!hashedValue.equals(currentUser.getUserPattern()))
+			System.out.println(hashedValue);
+			System.out.println(currentUser.getUserPattern());
+			if(!(hashedValue.equals(currentUser.getUserPattern())))
 			{
 				throw new Exception("Invalid Pattern");
 			}
