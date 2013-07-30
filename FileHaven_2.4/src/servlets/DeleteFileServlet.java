@@ -118,7 +118,8 @@ public class DeleteFileServlet extends HttpServlet {
 				r.setIPAddress(clientIp.getHostAddress());
 				r.setFileID(file.getFileID());
 				r.setStatus("Delete");
-				frdb.insertFileReport(r,login.getUserName());
+				r.setFileName(file.getFileName());
+				frdb.insertFileReport(r, login.getUserName(),login);
 				
 				session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
 				fdb.remove();
