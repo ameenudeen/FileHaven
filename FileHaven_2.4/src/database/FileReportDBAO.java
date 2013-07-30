@@ -71,7 +71,7 @@ public class FileReportDBAO {
 		return report;
 	}
 	
-	public Boolean insertFileReport(FileReport file,String user,Account login){
+	public Boolean insertFileReport(FileReport file){
 		boolean status=false;
 		try{
 		
@@ -95,10 +95,10 @@ public class FileReportDBAO {
         prepStmt.setString(3, sdf1.format(currentTime));
         prepStmt.setString(4, file.getStatus());
         prepStmt.setInt(5, file.getFileID());
-        prepStmt.setString(6, user);
+        prepStmt.setString(6,file.getUserName());
         prepStmt.setString(7, file.getFileName());
-        prepStmt.setInt(8, login.getCompanyID());
-        prepStmt.setString(9, login.getUserName());
+        prepStmt.setInt(8, file.getCompanyID());
+        prepStmt.setString(9, file.getAccountID());
         if (prepStmt.executeUpdate() == 1) {
 			status = true;
 			prepStmt.close();
@@ -136,10 +136,13 @@ public class FileReportDBAO {
 				f1.setFileID(rs.getInt("FileID"));
 				f1.setUserName(rs.getString("UserName"));
 				f1.setDownloadedDate(rs.getDate("DownloadedDate"));
+<<<<<<< HEAD
 				f1.setFileName(rs.getString("FileName"));
 				f1.setCompanyID(rs.getInt("CompanyID"));
 				f1.setAccountID(rs.getString("OwnerID"));
 				m1.add(f1);
+=======
+>>>>>>> branch 'master' of https://github.com/ameenudeen/FileHaven.git
 
 			}
 			

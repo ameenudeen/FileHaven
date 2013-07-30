@@ -168,6 +168,10 @@ public class FileDBAO{
              boolean success=true;
              
              if( prepStmt.executeUpdate()==1){
+            	 ArrayList<Files> files=getFileList();
+            	 Collections.sort(files);
+            	int fileID=files.get(files.size()-1).getFileID();
+            	file.setFileID(fileID);
             	if(file.getPrivilege()!=null){
 	            	for(Privilege p:file.getPrivilege()){
 	            		p.setFileID(file.getFileID());
