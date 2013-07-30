@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
 
+import model.Account;
 import model.Department;
 import model.FileReport;
 import model.Files;
@@ -77,7 +78,7 @@ public class FileReportDBAO {
 		return report;
 	}
 	
-	public Boolean insertFileReport(FileReport file,String user){
+	public Boolean insertFileReport(FileReport file,String user,Account login){
 		boolean status=false;
 		try{
 		
@@ -93,7 +94,7 @@ public class FileReportDBAO {
 			System.out.println("GMT date: " + sdf.format(currentTime));
 			System.out.println("GMT time: " + sdf1.format(currentTime));
 			
-		String insertStatement = "INSERT INTO filereport (IPAddress, DownloadedDate,DownloadedTime, Status, FileID,UserName) VALUES(?,?,?,?,?,?)";
+		String insertStatement = "INSERT INTO filereport (IPAddress, DownloadedDate,DownloadedTime, Status, FileID,UserName,FileName,CompanyID,OwnerID) VALUES(?,?,?,?,?,?,?,?,?)";
 		getConnection();
 		PreparedStatement prepStmt = con.prepareStatement(insertStatement);
         prepStmt.setString(1, file.getIPAddress());
@@ -102,6 +103,9 @@ public class FileReportDBAO {
         prepStmt.setString(4, file.getStatus());
         prepStmt.setInt(5, file.getFileID());
         prepStmt.setString(6, user);
+        prepStmt.setString(7, file.getFileName());
+        prepStmt.setInt(8, login.getCompanyID());
+        prepStmt.setString(9, login.getUserName());
         if (prepStmt.executeUpdate() == 1) {
 			status = true;
 			prepStmt.close();

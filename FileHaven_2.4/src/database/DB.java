@@ -16,7 +16,7 @@ public class DB {
     
     public static String url = "jdbc:mysql://localhost/FileHaven";
     public static String username = "root";
-    public static String password = "password";
+    public static String password = "";
     
     
     public DB() throws Exception {
