@@ -138,8 +138,6 @@ public class FileReportDBAO {
 				f1.setAccountID(rs.getString("OwnerID"));
 				f1.setFileName(rs.getString("FileName"));
 				f1.setDownloadedDate(rs.getDate("DownloadedDate"));
-				f1.
-				m1.add(f1);
 
 			}
 			

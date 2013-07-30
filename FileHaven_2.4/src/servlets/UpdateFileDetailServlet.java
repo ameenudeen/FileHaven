@@ -165,7 +165,9 @@ public class UpdateFileDetailServlet extends HttpServlet {
 			r.setFileID(file.getFileID());
 			r.setStatus("Update");
 			r.setFileName(file.getFileName());
-			frdb.insertFileReport(r, login.getUserName(),login);
+			r.setAccountID(file.getAccountID());
+			r.setUserName(login.getUserName());
+			frdb.insertFileReport(r);
 			session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
 			
 			pdb.remove();
