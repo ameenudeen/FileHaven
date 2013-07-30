@@ -162,10 +162,10 @@ public class UpdateFileDetailServlet extends HttpServlet {
 			InetAddress clientIp = InetAddress.getLocalHost();
 			r.setIPAddress(clientIp.getHostAddress());
 			r.setFileID(file.getFileID());
-			r.setFileID(file.getFileID());
 			r.setStatus("Update");
 			r.setFileName(file.getFileName());
 			r.setAccountID(file.getAccountID());
+			r.setCompanyID(login.getCompanyID());
 			r.setUserName(login.getUserName());
 			frdb.insertFileReport(r);
 			session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));

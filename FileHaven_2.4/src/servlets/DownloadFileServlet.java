@@ -143,6 +143,7 @@ public class DownloadFileServlet extends HttpServlet {
 			r.setStatus("Download");
 			r.setFileName(file.getFileName());
 			r.setAccountID(file.getAccountID());
+			r.setCompanyID(login.getCompanyID());
 			r.setUserName(login.getUserName());
 			frdb.insertFileReport(r);
 			byte[] data;

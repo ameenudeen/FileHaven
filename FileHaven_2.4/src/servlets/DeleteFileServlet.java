@@ -120,6 +120,7 @@ public class DeleteFileServlet extends HttpServlet {
 				r.setStatus("Delete");
 				r.setFileName(file.getFileName());
 				r.setAccountID(file.getAccountID());
+				r.setCompanyID(login.getCompanyID());
 				r.setUserName(login.getUserName());
 				frdb.insertFileReport(r);
 				
