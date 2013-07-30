@@ -141,7 +141,8 @@ public class DownloadFileServlet extends HttpServlet {
 			r.setIPAddress(clientIp.getHostAddress());
 			r.setFileID(file.getFileID());
 			r.setStatus("Download");
-			frdb.insertFileReport(r,login.getUserName());
+			r.setFileName(file.getFileName());
+			frdb.insertFileReport(r, login.getUserName(),login);
 			byte[] data;
 			if(file.getEncrypted().equals("TRUE")){
 				//System.out.println(Security.generateAESKey(key, 1).length);

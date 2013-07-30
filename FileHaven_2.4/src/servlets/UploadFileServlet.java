@@ -215,7 +215,8 @@ public class UploadFileServlet extends HttpServlet {
 			r.setFileID(file.getFileID());
 			r.setFileID(file.getFileID());
 			r.setStatus("Upload");
-			frdb.insertFileReport(r, login.getUserName());
+			r.setFileName(file.getFileName());
+			frdb.insertFileReport(r, login.getUserName(),login);
 			
 			frdb.remove();
 			

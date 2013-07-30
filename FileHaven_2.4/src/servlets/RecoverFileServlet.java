@@ -125,7 +125,8 @@ public class RecoverFileServlet extends HttpServlet {
 				r.setFileID(file.getFileID());
 				r.setFileID(file.getFileID());
 				r.setStatus("Recover");
-				frdb.insertFileReport(r,login.getUserName());
+				r.setFileName(file.getFileName());
+				frdb.insertFileReport(r, login.getUserName(),login);
 				session.setAttribute("SelectedFile", fdb.getFile(file.getFileID()));
 				
 				fdb.remove();
