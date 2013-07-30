@@ -52,7 +52,6 @@ public class UpdateAccountServlet extends HttpServlet {
 		
 		String button = request.getParameter("button");
 		
-		String userName = ((Account) session.getAttribute("updateViewAccount")).getUserName();
 		char type = request.getParameter("type").charAt(0);
 		
 		String gender = request.getParameter("gender");
@@ -63,6 +62,11 @@ public class UpdateAccountServlet extends HttpServlet {
 		String NRIC = request.getParameter("NRIC");
 		
 		try {
+			
+			if(session.getAttribute("updateViewAccount") != null)
+			{
+			String userName = ((Account) session.getAttribute("updateViewAccount")).getUserName();
+				
 			AccountDBAO dba = new AccountDBAO();
 			
 			Account acc = new Account();
@@ -207,6 +211,11 @@ public class UpdateAccountServlet extends HttpServlet {
 				session.removeAttribute("updateViewAccount");
 				dba.updateAccountAvailability(userName);
 				session.setAttribute("upmsg", "Account Disabled Successfully.");
+			}
+			}
+			else
+			{
+				session.setAttribute("upmsg", "Please select an account to update/remove first.");
 			}
 			
 		} catch (Exception e) 
