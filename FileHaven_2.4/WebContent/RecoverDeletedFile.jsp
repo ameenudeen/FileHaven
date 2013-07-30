@@ -61,7 +61,7 @@ $(document).ready(function(){
 			window.location="RecoverFileServlet?ID=<%=str%>";
 		}
 		else{
-			window.location.assign("ViewFile.jsp");
+			window.location.assign("ViewFileServlet?FileID=<%=str%>");
 		}
 	});
 </script>
