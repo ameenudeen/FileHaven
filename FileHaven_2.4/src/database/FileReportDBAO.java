@@ -161,6 +161,41 @@ public class FileReportDBAO {
 		return m1;
 	}
 	
+	public ArrayList<FileReport> chartFileReports(int departmentID)
+	{
+		ArrayList<FileReport> m1 = new ArrayList<FileReport>();
+		
+
+		try {
+			String selectStatement = "SELECT f.name,COUNT(f.ID) FROM filereport r INNER JOIN file f ON r.FileID=f.ID INNER JOIN privilege p ON f.ID=p.FileID INNER JOIN department d ON p.DepartmentID=d.ID WHERE departmentID=? GROUP BY f.name;";
+			getConnection();
+
+			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+			prepStmt.setInt(1, departmentID);
+
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				FileReport f1 = new FileReport();
+				f1.setFileName(rs.getString("f.name"));
+				System.out.println(rs.getInt("COUNT(f.ID)"));
+				m1.add(f1);
+
+			}
+			
+			
+			
+			prepStmt.close();
+			releaseConnection();
+
+		} catch (SQLException ex) {
+			releaseConnection();
+			ex.printStackTrace();
+
+		}
+		return m1;
+	}
+	
 	protected synchronized Connection getConnection() {
 		while (conFree == false) {
 			try {
@@ -195,21 +230,21 @@ public class FileReportDBAO {
 		notify();
 	}
 	
-//	public static void main(String args[])
-//	{
-//		FileReportDBAO f1;
-//		try {
-//			f1 = new FileReportDBAO();
-//			ArrayList<FileReport> test= f1.getFileReports(44);
-//			for(int i=0;i<test.size();i++)
-//			{
-//				System.out.println(test.get(i).getFileName());
-//			}
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//	}
+	public static void main(String args[])
+	{
+		FileReportDBAO f1;
+		try {
+			f1 = new FileReportDBAO();
+			ArrayList<FileReport> test= f1.chartFileReports(44);
+			for(int i=0;i<test.size();i++)
+			{
+				System.out.println(test.get(i).getFileName());
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 }

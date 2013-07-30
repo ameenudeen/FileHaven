@@ -39,38 +39,7 @@ public class Test {
 	    writeChartToPDF(PieChartDemo.generatePieChart(), 500, 400, "C://temp//piechart.pdf");
 	}
 	
-	  private static void createTable(Section subCatPart)
-		      throws BadElementException {
-		    PdfPTable table = new PdfPTable(3);
-
-		    // t.setBorderColor(BaseColor.GRAY);
-		    // t.setPadding(4);
-		    // t.setSpacing(4);
-		    // t.setBorderWidth(1);
-
-		    PdfPCell c1 = new PdfPCell(new Phrase("Table Header 1"));
-		    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    table.addCell(c1);
-
-		    c1 = new PdfPCell(new Phrase("Table Header 2"));
-		    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    table.addCell(c1);
-
-		    c1 = new PdfPCell(new Phrase("Table Header 3"));
-		    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		    table.addCell(c1);
-		    table.setHeaderRows(1);
-
-		    table.addCell("1.0");
-		    table.addCell("1.1");
-		    table.addCell("1.2");
-		    table.addCell("2.1");
-		    table.addCell("2.2");
-		    table.addCell("2.3");
-
-		    subCatPart.add(table);
-
-		  }
+	 
 	
 	 private static void addEmptyLine(Paragraph paragraph, int number) {
 		    for (int i = 0; i < number; i++) {

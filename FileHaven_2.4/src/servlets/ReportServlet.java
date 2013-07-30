@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import utils.Test;
+
 import model.Department;
 import model.FileReport;
 
@@ -66,6 +68,16 @@ public class ReportServlet extends HttpServlet {
 			f1.remove();
 			
 		}
+		
+		try{
+			Test t1 = new Test();
+			t1.writeChartToPDF(chart, width, height, fileName)
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		
 		
 		

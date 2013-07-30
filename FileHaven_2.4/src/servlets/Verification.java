@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import security.Hash;
 import security.Security;
+import model.Account;
+
 import org.apache.commons.codec.binary.Base64;
 /**
  * Servlet implementation class Verification
@@ -40,12 +43,22 @@ public class Verification extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
+		String password=request.getParameter("password");
+		Account currentUser=(Account) session.getAttribute("LoggedInUser");
 		
 		try{
 			if(session.getAttribute("externalcompany").equals("false")){
 				getServletContext().getRequestDispatcher("/Index.jsp").forward(request,response);
 				return;
 			}
+			Hash h1 = new Hash();
+			String hashedValue=h1.hashString(password, currentUser.getCreatorID(),currentUser.getCreatedTime());
+			
+			if(!hashedValue.equals(currentUser.getUserPattern()))
+			{
+				throw new Exception("Invalid Pattern");
+			}
+			
 			String base64enc=request.getParameter("hidden_timestamp");
 			base64enc=new String(Security.decryptByte(Base64.decodeBase64(base64enc), Security.generateAESKey("SYSTEM_KEY"), "AES"));
 			

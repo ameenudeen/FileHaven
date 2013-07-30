@@ -1,5 +1,9 @@
 package utils;
 
+import java.util.ArrayList;
+
+import model.FileReport;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
@@ -7,12 +11,21 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 public class PieChartDemo {
-    public static void main(String[] args) {
-        //TODO: Add code to generate PDFs with charts
-    }
+//    public static void main(String[] args) {
+//        //TODO: Add code to generate PDFs with charts
+//    }
+	
+	public void checking(ArrayList<FileReport> f1)
+	{
+		if()
+	}
  
-    public static JFreeChart generatePieChart() {
+    public static JFreeChart generatePieChart(ArrayList<FileReport> f1) {
         DefaultPieDataset dataSet = new DefaultPieDataset();
+        for(int i=0;i<f1.size();i++)
+        {	
+        	dataSet.setValue(f1.get(i).getFileName(), 2);
+        }
         dataSet.setValue("timetable1", 2);
         dataSet.setValue("timetable2", 1);
         
