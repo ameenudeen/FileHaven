@@ -49,7 +49,6 @@ public class LoginServlet extends HttpServlet {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		
-		String captcha = session.getAttribute("captcha").toString();
 		String code = request.getParameter("code");
 		
 		int cc = 0;
@@ -70,6 +69,12 @@ public class LoginServlet extends HttpServlet {
 		}
 		AccountDBAO dba = null;
 		try {
+			
+			if(session.getAttribute("captcha").toString() != null)
+			{
+			
+			String captcha = session.getAttribute("captcha").toString();
+				
 			dba=new AccountDBAO();
 			if (captcha != null && code != null && code != "") 
 			{
@@ -153,7 +158,15 @@ public class LoginServlet extends HttpServlet {
 					response.sendRedirect("Login.jsp");
 				}
 			}
-			
+			}
+			else
+			{
+				if(response.isCommitted() == false)
+				{
+					session.setAttribute("alert", "Your captcha has expired please refresh your page.");
+					response.sendRedirect("Login.jsp");
+				}
+			}
 		}catch (Exception e)
 		{
 			if(dba!=null)dba.remove();
