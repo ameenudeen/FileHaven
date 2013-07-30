@@ -136,13 +136,10 @@ public class FileReportDBAO {
 				f1.setFileID(rs.getInt("FileID"));
 				f1.setUserName(rs.getString("UserName"));
 				f1.setDownloadedDate(rs.getDate("DownloadedDate"));
-<<<<<<< HEAD
 				f1.setFileName(rs.getString("FileName"));
 				f1.setCompanyID(rs.getInt("CompanyID"));
 				f1.setAccountID(rs.getString("OwnerID"));
 				m1.add(f1);
-=======
->>>>>>> branch 'master' of https://github.com/ameenudeen/FileHaven.git
 
 			}
 			
