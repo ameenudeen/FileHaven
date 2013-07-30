@@ -71,7 +71,7 @@ public class FileReportDBAO {
 		return report;
 	}
 	
-	public Boolean insertFileReport(FileReport file,String user,Account login){
+	public Boolean insertFileReport(FileReport file){
 		boolean status=false;
 		try{
 		
@@ -95,10 +95,10 @@ public class FileReportDBAO {
         prepStmt.setString(3, sdf1.format(currentTime));
         prepStmt.setString(4, file.getStatus());
         prepStmt.setInt(5, file.getFileID());
-        prepStmt.setString(6, user);
+        prepStmt.setString(6,file.getUserName());
         prepStmt.setString(7, file.getFileName());
-        prepStmt.setInt(8, login.getCompanyID());
-        prepStmt.setString(9, login.getUserName());
+        prepStmt.setInt(8, file.getCompanyID());
+        prepStmt.setString(9, file.getAccountID());
         if (prepStmt.executeUpdate() == 1) {
 			status = true;
 			prepStmt.close();
