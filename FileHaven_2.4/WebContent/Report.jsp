@@ -140,11 +140,12 @@
 					<thead>
 						<tr>
 
-							<th>File Name</th>
-							<th>Name/IP Address</th>
-							<th>Position</th>
-							<th>Access Date</th>
-							<th>Access Time</th>
+								<th>Name</th>
+								<th>IP Address</th>
+								<th>File Owner</th>
+								<th>Status</th>
+								<th>Access Date</th>
+								<th>Access Time</th>
 						</tr>
 					</thead>
 
@@ -152,9 +153,10 @@
 						<% for (int i=0;i<report.size();i++){ %>
 						<tr class="gradeA">
 
-							<td><%=report.get(i).getFileName() %></td>
+							<td><%=report.get(i).getUserName() %></td>
 							<td><%=report.get(i).getIPAddress() %></td>
-							<td><%=report.get(i).getDownloadedDate() %></td>
+							<td><%=report.get(i).getAccountID() %></td>
+							<td><%=report.get(i).getStatus() %></td>
 							<td><%=report.get(i).getDownloadedDate() %></td>
 							<td><%=report.get(i).getDownloadedTime() %></td>
 

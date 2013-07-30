@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import utils.Test;
 
+import model.Account;
 import model.Department;
 import model.FileReport;
 
@@ -43,12 +44,12 @@ public class ReportServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(true);
-	
+		Account currentUser = (Account) session.getAttribute("LoggedInUser");
 		
 		FileReportDBAO f1=null;
 		try {
 			f1 = new FileReportDBAO();
-			ArrayList<FileReport> reports=f1.getFileReports(dep);
+			ArrayList<FileReport> reports=f1.getFileReports(currentUser.getCompanyID());
 			f1.remove();
 			session.setAttribute("report",reports);
 			response.sendRedirect("Report.jsp");

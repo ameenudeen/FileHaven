@@ -118,8 +118,6 @@ public class FileReportDBAO {
 	public ArrayList<FileReport> getFileReports(int companyID)
 	{
 		ArrayList<FileReport> m1 = new ArrayList<FileReport>();
-		
-
 		try {
 			String selectStatement = "SELECT * FROM filereport WHERE CompanyID=?";
 			getConnection();
@@ -135,10 +133,12 @@ public class FileReportDBAO {
 				f1.setIPAddress(rs.getString("IPAddress"));
 				f1.setDownloadedTime(rs.getString("DownloadedTime"));
 				f1.setStatus(rs.getString("Status"));
-				f1.setAccountID(rs.getString("OwnerID"));
-				f1.setFileName(rs.getString("FileName"));
+				f1.setFileID(rs.getInt("FileID"));
+				f1.setUserName(rs.getString("UserName"));
 				f1.setDownloadedDate(rs.getDate("DownloadedDate"));
-				f1.
+				f1.setFileName(rs.getString("FileName"));
+				f1.setCompanyID(rs.getInt("CompanyID"));
+				f1.setAccountID(rs.getString("OwnerID"));
 				m1.add(f1);
 
 			}
