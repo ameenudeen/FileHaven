@@ -49,7 +49,7 @@ public class ReportServlet extends HttpServlet {
 		FileReportDBAO f1=null;
 		try {
 			f1 = new FileReportDBAO();
-			ArrayList<FileReport> reports=f1.getFileReports(currentUser.getCompanyID());
+			ArrayList<FileReport> reports=f1.getFileReports(Integer.parseInt(request.getParameter("depValue")));
 			f1.remove();
 			session.setAttribute("report",reports);
 			response.sendRedirect("Report.jsp");

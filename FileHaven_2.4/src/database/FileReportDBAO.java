@@ -38,13 +38,12 @@ public class FileReportDBAO {
 	        }
 	}
 	
-	public ArrayList<String> getReports(int companyId)
+	public ArrayList<FileReport> getReports(int companyId)
 	{
-		ArrayList<String> m1 = new ArrayList<String>();
-		ArrayList<String> report=new ArrayList<String>();
+		ArrayList<FileReport> m1 = new ArrayList<FileReport>();
 
 		try {
-			String selectStatement = "SELECT * FROM filereport WHERE CompanyID=?";
+			String selectStatement = "SELECT DISTINCT FileName,FileID FROM filereport WHERE CompanyID=?";
 			getConnection();
 
 			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
@@ -54,8 +53,11 @@ public class FileReportDBAO {
 
 			while (rs.next()) {
 				FileReport f1 = new FileReport();
+				
 				f1.setFileName(rs.getString("FileName"));
-				m1.add(f1.getFileName());
+				f1.setFileID(rs.getInt("FileID"));
+				
+				m1.add(f1);
 
 			}
 						
@@ -68,7 +70,7 @@ public class FileReportDBAO {
 			ex.printStackTrace();
 
 		}
-		return report;
+		return m1;
 	}
 	
 	public Boolean insertFileReport(FileReport file){
@@ -115,15 +117,15 @@ public class FileReportDBAO {
      
 	}
 	
-	public ArrayList<FileReport> getFileReports(int companyID)
+	public ArrayList<FileReport> getFileReports(int fileId)
 	{
 		ArrayList<FileReport> m1 = new ArrayList<FileReport>();
 		try {
-			String selectStatement = "SELECT * FROM filereport WHERE CompanyID=?";
+			String selectStatement = "SELECT * FROM filereport WHERE FileID=?";
 			getConnection();
 
 			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
-			prepStmt.setInt(1, companyID);
+			prepStmt.setInt(1, fileId);
 
 			ResultSet rs = prepStmt.executeQuery();
 
@@ -250,10 +252,10 @@ public class FileReportDBAO {
 //		FileReportDBAO f1;
 //		try {
 //			f1 = new FileReportDBAO();
-//			ArrayList<FileReport> test= f1.chartFileReports(44);
+//			ArrayList<FileReport> test= f1.getReports(4);
 //			for(int i=0;i<test.size();i++)
 //			{
-//				System.out.println(test.get(i).getFileName());
+//				System.out.println(test.get(i).getFileID());
 //			}
 //		} catch (Exception e) {
 //			// TODO Auto-generated catch block

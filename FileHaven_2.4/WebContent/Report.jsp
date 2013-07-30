@@ -49,7 +49,7 @@
 <%
 	Account currentUser = (Account) session.getAttribute("LoggedInUser");
 	FileReportDBAO f1 = new FileReportDBAO();
-	ArrayList<String> departments = f1.getReports(currentUser.getCompanyID());
+	ArrayList<FileReport> fr = f1.getReports(currentUser.getCompanyID());
 %>
 
 <body>
@@ -71,10 +71,10 @@
 			<h2>File Statistics</h2>
 			Select your file <select id="department" name="depValue">
 				<%
-					ArrayList<String> deps = departments;
-					for (int i = 0; i < departments.size(); i++) {
+					ArrayList<FileReport> frs = fr;
+					for (int i = 0; i < frs.size(); i++) {
 				%>
-				<option value="<%=departments.get(i)%>"><%=departments.get(i)%></option>
+				<option value="<%=frs.get(i).getFileID()%>"><%=frs.get(i).getFileName()%></option>
 				<%
 					}
 				%>
