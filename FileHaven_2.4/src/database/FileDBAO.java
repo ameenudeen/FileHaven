@@ -153,25 +153,17 @@ public class FileDBAO{
 }
     public boolean createFile(Files file) throws Exception{
     	try{
-    		 String stmt="INSERT INTO file(ID,Name,Extension,Size,AccountID,UploadedTime,DeletedTime,Encrypted,Hash) VALUES (?,?,?,?,?,?,?,?,?)";
+    		 String stmt="INSERT INTO file(Name,Extension,Size,AccountID,UploadedTime,DeletedTime,Encrypted,Hash) VALUES (?,?,?,?,?,?,?,?)";
     		 PreparedStatement prepStmt = con.prepareStatement(stmt);
-    		 ArrayList<Files> files=getFileList();
-    		 if(files.isEmpty()){
-    			 file.setFileID(0);
-    		 }
-    		 else{
-    			 Collections.sort(files);
-    			 file.setFileID(files.get(files.size()-1).getFileID()+1);
-    		 }
-    		 prepStmt.setInt(1, file.getFileID());
-             prepStmt.setString(2, file.getFileName());
-             prepStmt.setString(3, file.getFileExtension());
-             prepStmt.setDouble(4, file.getFileSize());
-             prepStmt.setString(5, file.getAccountID());
-             prepStmt.setString(6, file.getFileUploadedTime());
-             prepStmt.setString(7, file.getFileDeletedTime());
-             prepStmt.setString(8,file.getEncrypted());
-             prepStmt.setString(9,file.getHash());
+    		
+             prepStmt.setString(1, file.getFileName());
+             prepStmt.setString(2, file.getFileExtension());
+             prepStmt.setDouble(3, file.getFileSize());
+             prepStmt.setString(4, file.getAccountID());
+             prepStmt.setString(5, file.getFileUploadedTime());
+             prepStmt.setString(6, file.getFileDeletedTime());
+             prepStmt.setString(7,file.getEncrypted());
+             prepStmt.setString(8,file.getHash());
              
              boolean success=true;
              
@@ -248,6 +240,11 @@ public class FileDBAO{
     		prepStmt.setInt(2, file.getFileID());
     		
             if( prepStmt.executeUpdate()==1){
+            	if(column.equals("Name")){
+            		FileReportDBAO frdb=new FileReportDBAO();
+            		frdb.updateFileReport(file.getFileID(), val);
+            		frdb.remove();
+            	}
             	prepStmt.close();
             	return true;
             }

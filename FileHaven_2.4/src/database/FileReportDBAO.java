@@ -13,6 +13,7 @@ import java.util.TimeZone;
 
 import model.Department;
 import model.FileReport;
+import model.Files;
 
 public class FileReportDBAO {
 	
@@ -226,6 +227,26 @@ public class FileReportDBAO {
 		notify();
 	}
 	
+	public boolean updateFileReport(int id,String name) throws Exception{
+    	try{
+    		String stmt="UPDATE filereport SET FileName=? WHERE FileID=?";
+    		PreparedStatement prepStmt = con.prepareStatement(stmt);
+    		prepStmt.setString(1,name);
+    		prepStmt.setInt(2, id);
+    		
+            if( prepStmt.executeUpdate()==1){
+            	prepStmt.close();
+            	return true;
+            }
+            prepStmt.close();
+            return false;
+    	}
+    	catch(SQLException ex){
+    		ex.printStackTrace();
+    		return false;
+    	}
+    }
+	
 	public static void main(String args[])
 	{
 		FileReportDBAO f1;
@@ -242,5 +263,5 @@ public class FileReportDBAO {
 		}
 		
 	}
-
+	
 }
