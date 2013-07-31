@@ -44,7 +44,6 @@ public class ReportServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(true);
-		Account currentUser = (Account) session.getAttribute("LoggedInUser");
 		
 		FileReportDBAO f1=null;
 		try {
