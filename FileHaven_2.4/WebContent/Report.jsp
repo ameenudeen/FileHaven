@@ -79,6 +79,7 @@
 					}
 				%>
 			</select> <input type="submit" value="Submit" class="btn btn-primary">
+			<hr/>
 		</form>
 
 
@@ -126,7 +127,7 @@
 			
 			%>
 		<div class="row-fluid">
-			<div class="span5 offset5">
+			<div class="span5 offset10">
 			<form action='PDF' method='POST'>
 				<input type="submit" value="Export to PDF"  class="btn btn-primary">
 				</form>

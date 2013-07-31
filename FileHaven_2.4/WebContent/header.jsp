@@ -644,7 +644,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 						$('#updateNotification').click(function(event) {  
 		                    var username=$('#user').val();
 		                	$.get('ActionServlet',{user:username},function(responseText) { 
-		                        $('#welcometext').text(responseText);
+		                       
 		                        location.reload();
 		                    });
 		                });
@@ -970,7 +970,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 							<li><a>File</a><ul>
 						        <li><a onclick="window.location.href=hosturl+'UploadFile.jsp';">Upload File</a></li>
 						        <li><a onclick="window.location.href=hosturl+'ViewFileList.jsp';">View File List</a></li>
-						        <li><a onclick="window.location.href=hosturl+'report.jsp';">File Statistics</a></li>
+						        <li><a onclick="window.location.href=hosturl+'Report.jsp';">File Statistics</a></li>
 		        				</ul></li>
 							
 		        			<li><a>Company</a><ul>
@@ -1060,9 +1060,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 
 
 
-					</div> <input type="text" id="user" /> <input type="button" id="submit1"
-					value="Ajax Submit1" /> <br />
-					<div id="welcometext"></div>
+					</div> <input type="hidden" id="user" /> 
 					<div class="well well-large">
 						Company Name:
 						<p class="muted">Hewlett Packard</p>
@@ -1073,13 +1071,6 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 							Postion:
 							<%=user.getType()%></p>
 
-
-
-
-						<p class="text-warning">465.1 MB of 28.38 GB used</p>
-						<div class="progress progress-striped active">
-							<div class="bar" style="width: 20%;"></div>
-						</div>
 					</div>
 					
 					<div id="sidebar" class="well sidebar-nav "
