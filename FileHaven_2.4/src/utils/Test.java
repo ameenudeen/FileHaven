@@ -2,8 +2,13 @@ package utils;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
+
+import model.FileReport;
 
 import org.jfree.chart.JFreeChart;
 
@@ -35,9 +40,9 @@ public class Test {
 		  private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
 		      Font.BOLD);
 	
-	public static void main(String[] args) {
-	    writeChartToPDF(PieChartDemo.generatePieChart(), 500, 400, "C://temp//piechart.pdf");
-	}
+//	public static void main(String[] args) {
+//	    writeChartToPDF(PieChartDemo.generatePieChart(null), 500, 400, "WebContent\\pdf\\piechart.pdf");
+//	}
 	
 	 
 	
@@ -46,14 +51,18 @@ public class Test {
 		      paragraph.add(new Paragraph(" "));
 		    }
 		  }
-	public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
+	public File  writeChartToPDF(JFreeChart chart, int width, int height, String fileName,ArrayList<FileReport> reports,JFreeChart chart1) {
 	    PdfWriter writer = null;
-	 
+	    File file=null;
 	    Document document = new Document();
 	 
 	    try {
-	        writer = PdfWriter.getInstance(document, new FileOutputStream(
-	                fileName));
+
+			file = File.createTempFile("hello", "test");
+			OutputStream outputStream = new FileOutputStream(file);
+			//PdfWriter.getInstance(receipt, outputStream);
+			
+	        writer = PdfWriter.getInstance(document, outputStream);
 	        document.open();
 	        document.addTitle("My first PDF");
 	        document.addSubject("Using iText");
@@ -66,14 +75,14 @@ public class Test {
 		            smallBold));
 	        addEmptyLine(preface, 1);
 	        preface.add(new Paragraph("This document describes something which is very important ",
-	            smallBold));
+	            redFont));
 	        // We add one empty line
 	        addEmptyLine(preface, 1);
 	        // Lets write a big header
 	        preface.add(new Paragraph("File Report", catFont));
-	        preface.add(new Paragraph("Department: Software ",
+	        preface.add(new Paragraph("File Name: "+reports.get(0).getFileName(),
 		            smallBold));
-	        preface.add(new Paragraph("Company: Hewlett Packard ",
+	        preface.add(new Paragraph("File Owner: "+reports.get(0).getAccountID(),
 		            smallBold));
 	        
 	        addEmptyLine(preface, 1);
@@ -82,49 +91,56 @@ public class Test {
 	        
 
 
-	        preface.add(new Paragraph("User's who accessed the department Files",
+	        preface.add(new Paragraph("User's who accessed "+reports.get(0).getFileName(),
 	            redFont));
 	        addEmptyLine(preface, 1);
 	        document.add(preface);
 	        
-	        PdfPTable table = new PdfPTable(4);
+	        PdfPTable table = new PdfPTable(6);
 
 	        // t.setBorderColor(BaseColor.GRAY);
 	        // t.setPadding(4);
 	        // t.setSpacing(4);
 	        // t.setBorderWidth(1);
+	        
 
-	        PdfPCell c1 = new PdfPCell(new Phrase("File Name"));
+	        PdfPCell c1 = new PdfPCell(new Phrase("User"));
 	        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	        table.addCell(c1);
 
-	        c1 = new PdfPCell(new Phrase("Name/IPAddress"));
+	        c1 = new PdfPCell(new Phrase("IPAddress"));
 	        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	        table.addCell(c1);
 	        	
+	        c1 = new PdfPCell(new Phrase("File Owner"));
+	        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(c1);
+	        
+	        c1 = new PdfPCell(new Phrase("Status"));
+	        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        table.addCell(c1);
+	        table.setHeaderRows(1);
+	        
 	        c1 = new PdfPCell(new Phrase("Access Date"));
 	        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	        table.addCell(c1);
+	        table.setHeaderRows(1);
 	        
 	        c1 = new PdfPCell(new Phrase("Access Time"));
 	        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	        table.addCell(c1);
 	        table.setHeaderRows(1);
-
-	        table.addCell("timetable1.jpg");
-	        table.addCell("lewis/192.168.1.1");
-	        table.addCell("2013-12-30");
-	        table.addCell("10:58:40");
-	        table.addCell("timetable1.jpg");
-	        table.addCell("lewis/192.168.1.3");
-	        table.addCell("2013-12-30");
-	        table.addCell("10:58:40");
-	        table.addCell("timetable2.jpg");
-	        table.addCell("alonso/192.168.1.4");
-	        table.addCell("2013-12-30");
-	        table.addCell("12:58:40");
 	        
-	      
+	        for(int i=0;i<reports.size();i++)
+	        {
+	        	table.addCell(reports.get(i).getUserName());
+	        	table.addCell(reports.get(i).getIPAddress());
+	        	table.addCell(reports.get(i).getAccountID());
+	        	table.addCell(reports.get(i).getStatus());
+	        	table.addCell(reports.get(i).getDownloadedDate().toString());
+	        	table.addCell(reports.get(i).getDownloadedTime());
+	        }
+	        	          
 	        
 	        document.add(table);		
 
@@ -143,11 +159,26 @@ public class Test {
 	        contentByte.addTemplate(template, 0, 0);
 	        
 	        
+	        PdfContentByte contentByte1 = writer.getDirectContent();
+	        PdfTemplate template1 = contentByte1.createTemplate(width, height);
+	        Graphics2D graphics2d1 = template1.createGraphics(width, height,
+	                new DefaultFontMapper());
+	        Rectangle2D rectangle2d1 = new Rectangle2D.Double(0, 0, width,
+	                height);
+	 
+	        chart1.draw(graphics2d1, rectangle2d1);
+	         
+	        graphics2d1.dispose();
+	        contentByte1.addTemplate(template1, 0, 0);
+	        
+	        
 	 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	    document.close();
+	    
+	    return file;
 	}
 
 	

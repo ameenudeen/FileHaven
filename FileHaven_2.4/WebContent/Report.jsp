@@ -94,7 +94,7 @@
 				<thead>
 					<tr>
 
-						<th>Name</th>
+						<th>User</th>
 						<th>IP Address</th>
 						<th>File Owner</th>
 						<th>Status</th>
@@ -127,7 +127,9 @@
 			%>
 		<div class="row-fluid">
 			<div class="span5 offset5">
-				<input type="submit" value="Export to PDF" class="btn btn-primary">
+			<form action='PDF' method='POST'>
+				<input type="submit" value="Export to PDF"  class="btn btn-primary">
+				</form>
 			</div>
 		</div>
 		<div class="row-fluid">
@@ -140,7 +142,7 @@
 					<thead>
 						<tr>
 
-								<th>Name</th>
+								<th>User</th>
 								<th>IP Address</th>
 								<th>File Owner</th>
 								<th>Status</th>
