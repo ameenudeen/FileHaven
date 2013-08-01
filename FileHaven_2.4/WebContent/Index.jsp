@@ -256,6 +256,10 @@
     </style>
 </head>
 <body>
+<div class="hero-unit">
+			            <h1>Welcome to FileHaven!</h1>
+
+			</div>
 <%
 	if(session.getAttribute("LoggedInUser")==null){
 		%>
@@ -263,13 +267,19 @@
 		<%
 	}
 	else{%>
-	<%@ include file="header.jsp"%> <% 
+	<%@ include file="header.jsp"%> 
+	
+	
+	<% 
+	
 	}%>
+	
       	<div class="span9">
-			<div class="hero-unit">
+      	<div class="hero-unit">
 			            <h1>Welcome to FileHaven!</h1>
 
 			</div>
+		
 			<div class="row-fluid" >
 				<div class="content_space">
 					<div id="examples_outer">
