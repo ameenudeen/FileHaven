@@ -43,10 +43,20 @@ public class NotificationDBAO {
 		}
 	}
 	
-	public boolean insertEmployeeNotification(String message,boolean messageRead,String sender,Employee employees)
+	public boolean insertEmployeeNotification(String message,boolean messageRead,Account sender,Employee employees)
 	{
 		boolean status = false;
 		try {
+			DepartmentDBAO d1;
+			ArrayList<String> userNames = new ArrayList<String>();
+			try {
+				d1 = new DepartmentDBAO();
+				userNames=d1.getEmployeesUserName(employees,sender.getCompanyID());
+				d1.remove();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			for(int i=0;i<employees.getEmployees().size();i++)
 			{
@@ -61,8 +71,58 @@ public class NotificationDBAO {
 			prepStmt.setString(1, message);
 			prepStmt.setTimestamp(2, new Timestamp(date.getTime()));
 			prepStmt.setBoolean(3, messageRead);
-			prepStmt.setString(4, sender);
-			prepStmt.setString(5, employees.getEmployees().get(i));
+			prepStmt.setString(4, sender.getUserName());
+			prepStmt.setString(5, userNames.get(i));
+			
+
+			if (prepStmt.executeUpdate() == 1) {
+				status = true;
+				prepStmt.close();
+				releaseConnection();
+				System.out.println("Successfully sent a notification to all intended recipients");
+			}
+				
+			
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			releaseConnection();
+
+		}
+		return status;
+	}
+	
+	public boolean insertManagerNotification(String message,boolean messageRead,Account sender,Manager employees)
+	{
+		boolean status = false;
+		try {
+			ArrayList<String> managerUserName = new ArrayList<String>();
+			ManagerDBAO m1;
+			try {
+				m1 = new ManagerDBAO();
+				managerUserName=m1.getManagersUserName(employees, sender.getCompanyID());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			for(int i=0;i<employees.getManagers().size();i++)
+			{
+			String selectStatement = "INSERT INTO notification (Message,MessageDateTime,MessageRead,Sender,UserName) VALUES (?,?,?,?,?);";
+			System.out.println(selectStatement);
+
+			getConnection();
+			
+			java.util.Date date= new java.util.Date();
+//			System.out.println(new Timestamp(date.getTime()));
+			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+			prepStmt.setString(1, message);
+			prepStmt.setTimestamp(2, new Timestamp(date.getTime()));
+			prepStmt.setBoolean(3, messageRead);
+			prepStmt.setString(4, sender.getUserName());
+			prepStmt.setString(5, managerUserName.get(i));
 			
 
 			if (prepStmt.executeUpdate() == 1) {

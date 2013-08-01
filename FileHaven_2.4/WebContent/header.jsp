@@ -984,7 +984,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 		        				<li><a onclick="window.location.href=hosturl+'CreateDepartment.jsp';">Create Department</a></li>
 		        				<li><a onclick="window.location.href=hosturl+'ViewDepartment.jsp';">View/Edit Departments</a></li>
 		        				</ul></li>	
-							<li><a>Notification</a></li>
+							
 							
 						</ul>
 					<% } %>

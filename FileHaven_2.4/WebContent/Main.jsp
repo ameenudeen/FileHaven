@@ -256,10 +256,10 @@
     </style>
 </head>
 <body>
-<div class="hero-unit">
-			            <h1>Welcome to FileHaven!</h1>
+<br/>
+<br/>
 
-			</div>
+
 <%
 	if(session.getAttribute("LoggedInUser")==null){
 		%>
@@ -274,78 +274,50 @@
 	
 	}%>
 	
-      	<div class="span9">
-      	
-			<div class="row-fluid" >
-				<div class="content_space">
-					<div id="examples_outer">
-					<hr class="featurette-divider">
-						<h2 class="featurette-heading"> A Little Introduction to <span class="muted">FileHaven</span></h2>
+	<div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+	<h2 class="featurette-heading"> Welcome to <span class="muted">FileHaven</span></h2>
 						<p class="lead"><span style="font-weight:bold;text-decoration:underline">FileHaven</span> 
 						is a safe and secured file hosting web application which allow you 
 						and your company have a platform to store and share the things among your company.
 						</p>
-						<p><a href="#" class="btn">More about FileHaven</a></p>
 						
-						<hr id="start_using" class="featurette-divider">
-						 
-						<h2 class="featurette-heading"> Need to start immediately? <span class="muted">Look no further</span></h2>
-						<p class="lead">
-						To get started, please contact us at our hotline: 000-0000-0000 <br />
-						Alternatively, you may leave us an e-mail at: example@mail.com <br /><br />
-						
-						We will provide you with the CEO credentials immediately so that you can
-						start work immediately without any delays!
-						</p>
-						
-						<hr class="featurette-divider">
-						
-						<h2 class="featurette-heading">Our Pricing Rate</h2>
-						<p class="lead">
-						Currently, we are offering 3 types of packages.
-						<br />
-						<table>
-						<tr> <td>Basic </td><td>- 100 GB Storage at $.99 per month.</td></tr>
-						<tr> <td>Pro </td><td>- 5 TB Storage at $34.99 per month.</td></tr>
-						<tr> <td>Industrial </td><td>- 15 TB Storage at $59.99 per month.</td></tr>
-						</table>
-						</p>
-						
-						<div id="slider_container_1">
-			
-							<div id="SliderName">
-								<img src="resources/img/sliderman/1.jpg" />
-								<div class="SliderNameDescription"><Strong></Strong>asd</div>
-								<img src="resources/img/sliderman/2.jpg" />
-								<div class="SliderNameDescription"><Strong></Strong>asd</div>
-								<img src="resources/img/sliderman/3.jpg" />
-								<div class="SliderNameDescription"><Strong></Strong>asd</div>
-								<img src="resources/img/sliderman/4.jpg" />
-								<div class="SliderNameDescription"><Strong></Strong>asd</div>
-							</div>
-							<div id="SliderNameNavigation"></div>
-							<script type="text/javascript">
-		
-							// we created new effect and called it 'demo01'. We use this name later.
-							Sliderman.effect({name: 'demo01', cols: 10, rows: 5, delay: 10, fade: true, order: 'straight_stairs'});
-		
-							var demoSlider = Sliderman.slider({container: 'SliderName', width: 640, height: 300, effects: 'demo01',
-							display: {
-								pause: true, // slider pauses on mouseover
-								autoplay: 3000, // 3 seconds slideshow
-								always_show_loading: 200, // testing loading mode
-								description: {background: '#ffffff', opacity: 0.5, height: 50, position: 'bottom'}, // image description box settings
-								loading: {background: '#000000', opacity: 0.2, image: 'img/loading.gif'}, // loading box settings
-								buttons: {opacity: 1, prev: {className: 'SliderNamePrev', label: ''}, next: {className: 'SliderNameNext', label: ''}}, // Next/Prev buttons settings
-								navigation: {container: 'SliderNameNavigation', label: '&nbsp;'} // navigation (pages) settings
-							}});
-		
-						</script>
-					</div>
-				</div>
-			</div>
-			</div>
-			</div>
+
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider">
+
+      <div class="featurette">
+        <img class="featurette-image pull-right" src="resources/img/examples/browser-icon-chrome.png">
+        <h2 class="featurette-heading">Need to start immediately? Look no further.<span class="muted">It'll blow your mind.</span></h2>
+        <p class="lead">To get started, please contact us at our hotline: 000-0000-0000 
+Alternatively, you may leave us an e-mail at: example@mail.com 
+
+We will provide you with the CEO credentials immediately so that you can start work immediately without any delays!</p>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="featurette">
+        <img class="featurette-image pull-left" src="resources/img/examples/browser-icon-firefox.png">
+        <h2 class="featurette-heading">Oh yeah, it's that good. <span class="muted">See for yourself.</span></h2>
+        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+      </div>
+
+     
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      
+
+    </div><!-- /.container -->
+	
+      	
+	
 <%@ include file="footer.jsp"%>
 </body>
 </html>
