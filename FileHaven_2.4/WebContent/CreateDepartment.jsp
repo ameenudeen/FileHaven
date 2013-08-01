@@ -125,7 +125,6 @@
 		else if(document.testRemove.test.value != "")
 			{
 			var fup = document.testRemove.test.value;
-			alert("Image:"+fup);
 			var ext = fup.substring(fup.lastIndexOf('.') + 1);
 
 			if (ext == "JPG" || ext == "jpg") {
@@ -328,7 +327,7 @@ $(document).ready(function(){
 								<th>Manager's Name</th>
 								<th>Phone Number</th>
 								<th>Address</th>
-								<th>Gender</th>
+								<th></th>
 							</tr>
 						</thead>
 
@@ -375,15 +374,13 @@ $(document).ready(function(){
 						var str = document.lewis.alonso.value;
 
 						if (str.search(re) == -1) {
-							alert("does not contain apples " + value);
 
 							name.submit();
 						} else {
-							alert("contains apples!");
 
 							var success = document.lewis.alonso.value;
 							var works = success.replace(re, "");
-							alert(works);
+							
 							document.lewis.alonso.value = works;
 							document.getElementById(removingValue).disabled = false;
 							document.getElementById("123" + removingValue).disabled = true;
@@ -398,20 +395,14 @@ $(document).ready(function(){
 												.getElementById("managerID").options[i].value);
 							}
 
-							alert(removingFromArray.options[0].value);
 
-							alert("Before index" + removingValue);
-							alert("Contents in an array" + array1);
 							var index = array1.indexOf(removingValue);
-							alert(index);
 							var removed = array1.splice(index, 1);
-							alert("Final" + removed);
 							for (i = 0; i < array1.length; i++) {
 
 								console.log(array1[i]);
 							}
 							document.testRemove.managerID.length = 0;
-							alert(array1.length);
 
 							for ( var i = 0; i < array1.length; i++) {
 								var select = document
@@ -446,7 +437,6 @@ $(document).ready(function(){
 							var str = document.lewis.alonso.value;
 
 							if (str.search(re) == -1) {
-								alert("Does not contain " + value);
 								array.push(value);
 								for ( var i = 0; i < array.length; i++) {
 									var select = document
@@ -469,7 +459,6 @@ $(document).ready(function(){
 
 					function checkSubmit() {
 
-						alert("hello");
 
 						var select = document.getElementById("managerID");
 						for ( var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
@@ -483,7 +472,7 @@ $(document).ready(function(){
 
 				<form name="lewis">
 
-					<input name="alonso" type="text">
+					<input name="alonso" type="hidden">
 
 				</form>
 
@@ -498,7 +487,7 @@ $(document).ready(function(){
 
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn" data-dismiss="modal" onclick="checkSubmit()" aria-hidden="true">Close</button>
 			<button class="btn btn-primary" data-dismiss="modal"
 				onclick="checkSubmit()">Save changes</button>
 		</div>
@@ -520,7 +509,7 @@ $(document).ready(function(){
 						<th>Employee's Name</th>
 						<th>Phone Number</th>
 						<th>Address</th>
-						<th>Gender</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -538,11 +527,11 @@ $(document).ready(function(){
 						<td class="center">
 							<button class="btn btn-small btn-primary btn-block" type="button"
 								value="<%=employ.getName()%>" id="<%=employ.getName()%>"
-								onclick="notWorking(this.value)">Add Manager</button>
+								onclick="notWorking(this.value)">Add Employee</button>
 							<button class="btn btn-small btn btn-danger btn-block"
 								type="button" value="<%=employ.getName()%>"
 								id="123<%=employ.getName()%>" onclick="myFunction1(this.value)"
-								disabled>Remove Manager</button>
+								disabled>Remove Employee</button>
 
 						</td>
 					</tr>
@@ -577,7 +566,6 @@ $(document).ready(function(){
 						var str = document.lewis1.alonso1.value;
 
 						if (str.search(re) == -1) {
-							alert("Does not contain " + value);
 							array.push(value);
 							for ( var i = 0; i < array.length; i++) {
 								var select = document
@@ -591,7 +579,7 @@ $(document).ready(function(){
 							document.getElementById("123" + value).disabled = false;
 
 						} else {
-							alert("You can't add the same manager!");
+							alert("You can't add the same employee!");
 						}
 
 					}
@@ -603,15 +591,12 @@ $(document).ready(function(){
 					var str = document.lewis1.alonso1.value;
 
 					if (str.search(re) == -1) {
-						alert("does not contain apples " + value);
 
 						name.submit();
 					} else {
-						alert("contains apples!");
 
 						var success = document.lewis1.alonso1.value;
 						var works = success.replace(re, "");
-						alert(works);
 						document.lewis1.alonso1.value = works;
 						document.getElementById(removingValue).disabled = false;
 						document.getElementById("123" + removingValue).disabled = true;
@@ -625,12 +610,9 @@ $(document).ready(function(){
 									.push(document.getElementById("populate1").options[i].value);
 						}
 
-						alert(removingFromArray.options[0].value);
 
 						var index = array1.indexOf(removingValue);
-						alert(index);
 						var removed = array1.splice(index, 1);
-						alert("hey" + array1.length);
 						document.testRemove.populate1.length = 0;
 
 						for ( var i = 0; i < array1.length; i++) {
@@ -663,7 +645,6 @@ $(document).ready(function(){
 						var re = value;
 
 						if (str.search(re) == -1) {
-							alert("Does not contain " + value);
 							array.push(value);
 							for ( var i = 0; i < array.length; i++) {
 								var select = document
@@ -675,7 +656,7 @@ $(document).ready(function(){
 							document.getElementById("123" + value).disabled = false;
 
 						} else {
-							alert("You can't add the same manager!");
+							alert("You can't add the same employee!");
 						}
 
 					}
@@ -684,7 +665,6 @@ $(document).ready(function(){
 
 				function checkSubmit1() {
 
-					alert("hello");
 
 					var select = document.getElementById("populate1");
 					for ( var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
@@ -697,7 +677,7 @@ $(document).ready(function(){
 			</SCRIPT>
 			<form name="lewis1">
 
-				<input name="alonso1" type="text">
+				<input name="alonso1" type="hidden">
 
 			</form>
 
@@ -705,7 +685,7 @@ $(document).ready(function(){
 
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn" onclick="checkSubmit1()" data-dismiss="modal" aria-hidden="true">Close</button>
 			<button class="btn btn-primary" data-dismiss="modal"
 				onclick="checkSubmit1() ">Save changes</button>
 		</div>

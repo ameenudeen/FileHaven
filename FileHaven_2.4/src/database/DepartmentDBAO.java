@@ -199,6 +199,44 @@ public class DepartmentDBAO {
 
 		return d1;
 	}
+	
+	public ArrayList<Department> getDepartmentDetail(int departmentId) {
+		ArrayList<Department> d1 = new ArrayList<Department>();
+
+		try {
+			String selectStatement = "SELECT * FROM department WHERE ID=?";
+			System.out.println(selectStatement);
+			getConnection();
+
+			PreparedStatement prepStmt = con.prepareStatement(selectStatement);
+			prepStmt.setInt(1, departmentId);
+
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				Department department = new Department();
+				department.setId(rs.getInt("ID"));
+				department
+						.setDepartmentName(rs.getString(rs.findColumn("Name")));
+				department.setDepartmentLogo(rs.getString(rs
+						.findColumn("DepartmentLogo")));
+				department.setDepartmentDescription(rs.getString(rs
+						.findColumn("Description")));
+
+				d1.add(department);
+
+			}
+			prepStmt.close();
+			releaseConnection();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			releaseConnection();
+
+		}
+
+		return d1;
+	}
 
 	// TODO change the sql statement,change name to username
 	public int getDepartmentID(String departmentName) {

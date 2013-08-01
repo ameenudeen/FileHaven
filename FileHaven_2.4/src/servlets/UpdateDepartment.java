@@ -3,6 +3,7 @@ package servlets;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -92,10 +93,19 @@ public class UpdateDepartment extends HttpServlet {
 					while (iter.hasNext()) {
 						FileItem item = (FileItem) iter.next();
 						if (!item.isFormField()) {
-
+							System.out.println("pic");	
+							
 							Scanner sc = new Scanner(item.getContentType());
 							sc.useDelimiter("/");
-							sc.next();
+							if(sc.next().equals("application")){
+								String contentType = sc.next();
+
+								
+
+								departmentLogo = "https://filehavendata.s3.amazonaws.com/Department_Logo/thumbnailpic.jpg";
+							}
+							
+							else{
 							String contentType = sc.next();
 
 							InputStream is = item.getInputStream();
@@ -107,6 +117,7 @@ public class UpdateDepartment extends HttpServlet {
 
 							departmentLogo = url;
 							System.out.println(url);
+							}
 						}
 
 						else {
@@ -178,6 +189,13 @@ public class UpdateDepartment extends HttpServlet {
 						managers.updateManagerDepartment(m1, departmentName, currentUser);
 						//manager.updateManagerssDepartment(m1, departmentName, currentUser.getName(),currentUser);
 						System.out.println("Success");
+						PrintWriter out = response.getWriter();  
+						response.setContentType("text/html");  
+						out.println("<script type=\"text/javascript\">");  
+						out.println("alert('Department Successfully Updated');");  
+						out.println("var hosturl = location.origin + '/' + location.pathname.split('/')[1] + '/';");
+						out.println("window.location.href=hosturl+'ViewDepartment.jsp';");
+						out.println("</script>");
 						
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

@@ -43,6 +43,45 @@ $(document).ready(function(){
 	
 	%>
 	</script>
+	
+	<script type="text/javascript">
+	function validateForm() {
+		if (document.test.departmentName.value == "") {
+			alert("Department name should not be left blank");
+			document.test.departmentName.focus();
+			return false;
+		}
+		
+		else if(document.test.departmentName.value.match(' '))
+			{
+				alert("No spaces are allowed in the department name");
+				return false;
+			}
+
+		else if (document.test.sometext.value == "") {
+			alert("Please select at least one manager");
+			document.test.sometext.focus();
+			return false;
+		}
+
+		else if (document.test.employees.value == "") {
+			alert("Please select at least one employee");
+			document.test.employees.focus();
+			return false;
+
+		}
+
+		else if (document.test.departmentDescription.value == "") {
+			alert("Department description should not be blank");
+			document.test.departmentDescription.focus();
+			return false;
+		}
+
+
+
+		
+	}
+</script>
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <link href="resources/css/bootstrap.css" rel="stylesheet"
@@ -131,7 +170,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 	<div class="container-fluid">
 		<div class="hero-unit">
 			<h2>
-				<%= session.getAttribute("departmentId") %></h2>
+				Welcome <%= currentUser.getUserName()  %>!</h2>
 
 		</div>
 
@@ -139,7 +178,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 
 		<div class="span9">
 			<div class="hero-unit">
-				<form action='UpdateDepartment' method='POST'
+				<form action='UpdateDepartment' method='POST' onSubmit="return validateForm()"
 					enctype="multipart/form-data" name="test" class="form-horizontal">
 
 					<h1>Updating Department...</h1>
@@ -172,6 +211,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 									<%
 								for (int i=0; i<mama.size(); i++) {
 									Manager m2ama = (Manager)mama.get(i);
+									
 									
 							%>
 									<option value="<%=m2ama.getName() %>"><%= m2ama.getName() %></option>
@@ -235,7 +275,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 								Picture</label>
 							<div class="controls">
 
-								Upload: <input type="file" name="test">
+								Upload: <input type="file" name="testi">
 							</div>
 
 						</div>
@@ -245,6 +285,8 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 									src="<%=d1.get(0).getDepartmentLogo() %>" alt="">
 							</a></li>
 						</ul>
+						
+						<input type="hidden" name="currentPic" value="<%=d1.get(0).getDepartmentLogo() %>"/> 
 
 					</div>
 
@@ -321,7 +363,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 								<th>Manager's Name</th>
 								<th>Phone Number</th>
 								<th>Address</th>
-								<th>Gender</th>
+								<th></th>
 							</tr>
 						</thead>
 
@@ -395,10 +437,11 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 				function preload()
 				{
 					
-					alert("hello");
 					var tempValue;
+					document.lewis.alonso.value="";
 					for(var i=0;i<document.getElementById("populate").options.length;i++)
 					   {
+						
 						var value1 = document.lewis.alonso.value;
 						 tempValue=document.getElementById("populate").options[i].value;
 						document.lewis.alonso.value=value1+","+tempValue+",";
@@ -415,16 +458,13 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 						var str = document.lewis.alonso.value;
 
 						if ( str.search(re) == -1 ){
-						    alert("does not contain apples "+value );
 						    
 							
 							name.submit();
 						}else{
-						   alert("contains apples!" );
 						   
 						   var success = document.lewis.alonso.value;
 						   var works= success.replace(re,"");
-						   alert(works);
 						   document.lewis.alonso.value=works;
 						   document.getElementById(removingValue).disabled=false;
 							document.getElementById("123"+removingValue).disabled=true;
@@ -437,7 +477,6 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 							   }
 						  
 						  
-						  alert(removingFromArray.options[0].value);
 						  
 						 
 						  
@@ -445,15 +484,12 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 						  
 						  
 						  var index = array1.indexOf(removingValue);
-						  alert(index);
 						  var removed = array1.splice(index, 1);
-						  alert("Final"+removed);
 						  for (i=0; i<array1.length; i++) {
 							  
 							  console.log(array1[i]);
 						  }
 			                document.test.populate.length = 0;
-			              	alert(array1.length);
 			              						  
 			                for(var i=0;i<array1.length;i++){
 			                    var select = document.getElementById("populate");
@@ -494,7 +530,6 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 							var str = document.lewis.alonso.value;
 
 							if ( str.search(re) == -1 ){
-							    alert("Does not contain "+value );
 							    array.push(value);
 								for(var i=0;i<array.length;i++){
 				                    var select = document.getElementById("populate");
@@ -518,7 +553,6 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 	
 					function checkSubmit() {
 						
-						alert("hello");
 						
 						
 						 var select = document.getElementById("populate");
@@ -534,7 +568,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 
 				<form name="lewis">
 
-					<input name="alonso" type="text">
+					<input name="alonso" type="hidden">
 
 				</form>
 
@@ -549,7 +583,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn" data-dismiss="modal" onclick="checkSubmit()" aria-hidden="true">Close</button>
 			<button class="btn btn-primary" data-dismiss="modal"
 				onclick="checkSubmit()">Save changes</button>
 		</div>
@@ -571,7 +605,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 						<th>Employee's Name</th>
 						<th>Phone Number</th>
 						<th>Address</th>
-						<th>Gender</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -591,11 +625,11 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 						<td class="center">
 							<button class="btn btn-small btn-primary btn-block" type="button"
 								value="<%=employz.getName()%>" id="<%=employz.getName()%>"
-								onclick="notWorking(this.value)" disabled>Add Manager</button>
+								onclick="notWorking(this.value)" disabled>Add Employee</button>
 							<button class="btn btn-small btn btn-danger btn-block"
 								type="button" value="<%=employz.getName()%>"
 								id="123<%=employz.getName()%>" onclick="myFunction1(this.value)">Remove
-								Manager</button>
+								Employee</button>
 
 						</td>
 					</tr>
@@ -636,10 +670,11 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 				function preload1()
 				{
 					
-					alert("hello");
+					document.lewis1.alonso1.value="";
 					var tempValue;
 					for(var i=0;i<document.getElementById("populate1").options.length;i++)
 					   {
+						
 						var value1 = document.lewis1.alonso1.value;
 						 tempValue=document.getElementById("populate1").options[i].value;
 						document.lewis1.alonso1.value=value1+","+tempValue+",";
@@ -677,7 +712,6 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 						var str = document.lewis1.alonso1.value;
 
 						if ( str.search(re) == -1 ){
-						    alert("Does not contain "+value );
 						    array.push(value);
 							for(var i=0;i<array.length;i++){
 			                    var select = document.getElementById("populate1");
@@ -689,7 +723,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 							
 							
 						}else{
-						   alert("You can't add the same manager!" );
+						   alert("You can't add the same employee!" );
 						}
 						
 												
@@ -705,16 +739,13 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 						var str = document.lewis1.alonso1.value;
 
 						if ( str.search(re) == -1 ){
-						    alert("does not contain apples "+value );
 						    
 							
 							name.submit();
 						}else{
-						   alert("contains apples!" );
 						   
 						   var success = document.lewis1.alonso1.value;
 						   var works= success.replace(re,"");
-						   alert(works);
 						   document.lewis1.alonso1.value=works;
 						   document.getElementById(removingValue).disabled=false;
 							document.getElementById("123"+removingValue).disabled=true;
@@ -727,13 +758,10 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 							   }
 						  
 						  
-						  alert(removingFromArray.options[0].value);
 						  
 						 
 						  var index = array1.indexOf(removingValue);
-						  alert(index);
 						  var removed = array1.splice(index, 1);
-						  alert("hey"+array1.length);
 						  document.test.populate1.length = 0;
 						  
 						  for(var i=0;i<array1.length;i++){
@@ -772,7 +800,6 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 							
 
 							if ( str.search(re) == -1 ){
-							    alert("Does not contain "+value );
 							    array.push(value);
 								for(var i=0;i<array.length;i++){
 				                    var select = document.getElementById("populate1");
@@ -784,7 +811,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 								
 								name.submit();
 							}else{
-							   alert("You can't add the same manager!" );
+							   alert("You can't add the same employee!" );
 							}
 
 							
@@ -796,7 +823,6 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 	
 					function checkSubmit1() {
 						
-						alert("hello");
 						
 						
 						 var select = document.getElementById("populate1");
@@ -811,7 +837,7 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 				</SCRIPT>
 			<form name="lewis1">
 
-				<input name="alonso1" type="text">
+				<input name="alonso1" type="hidden">
 
 			</form>
 
@@ -819,11 +845,30 @@ ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCom
 
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn" data-dismiss="modal" onclick="checkSubmit1()" aria-hidden="true">Close</button>
 			<button class="btn btn-primary" data-dismiss="modal"
 				onclick="checkSubmit1() ">Save changes</button>
 		</div>
 	</div>
+
+<script>
+
+var select = document.getElementById("populate1");
+for (var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
+    if (children[i].tagName === "OPTION") children[i].selected = true;
+}
+document.lewis1.alonso1.value="";
+</script>
+
+<script type="text/javascript">
+var select = document.getElementById("populate");
+for (var i = 0, children = select.childNodes, l = children.length; i < l; i++) {
+   if (children[i].tagName === "OPTION") children[i].selected = true;
+}
+
+document.lewis.alonso.value="";
+
+</script>
 
 </body>
 </html>
