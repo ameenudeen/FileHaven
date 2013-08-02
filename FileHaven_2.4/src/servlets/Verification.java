@@ -71,7 +71,7 @@ public class Verification extends HttpServlet {
 			while(sc.hasNext())
 				val[count++]=sc.nextInt();
 			sc.close();
-			
+			System.out.println(count);
 			if(count!=5){
 				throw new Exception("Error occur.Please consult FileHaven administrator");
 			}

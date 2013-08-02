@@ -97,7 +97,8 @@ public class LoginTimeCheckServlet extends HttpServlet {
 			Date endTime = cal.getTime();
 			
 			Date now = new Date();
-			
+			session.setAttribute("externalcompany", "true");
+			session.setAttribute("AtVerify","FALSE");
 			if(now.equals(startTime) || now.after(startTime) && now.before(endTime) || acc.getType() == 'C' || acc.getType() == 'A'
 			|| com.getStartTime().substring(0, 2).equalsIgnoreCase("00") && com.getStartTime().substring(3, 5).equalsIgnoreCase("00") && com.getEndTime().substring(0, 2).equalsIgnoreCase("00") && com.getEndTime().substring(3, 5).equalsIgnoreCase("00"))
 			{
@@ -121,13 +122,13 @@ public class LoginTimeCheckServlet extends HttpServlet {
 		        session.setAttribute("AtVerify", "FALSE");
 		        if((ipToTest >= ipLo && ipToTest <= ipHi)==false)
 		        {
-
+		        	System.out.println("A");
 		        	session.setAttribute("AtVerify","TRUE");
 		        	session.setAttribute("externalcompany", "true");
 		        	response.sendRedirect("Verification.jsp");
 		        }
-		        
 		        else{
+		        	System.out.println("B");
 		        	session.setAttribute("externalcompany", "false");
 		        	response.sendRedirect("Index.jsp");
 		        	

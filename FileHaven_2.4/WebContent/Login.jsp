@@ -78,6 +78,15 @@ padding:60px;
       }
 
     </style>
+    
+    <style type="text/css">
+	.invalidAlert
+	{
+	color:#CC0000;
+	font-weight: bold;
+	}
+	</style>
+    
         <link href="resources/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -93,6 +102,19 @@ padding:60px;
           <img src="CaptchaServlet">
         	<p></p>
           <input type="text" name="code"  />
+          
+          <%
+          if(session.getAttribute("alert") != null)
+          {
+          %>
+          <div class="invalidAlert">
+          <%= session.getAttribute("alert").toString()%>
+          </div>
+          <%
+          }
+          else
+          %>
+         
           
           <hr/>
         <button class="btn btn-large btn-primary" name="submit" value="Login" type="submit">Sign in</button>

@@ -237,7 +237,7 @@ padding:60px;
 							 				str=Base64.encodeBase64String(Security.encryptByte(str.getBytes(),Security.generateAESKey("SYSTEM_KEY"),"AES"));
 											%>
 							 				<td><a href="ViewFileServlet?FileID=<%=str%>"><%=files.get(i).getFileName()%></a></td>
-							 				<td><a href="" ><%=files.get(i).getAccountID()%></a></td>
+							 				<td><%=files.get(i).getAccountID()%></td>
 							 				<td><%
 					double size=files.get(i).getFileSize();
 					if(size>=1048576){
