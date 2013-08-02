@@ -2,7 +2,7 @@
 	type="text/css" />
 <link href="resources/css/reveal.css" rel="stylesheet" type="text/css" />
 <link href="resources/css/header.css" rel="stylesheet" type="text/css" />
-
+<%@page import="database.CompanyDBAO,model.Company,model.Account" %>
 
 <link href="resources/css/jquery-ui.css" rel="stylesheet"
 	type="text/css">
@@ -1056,20 +1056,41 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 <ul class="thumbnails">
 				<li class="span3">
 					<div class="thumbnail">
-						<img src="resources/img/hewlett.jpg" alt="">
+					<%
+						CompanyDBAO cdb_header=new CompanyDBAO();
+						Company company_header=cdb_header.getCompanyDetails(user.getCompanyID());
+						cdb_header.remove();
+					%>
+					
+						<img src="<%=company_header.getCompanyLogo()%>" alt="<%=company_header.getCompanyName()%>">
 
 
-
+					
 					</div> <input type="hidden" id="user" /> 
 					<div class="well well-large">
 						Company Name:
-						<p class="muted">Hewlett Packard</p>
+						<p class="muted"><%=company_header.getCompanyName()%></p>
 						<p class="text-success">
 							User: Mr
 							<%=user.getName()%></p>
 						<p class="text-info">
 							Postion:
-							<%=user.getType()%></p>
+							<%
+							String user_type_header="";
+							switch(user.getType()){
+							case 'C':user_type_header="CEO";
+							break;
+							case 'M':user_type_header="Manager";
+							break;
+							case 'E':user_type_header="Employee";
+							break;
+							case 'A':user_type_header="Admin";
+							break;
+							case 'F':user_type_header="File Manager";
+							break;
+							}
+							%>
+							<%=user_type_header%></p>
 
 					</div>
 					
