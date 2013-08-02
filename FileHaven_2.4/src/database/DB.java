@@ -10,7 +10,6 @@ public class DB {
     public static String dbdriver = "com.mysql.jdbc.Driver";
 
 
-<<<<<<< HEAD
 //    public static String url = "jdbc:mysql://adeeldb.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
 //    public static String username = "adeeldb";
 //    public static String password = "Iamtheking";
@@ -18,10 +17,10 @@ public class DB {
     public static String url = "jdbc:mysql://localhost/FileHaven";
     public static String username = "root";
     public static String password = "password";
-=======
-   public static String url = "jdbc:mysql://adeeldb.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
-   public static String username = "adeeldb";
-    public static String password = "Iamtheking";
+    
+//   public static String url = "jdbc:mysql://adeeldb.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com:3306/filehaven";
+//   public static String username = "adeeldb";
+//    public static String password = "Iamtheking";
     //public static String url = "jdbc:mysql://localhost/FileHaven";
   //  public static String username = "root";
   //  public static String password = "";
@@ -29,7 +28,6 @@ public class DB {
     //    public static String url = "jdbc:mysql://localhost/FileHaven";
 //    public static String username = "root";
 //    public static String password = "password";
->>>>>>> branch 'master' of https://github.com/ameenudeen/FileHaven.git
     
     
     public DB() throws Exception {
