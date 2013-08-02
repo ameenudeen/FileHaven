@@ -36,13 +36,13 @@
 <script src="resources/js/jquery.reveal.js" type="text/javascript"></script>
 
 <%@ page import="database.*,model.*, java.util.*"%>
-
 <% 	
 if(session.getAttribute("LoggedInUser")==null){
 		response.sendRedirect("Login.jsp");
 		return;
 }
 if(session.getAttribute("externalcompany")==null||session.getAttribute("AtVerify")==null){
+	System.out.println(session.getAttribute("externalcompany")+" "+session.getAttribute("AtVerify"));
 	response.sendRedirect("Information.jsp");
 	return;
 }
@@ -1040,8 +1040,8 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 							<li><a>Profile</a><ul>
 						        <li><a onclick="window.location.href=hosturl+'ViewPersonalInfoServlet';">View Profile</a></li>
 						        <li><a onclick="window.location.href=hosturl+'ChangePassword.jsp';">Change Password</a></li>
+						        <li><a onclick="window.location.href=hosturl+'UpdatePersonalPattern.jsp';">Change Secondary Password</a></li>
 						        <li><a onclick="window.location.href=hosturl+'LogoutServlet';">Logout</a></li>
-		        				<li><a onclick="window.location.href=hosturl+'UpdatePersonalPattern.jsp';">Change Secondary Password</a></li>
 		        				</ul></li>
 						</ul>
 					<% } %>
@@ -1162,7 +1162,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 
 
 <div id="invDialog" class="reveal-modal large"
-	Style="background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
+	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
 	<a class="close-reveal-modal">&#215;</a>
 
 				<p><h4>Select users to invite</h4></p>
@@ -1196,7 +1196,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 </div>
 
 <div id="cfmDialog" class="reveal-modal small"
-	Style="background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
+	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
 	<a class="close-reveal-modal">&#215;</a>
 
 	<h4>You are invited to <span id="invCfmDialogTitle">Chatroom3</span></h4>
@@ -1216,7 +1216,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 </div>
 
 <div id="pinDialog" class="reveal-modal small"
-	Style="background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
+	Style="background-color: white; border: grey solid 1px; z-index: 10000;">
 	<a class="close-reveal-modal">&#215;</a>
 
 	<h4>Please enter your pin</h4>
@@ -1235,7 +1235,7 @@ else if(session.getAttribute("AtVerify").equals("FALSE")&&session.getAttribute("
 </div>
 
 <div id="cpinDialog" class="reveal-modal small"
-	Style="width:250px;background-color: white; border: grey solid 1px; z-index: 10000;position:fixed;">
+	Style="width:250px;background-color: white; border: grey solid 1px; z-index: 10000;">
 	<a class="close-reveal-modal">&#215;</a>
 	<h4>Create a New Pin</h4>
 	<div style="height:230px;overflow-x:hidden;overflow-y:scroll;">
