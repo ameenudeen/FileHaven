@@ -164,18 +164,21 @@ public class CreateDepartment extends HttpServlet {
 				db = new DepartmentDBAO();
 				db.insertDepartment(d1, currentUser.getUserName());
 				db.updateEmployeeDepartment(e1,departmentName,currentUser);
-				
+				db.remove();
 				
 				ManagerDBAO manager = new ManagerDBAO();
 				manager.updateManagerDepartment(m1, departmentName, currentUser);
+				manager.remove();
 				
 				//sendnotification
 				NotificationDBAO notificationEmployee = new NotificationDBAO();
 				notificationEmployee.insertEmployeeNotification(currentUser.getName()+" had added you into the "+departmentName, false, currentUser, e1);
+				notificationEmployee.remove();
 				
 				NotificationDBAO notificationManager = new NotificationDBAO();
 				notificationManager.insertManagerNotification(currentUser.getName()+" had added you into the "+departmentName, false, currentUser, m1);
 //				
+				notificationManager.remove();
 				System.out.println("Success");
 //				session.setAttribute("info_line1","Create Department");
 //				session.setAttribute("info_line2","Department created successfully");

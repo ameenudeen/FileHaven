@@ -181,13 +181,14 @@ $(document).ready(function(){
 <%
 	Account currentUser=(Account)session.getAttribute("LoggedInUser");
 	ManagerDBAO m1 = new ManagerDBAO();
-	
 	ArrayList<Manager> allManagers = m1.getAllManagers(currentUser.getCompanyID());
+	m1.remove();
 %>
 
 <%
 	EmployeeDBAO e1 = new EmployeeDBAO();
 	ArrayList<Employee> employMama = e1.getAllEmployees(currentUser.getCompanyID());
+	e1.remove();
 %>
 
 

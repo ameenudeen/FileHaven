@@ -50,6 +50,7 @@
 	Account currentUser = (Account) session.getAttribute("LoggedInUser");
 	FileReportDBAO f1 = new FileReportDBAO();
 	ArrayList<FileReport> fr = f1.getReports(currentUser.getCompanyID());
+	f1.remove();
 %>
 
 <body>
@@ -100,7 +101,7 @@
 						<th>File Owner</th>
 						<th>Status</th>
 						<th>Access Date</th>
-						<th>Access Time</th>
+						<th>Access Time(GMT)</th>
 					</tr>
 				</thead>
 
@@ -148,7 +149,7 @@
 								<th>File Owner</th>
 								<th>Status</th>
 								<th>Access Date</th>
-								<th>Access Time</th>
+								<th>Access Time(GMT)</th>
 						</tr>
 					</thead>
 

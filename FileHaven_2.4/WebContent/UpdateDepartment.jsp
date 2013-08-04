@@ -142,26 +142,31 @@ $(document).ready(function(){
 	Account currentUser = (Account) session.getAttribute("LoggedInUser");
 	int inputDepartmentId=(Integer)session.getAttribute("departmentId");
 	ArrayList<Manager> mama = m1.getDepartmentManagers(inputDepartmentId,currentUser.getCompanyID());
+	m1.remove();
 	
 %>
 <%
 ManagerDBAO m2 = new ManagerDBAO();
-ArrayList<Manager> availableManagers = m1.getSelectedManagers(currentUser.getCompanyID());
+ArrayList<Manager> availableManagers = m2.getSelectedManagers(currentUser.getCompanyID());
+m2.remove();
 %>
 
 <%
 	EmployeeDBAO employee = new EmployeeDBAO();
 	ArrayList<Employee> e2 = employee.getDepartmentEmployees(inputDepartmentId,currentUser.getCompanyID());
+	employee.remove();
 %>
 
 <%
 	DepartmentDBAO department = new DepartmentDBAO();
 	ArrayList<Department> d1 =department.getDepartmentDetails(currentUser.getUserName(), inputDepartmentId);
+	department.remove();
 %>
 
 <%
 	EmployeeDBAO e1 = new EmployeeDBAO();
 	ArrayList<Employee> employMama = e1.getSelectedEmployees(currentUser.getCompanyID());
+	e1.remove();
 %>
 <body>
 

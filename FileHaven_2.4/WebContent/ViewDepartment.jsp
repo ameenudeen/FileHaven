@@ -57,6 +57,8 @@ $(document).ready(function(){
 			.getAttribute("LoggedInUser");
 	ArrayList<Department> department = d1
 			.getCompanyDepartment(currentUser.getUserName());
+	
+	d1.remove();
 %>
 
 

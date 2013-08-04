@@ -182,11 +182,14 @@ public class UpdateDepartment extends HttpServlet {
 						int departmentId= (Integer)session.getAttribute("departmentId");
 						db.updateDepartment(d1, currentUser.getName(),departmentId);
 						
+						
 						db.updateEmployeeDepartment(e1,departmentName,currentUser);
 						//db.updateEmployeesDepartment(e1,departmentName,currentUser.getName(),currentUser);
+						db.remove();
 						
 						ManagerDBAO managers = new ManagerDBAO();
 						managers.updateManagerDepartment(m1, departmentName, currentUser);
+						managers.remove();
 						//manager.updateManagerssDepartment(m1, departmentName, currentUser.getName(),currentUser);
 						System.out.println("Success");
 						PrintWriter out = response.getWriter();  
