@@ -63,8 +63,8 @@ public class FileUploadService
 
 	public FileUploadService()
 	{
-		setAccessKey("AKIAJPYI22BYCUWFFR5Q");
-		setSecretKey("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");
+		setAccessKey("");
+		setSecretKey("");
 		setBucket("filehavendata");
 		doRefreshConnection();
 	}
